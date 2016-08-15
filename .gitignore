@@ -1,5 +1,8 @@
 *.pyc
 /ve/
+/env/
+.cache/
+.coverage
 
 *.sqlite3
 .idea/
