@@ -2,3 +2,4 @@
 /ve/
 
 *.sqlite3
+.idea/
