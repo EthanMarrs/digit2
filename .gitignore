@@ -7,3 +7,5 @@
 
 *.sqlite3
 .idea/
+
+/docs/build/
