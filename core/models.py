@@ -2,8 +2,39 @@
 from django.db import models
 
 
+class Grade(models.Model):
+    """Grade class that describes school year."""
+    name = models.TextField(max_length=10)
+
+
+class Syllabus(models.Model):
+    """Overarching container that conceptually organises topics for a year."""
+    grade = models.OneToOneField(Grade)
+
+
+class Topic(models.Model):
+    """Class that describes a unit of math content with time and duration."""
+    name = models.TextField(max_length=50)
+    description = models.TextField(max_length=200)
+    syllabus = models.ForeignKey(Syllabus)
+    week_start = models.PositiveSmallIntegerField(unique=True)
+    duration = models.PositiveSmallIntegerField()
+
+
+class Block(models.Model):
+    """Class that is used to organise math questions within a topic"""
+    topic = models.ForeignKey(Topic)
+    order = models.PositiveIntegerField(default=0)
+
+
+class Subject(models.Model):
+    """Class that describes the area of mathematics that a block covers."""
+    name = models.TextField(max_length=50)
+    grade = models.ForeignKey(Grade)
+
+
 class Question(models.Model):
-    """Question class containing challenges."""
+    """Question class containing challenge."""
 
     # Question States
     INCOMPLETE = 1
@@ -14,6 +45,8 @@ class Question(models.Model):
 
     content = models.TextField()
     explanation = models.TextField()
+    block = models.ForeignKey(Block)
+    subject = models.ForeignKey(Subject)
     state = models.PositiveIntegerField("State",
                                         choices=(
                                             (INCOMPLETE, "Incomplete"),
