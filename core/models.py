@@ -1,5 +1,6 @@
 """Models.py: creates models for core of digit platform."""
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class StateException(Exception):
@@ -13,6 +14,14 @@ class StateException(Exception):
         """Return state error message indicating why exception is thrown."""
         return ("Incorrect state change. Current state is " +
                 str(self.state))
+
+
+class CorrectOptionExistsError(Exception):
+    """An Exception for two or more correct options per question."""
+
+    def __init__(self, message):
+        """Constructor for CorrectOptionExistsError."""
+        self.message = message
 
 
 class Grade(models.Model):
@@ -131,10 +140,26 @@ class Option(models.Model):
     question = models.ForeignKey(Question)
     correct = models.BooleanField()
 
+    def save(self, *args, **kwargs):
+        """Save model and check that no other questions are already correct.
+
+        This function is checks that there are no questions that
+        are already correct, before calling the inherited save function.
+
+        NOTE: this does not validate questions that have no correct answers
+        """
+        if self.correct:
+            for option in self.question.option_set.all():
+                if option.correct:
+                    raise CorrectOptionExistsError(
+                        "An option already exists that is correct")
+        super(Option, self).save(*args, **kwargs)
+
 
 class QuestionResponse(models.Model):
-    """A record of which option was chosen in response to a question"""
+    """A record of which option was chosen in response to a question."""
 
     question = models.ForeignKey(Question)
     response = models.ForeignKey(Option)
+    user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now_add=True)

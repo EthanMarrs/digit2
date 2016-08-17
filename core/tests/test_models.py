@@ -4,9 +4,10 @@ from core.models import (Grade,
                          Subject,
                          Question,
                          Option,
-                         StateException)
+                         StateException,
+                         CorrectOptionExistsError,
+                         )
 from django.test import TestCase
-from django.db.utils import IntegrityError
 
 
 class TestQuestion(TestCase):
@@ -175,3 +176,20 @@ class TestQuestion(TestCase):
 
         question1.change_to_complete()
         assert(question1.state == question1.COMPLETE)
+
+    def test_question_option_save(self):
+        """Test that question cannot have option with correct answer."""
+        question1 = Question.objects.all()[0]
+        option1 = Option(content="1", question=question1, correct=False)
+        option1.save()
+
+        option2 = Option(content="2", question=question1, correct=True)
+        option2.save()
+
+        with pytest.raises(CorrectOptionExistsError) as exception_info:
+            option3 = Option(content="3", question=question1, correct=True)
+            option3.save()
+        assert(exception_info.value.__str__() ==
+               "An option already exists that is correct")
+        assert(len(question1.option_set.all()) == 2)
+        assert(len(Option.objects.all()) == 2)
