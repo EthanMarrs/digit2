@@ -70,7 +70,7 @@ class Question(models.Model):
 
     content = models.TextField()
     explanation = models.TextField()
-    block = models.ForeignKey(Block)
+    block = models.ForeignKey(Block, blank=True, null=True)
     subject = models.ForeignKey(Subject)
     # WARNING: DO NOT CHANGE STATE DIRECTLY, USE STATE CHANGE METHODS
     state = models.PositiveIntegerField("State",

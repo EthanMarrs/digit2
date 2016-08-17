@@ -1,6 +1,10 @@
 """test_models.py: runs tests on the models for digit."""
 import pytest
-from core.models import Question, Answer, StateException
+from core.models import (Grade,
+                         Subject,
+                         Question,
+                         Answer,
+                         StateException)
 from django.test import TestCase
 from django.db.utils import IntegrityError
 
@@ -10,8 +14,14 @@ class TestQuestion(TestCase):
 
     def setUp(self):
         """Create questions for testing."""
+        grade_test = Grade(name="Grade Example")
+        grade_test.save()
+        subject_test = Subject(name="addition",
+                               grade=grade_test)
+        subject_test.save()
         question1 = Question(content='what is 1 + 1?',
-                             explanation='This is an addition question')
+                             explanation='This is an addition question',
+                             subject=subject_test,)
         question1.save()
         answer1 = Answer(content='2', question=question1)
         answer1.save()
