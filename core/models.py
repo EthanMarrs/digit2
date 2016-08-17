@@ -124,15 +124,17 @@ class Question(models.Model):
             raise StateException(self.state)
 
 
-class Answer(models.Model):
-    """Single correct answer for each Question."""
-
-    content = models.TextField()
-    question = models.OneToOneField(Question)
-
-
 class Option(models.Model):
     """One or more incorrect options for each Question."""
 
     content = models.TextField()
     question = models.ForeignKey(Question)
+    correct = models.BooleanField()
+
+
+class QuestionResponse(models.Model):
+    """A record of which option was chosen in response to a question"""
+
+    question = models.ForeignKey(Question)
+    response = models.ForeignKey(Option)
+    time = models.DateTimeField(auto_now_add=True)

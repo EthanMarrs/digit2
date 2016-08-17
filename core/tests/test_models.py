@@ -3,7 +3,7 @@ import pytest
 from core.models import (Grade,
                          Subject,
                          Question,
-                         Answer,
+                         Option,
                          StateException)
 from django.test import TestCase
 from django.db.utils import IntegrityError
@@ -23,22 +23,11 @@ class TestQuestion(TestCase):
                              explanation='This is an addition question',
                              subject=subject_test,)
         question1.save()
-        answer1 = Answer(content='2', question=question1)
-        answer1.save()
 
     def test_question_deafult_state(self):
         """Confirm that default state is Incomplete."""
         question1 = Question.objects.all()[0]
         assert(question1.state == question1.INCOMPLETE)
-
-    def test_question_answer_relation(self):
-        """Confirm that question can only have one answer."""
-        question1 = Question.objects.all()[0]
-        with pytest.raises(IntegrityError) as exception_info:
-            another_answer = Answer(content='3', question=question1)
-            another_answer.save()
-        assert(exception_info.value.__str__() ==
-               "UNIQUE constraint failed: core_answer.question_id")
 
     def test_question_state_from_incomplete(self):
         """Check that question state.
