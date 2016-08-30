@@ -4,6 +4,9 @@ from core.models import (Grade,
                          Subject,
                          Question,
                          Option,
+                         Topic,
+                         Block,
+                         Syllabus,
                          StateException,
                          CorrectOptionExistsError,
                          )
@@ -193,3 +196,27 @@ class TestQuestion(TestCase):
                "An option already exists that is correct")
         assert(len(question1.option_set.all()) == 2)
         assert(len(Option.objects.all()) == 2)
+
+
+class TestTopic(TestCase):
+    """Test the Topic Model."""
+
+    def setUp(self):
+        """Create Topic for testing."""
+
+        grade_test = Grade.objects.create(name="Grade Example")
+        syllabus_test = Syllabus.objects.create(grade=grade_test)
+        Topic.objects.create(name="Financial Mathematics",
+                             description="Topic that involves sinking funds "
+                                         "and loan calculations",
+                             syllabus=syllabus_test, week_start=1,
+                             duration=3)
+
+    def test_topic_creates_blocks(self):
+        """
+        Confirm that blocks are created automatically and associated with the
+        topic.
+        """
+        blocks = Block.objects.all()
+        assert(len(blocks) == 3)
+        assert(blocks[0].topic.name == "Financial Mathematics")

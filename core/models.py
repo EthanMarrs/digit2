@@ -35,6 +35,9 @@ class Syllabus(models.Model):
 
     grade = models.OneToOneField(Grade)
 
+    class Meta:
+        verbose_name_plural = "syllabi"
+
 
 class Topic(models.Model):
     """Class that describes a unit of math content with time and duration."""
@@ -44,6 +47,17 @@ class Topic(models.Model):
     syllabus = models.ForeignKey(Syllabus)
     week_start = models.PositiveSmallIntegerField(unique=True)
     duration = models.PositiveSmallIntegerField()
+
+    def save(self, *args, **kwargs):
+        """
+        Saves model and automatically creates the associated blocks
+        for the topic.
+        """
+
+        super(Topic, self).save(*args, **kwargs)
+
+        for i in range(int(self.duration)):
+            Block.objects.create(topic=self, order=i)
 
 
 class Block(models.Model):
@@ -58,6 +72,13 @@ class Subject(models.Model):
 
     name = models.TextField(max_length=50)
     grade = models.ForeignKey(Grade)
+
+
+class QuestionOrder(models.Model):
+    assigned_by = models.ForeignKey(User, related_name="assigned_by")
+    assigned_to = models.ForeignKey(User, related_name="assigned_to")
+    module = models.ForeignKey(Topic)
+    description = models.TextField()
 
 
 class Question(models.Model):
@@ -81,6 +102,7 @@ class Question(models.Model):
     explanation = models.TextField()
     block = models.ForeignKey(Block, blank=True, null=True)
     subject = models.ForeignKey(Subject)
+    question_order = models.ForeignKey(QuestionOrder, null=True, blank=True)
     # WARNING: DO NOT CHANGE STATE DIRECTLY, USE STATE CHANGE METHODS
     state = models.PositiveIntegerField("State",
                                         choices=QUESTION_STATES,
