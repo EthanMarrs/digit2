@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+<h1>{{ object }}</h1>
+<div class="module">
+    <p>{{ object.description }}</p>
+</div>
+
+<div class="module">
+    <p>{{ object.topic.questions }}</p>
+</div>
+
+{% endblock %}

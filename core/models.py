@@ -29,6 +29,9 @@ class Grade(models.Model):
 
     name = models.TextField(max_length=10)
 
+    def __str__(self):
+        return "Grade " + str(self.name)
+
 
 class Syllabus(models.Model):
     """Overarching container that conceptually organises topics for a year."""
@@ -37,6 +40,9 @@ class Syllabus(models.Model):
 
     class Meta:
         verbose_name_plural = "syllabi"
+
+    def __str__(self):
+        return "Grade " + str(self.grade.name) + " Syllabus"
 
 
 class Topic(models.Model):
@@ -77,8 +83,11 @@ class Subject(models.Model):
 class QuestionOrder(models.Model):
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
-    module = models.ForeignKey(Topic)
+    topic = models.ForeignKey(Topic)
     description = models.TextField()
+
+    def __str__(self):
+        return str(self.topic.name) + " Question Order"
 
 
 class Question(models.Model):
