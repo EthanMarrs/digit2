@@ -1,6 +1,7 @@
 """Models.py: creates models for core of digit platform."""
 from django.db import models
 from django.contrib.auth.models import User
+from ordered_model.models import OrderedModel
 
 
 class StateException(Exception):
@@ -66,11 +67,11 @@ class Topic(models.Model):
             Block.objects.create(topic=self, order=i)
 
 
-class Block(models.Model):
+class Block(OrderedModel):
     """Class that is used to organise math questions within a topic."""
 
     topic = models.ForeignKey(Topic)
-    order = models.PositiveIntegerField(default=0)
+    order_with_respect_to = 'topic'
 
 
 class Subject(models.Model):
@@ -85,12 +86,13 @@ class QuestionOrder(models.Model):
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     topic = models.ForeignKey(Topic)
     description = models.TextField()
+    open = models.BooleanField()
 
     def __str__(self):
         return str(self.topic.name) + " Question Order"
 
 
-class Question(models.Model):
+class Question(OrderedModel):
     """Question class containing challenge."""
 
     INCOMPLETE = 0
@@ -116,6 +118,7 @@ class Question(models.Model):
     state = models.PositiveIntegerField("State",
                                         choices=QUESTION_STATES,
                                         default=INCOMPLETE)
+    order_with_respect_to = 'block'
 
     def change_to_review_ready(self):
         """Change state of question.
@@ -163,6 +166,14 @@ class Question(models.Model):
         else:
             raise StateException(self.state)
 
+    def get_comments(self):
+        """
+        Fetch all the comments associated with a question ordered
+        chronologically.
+        """
+        comments = Comment.objects.filter(question=self).order_by("-created_at")
+        return comments
+
 
 class Option(models.Model):
     """One or more incorrect options for each Question."""
@@ -194,3 +205,15 @@ class QuestionResponse(models.Model):
     response = models.ForeignKey(Option)
     user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now_add=True)
+
+
+class Comment(models.Model):
+    """
+    A comment class that is associated with a specific question and
+    the user that posted it.
+    """
+
+    text = models.TextField()
+    question = models.ForeignKey(Question)
+    user = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)

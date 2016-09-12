@@ -8,7 +8,12 @@
 </div>
 
 <div class="module">
-    <p>{{ object.topic.questions }}</p>
+    {% for i in question_list %}
+        <p>{{ i }}</p>
+        {% for j in i.get_comments %}
+            <p>{{ j }}</p>
+        {% endfor %}
+    {% endfor %}
 </div>
 
 {% endblock %}
