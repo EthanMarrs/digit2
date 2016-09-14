@@ -21,5 +21,5 @@ from core import urls as core_urls
 
 urlpatterns = [
     url(r'^admin/', dashboard_site.urls),
-    url(r'^', include(core_urls))
+    url(r'^', include(core_urls)),
 ]

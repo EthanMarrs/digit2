@@ -4,8 +4,13 @@
 
 <h1>Syllabus</h1>
 <div class="module">
-
     <p>{{ object }}</p>
+    {% for i in topic_list %}
+        <p>{{ i }}</p>
+        {% for j in i.get_blocks %}
+            <p>{{ j.order }} {{ j.id }}</p>
+        {% endfor %}
+    {% endfor %}
 </div>
 
 {% endblock %}

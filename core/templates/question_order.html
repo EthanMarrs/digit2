@@ -1,6 +1,17 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
+<!--<link rel="stylesheet" type="text/css" href="{% static 'core/grid12.css' %}" />-->
+{% endblock %}
+
 {% block coltype %}flex{% endblock %}
 {% block content %}
+
+{% load widget_tweaks %}
+{% load humanize %}
 
 <h1>{{ object }}</h1>
 <div class="module">
@@ -8,11 +19,22 @@
 </div>
 
 <div class="module">
-    {% for i in question_list %}
-        <p>{{ i }}</p>
-        {% for j in i.get_comments %}
-            <p>{{ j }}</p>
+    {% for question in question_list %}
+        <p>{{ question.content }}</p>
+        {% for comment in question.get_comments %}
+            <p><b>{{ comment.user }}</b></p>
+            <p class="float-right grey-text">{{ comment.created_at|naturaltime }}</p>
+            <p>{{ comment.text }}</p>
         {% endfor %}
+
+        <form action="/comments/" method="post">
+            {% csrf_token %}
+            {{ form.text }}
+            {{ form.text.errors }}
+            {% render_field form.question_id value=question.id %}
+        <input type="submit" value="Send" />
+        </form>
+
     {% endfor %}
 </div>
 

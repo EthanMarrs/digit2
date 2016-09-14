@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'core',
-    'ordered_model'
+    'ordered_model',
+    'widget_tweaks',
+    'bootstrap3'
 ]
 
 MIDDLEWARE = [

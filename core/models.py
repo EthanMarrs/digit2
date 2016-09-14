@@ -66,6 +66,12 @@ class Topic(models.Model):
         for i in range(int(self.duration)):
             Block.objects.create(topic=self, order=i)
 
+    def get_blocks(self):
+        blocks = Block.objects.filter(
+            topic=self
+        )
+        return blocks
+
 
 class Block(OrderedModel):
     """Class that is used to organise math questions within a topic."""
@@ -171,7 +177,7 @@ class Question(OrderedModel):
         Fetch all the comments associated with a question ordered
         chronologically.
         """
-        comments = Comment.objects.filter(question=self).order_by("-created_at")
+        comments = Comment.objects.filter(question=self)
         return comments
 
 
