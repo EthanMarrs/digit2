@@ -68,3 +68,16 @@ class CommentView(View):
             return HttpResponseRedirect("/comment_success")
 
         return render(request, self.template_name, {'form': form})
+
+
+class QuestionPositionUpView(View):
+    """
+    A view that moves a question up one position relative to
+    the block it belongs to.
+    """
+
+    def post(self, request, *args, **kwargs):
+        question = models.Question.objects.get_object_or_404(
+            pk=kwargs["pk"])
+        question.up()
+
