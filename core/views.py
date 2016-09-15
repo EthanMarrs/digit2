@@ -70,14 +70,19 @@ class CommentView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class QuestionPositionUpView(View):
+class BlockDetailView(DetailView):
     """
-    A view that moves a question up one position relative to
-    the block it belongs to.
+    A detail view that displays the detail of a block, namely
+    the questions associated with it.
     """
 
-    def post(self, request, *args, **kwargs):
-        question = models.Question.objects.get_object_or_404(
-            pk=kwargs["pk"])
-        question.up()
+    model = models.Block
+    template_name = "block.html"
+
+    def get_context_data(self, **kwargs):
+        """ Get context for a block. """
+
+        context = super(BlockDetailView, self).get_context_data(**kwargs)
+        return context
+
 

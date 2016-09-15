@@ -8,16 +8,38 @@
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
 <script src="{% static 'core/events.js' %}"></script>
 
-<h1>Syllabus</h1>
+<h1>{{ object }}</h1>
 <div class="module">
-    <p>{{ object }}</p>
     {% for topic in topic_list %}
-    <p>{{ topic }}</p>
-    {% for block in topic.get_blocks %}
-    <p>{{ block.order }} {{ block.id }}</p>
-    <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-up/?">Up</a>
-    <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-down/?">Down</a>
-    {% endfor %}
+    <h3>{{ topic }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>BLOCK</th>
+                <th>QUESTIONS</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for block in topic.get_blocks %}
+        <tr>
+            <td class="field-id">{{ block.id }}</td>
+            <td class="field-order">Block {{ block.order|add:1 }}</td>
+            <td class="field-questions">{{ block.get_number_of_questions }} Question{{ block.get_number_of_questions|pluralize }}</td>
+            <td class="field-up">
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-up/?">Up</a>
+            </td>
+            <td class="field-down">
+                <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-down/?">Down</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/>
     {% endfor %}
 </div>
 

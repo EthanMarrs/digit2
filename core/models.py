@@ -60,17 +60,20 @@ class Topic(models.Model):
         Saves model and automatically creates the associated blocks
         for the topic.
         """
-
         super(Topic, self).save(*args, **kwargs)
 
         for i in range(int(self.duration)):
             Block.objects.create(topic=self, order=i)
 
     def get_blocks(self):
+        """Helper function which returns all blocks related to the topic."""
         blocks = Block.objects.filter(
             topic=self
         )
         return blocks
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Block(OrderedModel):
@@ -79,12 +82,26 @@ class Block(OrderedModel):
     topic = models.ForeignKey(Topic)
     order_with_respect_to = 'topic'
 
+    def get_number_of_questions(self):
+        """Helper function which returns the count of related questions."""
+        return Question.objects.filter(block=self).count()
+
+    def get_questions(self):
+        """Helper function which returns all related questions."""
+        return Question.objects.filter(block=self)
+
+    def __str__(self):
+        return str(self.topic) + " Block " + str(self.order + 1)
+
 
 class Subject(models.Model):
     """Class that describes the area of mathematics that a block covers."""
 
     name = models.TextField(max_length=50)
     grade = models.ForeignKey(Grade)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class QuestionOrder(models.Model):
