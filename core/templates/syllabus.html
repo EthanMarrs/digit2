@@ -6,6 +6,7 @@
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
+<script src="{% static 'core/events.js' %}"></script>
 
 <h1>Syllabus</h1>
 <div class="module">
@@ -14,33 +15,10 @@
     <p>{{ topic }}</p>
     {% for block in topic.get_blocks %}
     <p>{{ block.order }} {{ block.id }}</p>
-    <a class="move-link" href="#" url="/admin/core/block/{{ block.id }}/move-up/?">Up</a>
-    <a class="move-link" href="#" url="/admin/core/block/{{ block.id }}/move-down/?">Down</a>
+    <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-up/?">Up</a>
+    <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-down/?">Down</a>
     {% endfor %}
     {% endfor %}
 </div>
-
-<script>
-    $(function () {
-        $(".move-link").on('click', function () {
-            $.ajaxSetup({
-                headers: {"X-CSRFToken": $.cookie("csrftoken")}
-            });
-
-            var url = $(this).attr("url");
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                success: function () {
-                    location.reload();
-                },
-                error: function () {
-                    console.log("Error: Can't update question position.")
-                }
-            })
-        });
-    });
-</script>
 
 {% endblock %}

@@ -2,11 +2,16 @@
  * Created by ethan on 2016/09/14.
  */
 
-$(function() {
-    $(".up-link").on('click', function () {
-        console.log("yay");
+$(function () {
+    $(".move-link").on('click', function () {
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        var url = $(this).attr("url");
+
         $.ajax({
-            url: "/admin/core/block/6/move-up/?",
+            url: url,
             type: "POST",
             success: function () {
                 location.reload();
