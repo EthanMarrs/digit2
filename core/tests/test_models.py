@@ -3,6 +3,7 @@ import pytest
 from core.models import (Grade,
                          Subject,
                          Question,
+                         Comment,
                          Option,
                          Topic,
                          Block,
@@ -11,6 +12,7 @@ from core.models import (Grade,
                          CorrectOptionExistsError,
                          )
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 
 class TestQuestion(TestCase):
@@ -28,7 +30,7 @@ class TestQuestion(TestCase):
                              subject=subject_test,)
         question1.save()
 
-    def test_question_deafult_state(self):
+    def test_question_default_state(self):
         """Confirm that default state is Incomplete."""
         question1 = Question.objects.all()[0]
         assert(question1.state == question1.INCOMPLETE)
@@ -196,6 +198,26 @@ class TestQuestion(TestCase):
                "An option already exists that is correct")
         assert(len(question1.option_set.all()) == 2)
         assert(len(Option.objects.all()) == 2)
+
+    def test_get_comments(self):
+        """
+        Test that the get_comments() function returns all comments
+        relating to a question.
+        """
+        user = User.objects.create(username="testuser")
+        question1 = Question.objects.all()[0]
+        Comment.objects.create(text="Test comment!", question=question1, user=user)
+        Comment.objects.create(text="Another comment!", question=question1, user=user)
+
+        assert(len(question1.get_comments()) == 2)
+        assert(question1.get_comments()[0].text == "Test comment!")
+        assert(question1.get_comments()[0].created_at < question1.get_comments()[1].created_at)
+
+    def test_get_state(self):
+        question1 = Question.objects.all()[0]
+
+        assert(question1.state == question1.INCOMPLETE)
+        assert(question1.get_state() == "Incomplete")
 
 
 class TestTopic(TestCase):
