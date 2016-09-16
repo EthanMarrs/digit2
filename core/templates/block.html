@@ -18,7 +18,6 @@
             <th>ID</th>
             <th>CONTENT</th>
             <th>SUBJECT</th>
-            <th>BLOCK</th>
             <th>STATE</th>
             <th></th>
             <th></th>
@@ -27,15 +26,21 @@
         <tbody>
         {% for question in object.get_questions %}
         <tr>
-            <td class="field-id">{{ question.id }} {{ question.order }}</td>
+            <td class="field-id"><a href="/admin/core/question/{{ question.id }}/change/">{{ question.id }}</a></td>
             <td class="field-content">{{ question.content|truncatechars:20 }}</td>
             <td class="field-subject">{{ question.subject }}</td>
+            <td class="field-state">{{ question.get_state }}</td>
             <td class="field-up">
                 <a class="move-link" href="javascript:void(null);"
-                   url="/admin/core/question/{{ question.id }}/move-up/?">Up</a>
+                   url="/admin/core/question/{{ question.id }}/move-up/?">
+                    <img src="/static/ordered_model/arrow-up.gif">
+                </a>
             </td>
             <td class="field-down">
-                <a class="move-link" href="javascript:void(null);" url="/admin/core/question/{{ question.id }}/move-down/?">Down</a>
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/question/{{ question.id }}/move-down/?">
+                    <img src="/static/ordered_model/arrow-down.gif">
+                </a>
             </td>
         </tr>
         {% endfor %}

@@ -91,7 +91,7 @@ class Block(OrderedModel):
         return Question.objects.filter(block=self)
 
     def __str__(self):
-        return str(self.topic) + " Block " + str(self.order + 1)
+        return str(self.topic) + " Block " + str(self.order)
 
 
 class Subject(models.Model):
@@ -196,6 +196,12 @@ class Question(OrderedModel):
         """
         comments = Comment.objects.filter(question=self)
         return comments
+
+    def get_state(self):
+        """
+        Returns the string value of the current question state.
+        """
+        return self.QUESTION_STATES[self.state][1]
 
 
 class Option(models.Model):
