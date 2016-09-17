@@ -25,7 +25,7 @@
         <tbody>
         {% for block in topic.get_blocks %}
         <tr>
-            <td class="field-id">{{ block.id }}</td>
+            <td class="field-id"><a href="/blocks/{{ block.id }}/">{{ block.id }}</a></td>
             <td class="field-order">Block {{ block.order|add:1 }}</td>
             <td class="field-questions">{{ block.get_number_of_questions }} Question{{ block.get_number_of_questions|pluralize }}</td>
             <td class="field-up">
