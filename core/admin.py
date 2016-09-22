@@ -10,7 +10,7 @@ class DashboardSite(admin.AdminSite):
     def get_urls(self):
         urls = super(DashboardSite, self).get_urls()
         urls += [
-            url(r'^dashboard/$', views.DashboardAdminView.as_view())
+            url(r'^dashboard/$', views.DashboardView.as_view())
         ]
         return urls
 

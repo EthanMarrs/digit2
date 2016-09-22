@@ -1,6 +1,7 @@
 """Models.py: creates models for core of digit platform."""
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.forms import ValidationError
 from ordered_model.models import OrderedModel
 
 
@@ -38,6 +39,7 @@ class Syllabus(models.Model):
     """Overarching container that conceptually organises topics for a year."""
 
     grade = models.OneToOneField(Grade)
+    users = models.ManyToManyField(User)
 
     class Meta:
         verbose_name_plural = "syllabi"
@@ -54,6 +56,23 @@ class Topic(models.Model):
     syllabus = models.ForeignKey(Syllabus)
     week_start = models.PositiveSmallIntegerField(unique=True)
     duration = models.PositiveSmallIntegerField()
+
+    def clean(self):
+        """
+        Also validates that no other topic for this syllabus exists
+        in the same time frame.
+        """
+        topics = Topic.objects.filter(syllabus=self.syllabus)
+
+        for topic in topics:
+            week_end = topic.week_start + topic.duration
+            print(topic.week_start, self.week_start, week_end)
+            # Topic occurs in another topic's time frame
+            if topic.week_start <= self.week_start <= week_end:
+                raise ValidationError(
+                    "The topic starts during an existing "
+                    "topic in the same syllabus."
+                )
 
     def save(self, *args, **kwargs):
         """
@@ -91,7 +110,7 @@ class Block(OrderedModel):
         return Question.objects.filter(block=self)
 
     def __str__(self):
-        return str(self.topic) + " Block " + str(self.order)
+        return str(self.topic) + " Block " + str(self.order + 1)
 
 
 class Subject(models.Model):
@@ -109,7 +128,7 @@ class QuestionOrder(models.Model):
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     topic = models.ForeignKey(Topic)
     description = models.TextField()
-    open = models.BooleanField()
+    open = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.topic.name) + " Question Order"
@@ -151,7 +170,7 @@ class Question(OrderedModel):
         or "Needs Reworking".
         """
         if (self.state is self.INCOMPLETE or
-                self.state is self.NEEDS_REWORKING):
+                    self.state is self.NEEDS_REWORKING):
             self.state = self.REVIEW_READY
         else:
             raise StateException(self.state)
@@ -174,7 +193,7 @@ class Question(OrderedModel):
         or "Flagged for Review".
         """
         if (self.state is self.REVIEW_READY or
-                self.state is self.FLAGGED):
+                    self.state is self.FLAGGED):
             self.state = self.COMPLETE
         else:
             raise StateException(self.state)
@@ -202,6 +221,9 @@ class Question(OrderedModel):
         Returns the string value of the current question state.
         """
         return self.QUESTION_STATES[self.state][1]
+
+    def __str__(self):
+        return "Question " + str(self.id)
 
 
 class Option(models.Model):
