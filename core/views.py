@@ -1,13 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView
-from django.utils import timezone
+from django.http import HttpResponse
 from datetime import datetime, timedelta
 from django.db.models import F
 
 from core import models, forms
 
 
-class DashboardView(View):
+class SyllabiView(View):
     """ Overview screen for the Digit dashboard. Displays all syllabi."""
 
     def get(self, request):
@@ -26,9 +26,12 @@ class QuestionOrderDetailView(DetailView):
         """ Get context for all questions relating to a question order. """
 
         context = super(QuestionOrderDetailView, self).get_context_data(**kwargs)
+        blocks = models.Block.objects.filter(topic=context["object"].topic)
+
         context["question_list"] = models.Question.objects.filter(
-            question_order=context["object"]
+            block__in=blocks
         )
+        context["block_list"] = blocks
         context["form"] = self.form_class
 
         return context
@@ -88,6 +91,71 @@ class BlockDetailView(DetailView):
         return context
 
 
+class QuestionUpView(View):
+    """
+    A view that intelligently increments the ordering of a question.
+    If the question is currently at the top of its block, then
+    the question is moved to the bottom of the next block (if it exists).
+    """
+
+    def post(self, request, *args, **kwargs):
+        question = models.Question.objects.get(pk=kwargs["pk"])
+        first_question = models.Question.objects.filter(block=question.block).first()
+
+        # At top of block, so move up to next block
+        if question == first_question:
+            block = models.Block.objects.get(pk=question.block.id)
+            first_block = models.Block.objects.filter(topic=question.block.topic).first()
+
+            # Not the top block, otherwise do nothing
+            if block != first_block:
+                new_block = models.Block.objects.get(topic=block.topic,
+                                                     order=block.order - 1)
+                pos = models.Question.objects.filter(block=new_block).count()
+
+                question.block = new_block
+                question.order = pos
+                question.save()
+
+        else:
+            question.up()
+
+        return HttpResponse(status=200)
+
+
+class QuestionDownView(View):
+    """
+    A view that intelligently decrements the ordering of a question.
+    If the question is currently at the bottom of its block, then
+    the question is moved to the top of the next block (if it exists).
+    """
+
+    def post(self, request, *args, **kwargs):
+        question = models.Question.objects.get(pk=kwargs["pk"])
+        last_question = models.Question.objects.filter(block=question.block).last()
+
+        # At bottom of block, so move down to previous block
+        if question == last_question:
+            block = models.Block.objects.get(pk=question.block.id)
+            last_block = models.Block.objects.filter(topic=question.block.topic).last()
+
+            # Not the bottom block, otherwise do nothing
+            if block != last_block:
+                new_block = models.Block.objects.get(topic=block.topic,
+                                                     order=block.order + 1)
+                pos = models.Question.objects.filter(block=new_block).count()
+
+                question.block = new_block
+                question.order = pos
+                question.save()
+                question.top()
+
+        else:
+            question.down()
+
+        return HttpResponse(status=200)
+
+
 class QuizView(View):
     def get(self, request):
         user = request.user
@@ -110,7 +178,7 @@ class QuizView(View):
         blocks = models.Block.objects.filter(topic__in=topics)
 
         # Get IDs of questions in last 2 weeks
-        pool = models.Question.objects.filter(block__in=blocks)\
+        pool = models.Question.objects.filter(block__in=blocks, live=True)\
             .values_list("id", flat=True)
 
         # Get question to serve from pool - answered

@@ -1,3 +1,9 @@
 .grey-text {
     color: #BDBDBD;
 }
+
+.hidden {
+    display: none;
+}
+
+/* Table Styling */

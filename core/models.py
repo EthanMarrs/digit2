@@ -76,13 +76,16 @@ class Topic(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Saves model and automatically creates the associated blocks
-        for the topic.
+        Saves model, automatically creates the associated blocks
+        for the topic and empty questions.
         """
         super(Topic, self).save(*args, **kwargs)
 
         for i in range(int(self.duration)):
-            Block.objects.create(topic=self, order=i)
+            block = Block.objects.create(topic=self, order=i)
+
+            for j in range(15):
+                Question.objects.create(block=block)
 
     def get_blocks(self):
         """Helper function which returns all blocks related to the topic."""
@@ -99,6 +102,7 @@ class Block(OrderedModel):
     """Class that is used to organise math questions within a topic."""
 
     topic = models.ForeignKey(Topic)
+    description = models.TextField(default="")
     order_with_respect_to = 'topic'
 
     def get_number_of_questions(self):
@@ -154,8 +158,8 @@ class Question(OrderedModel):
     content = models.TextField()
     explanation = models.TextField()
     block = models.ForeignKey(Block, blank=True, null=True)
-    subject = models.ForeignKey(Subject)
-    question_order = models.ForeignKey(QuestionOrder, null=True, blank=True)
+    subject = models.ForeignKey(Subject, null=True)
+    live = models.BooleanField(default=False)
     # WARNING: DO NOT CHANGE STATE DIRECTLY, USE STATE CHANGE METHODS
     state = models.PositiveIntegerField("State",
                                         choices=QUESTION_STATES,

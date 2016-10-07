@@ -12,7 +12,9 @@ urlpatterns = [
     url(r'^logout/$', logout),
     url(r'^syllabi/(?P<pk>[^/]+)', views.SyllabusDetailView.as_view()),
     url(r'^question_orders/(?P<pk>[^/]+)', views.QuestionOrderDetailView.as_view()),
-    url(r'^dashboard/', views.DashboardView.as_view()),
+    url(r'^questions/(?P<pk>[^/]+)/up/', views.QuestionUpView.as_view()),
+    url(r'^questions/(?P<pk>[^/]+)/down/', views.QuestionDownView.as_view()),
+    url(r'^syllabi/', views.SyllabiView.as_view()),
     url(r'^comments/', views.CommentView.as_view()),
     url(r'^comment_success/', TemplateView.as_view(template_name='comment_success.html')),
     url(r'^blocks/(?P<pk>[^/]+)', views.BlockDetailView.as_view())

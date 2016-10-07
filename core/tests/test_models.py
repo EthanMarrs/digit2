@@ -242,3 +242,12 @@ class TestTopic(TestCase):
         blocks = Block.objects.all()
         assert(len(blocks) == 3)
         assert(blocks[0].topic.name == "Financial Mathematics")
+
+    def test_topic_creates_questions(self):
+        """
+        Confirm that questions are created automatically and associated with the
+        correct block and topic.
+        """
+        questions = Question.objects.all()
+        assert(len(questions) == 3 * 15)
+        assert(questions[0].block.topic.name == "Financial Mathematics")

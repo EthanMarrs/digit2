@@ -2,3 +2,4 @@ django>=1.10
 django-ordered-model==1.2.1
 django-bootstrap3==7.0.1
 django-widget-tweaks==1.4.1
+django-grappelli==2.8.1

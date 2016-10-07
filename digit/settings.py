@@ -31,9 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
+    'grappelli.dashboard',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -124,4 +126,6 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-
+GRAPPELLI_INDEX_DASHBOARD = {
+    'core.admin.dashboard_site': 'core.dashboard.CustomIndexDashboard',
+}

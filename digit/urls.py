@@ -20,6 +20,7 @@ from core.admin import dashboard_site
 from core import urls as core_urls
 
 urlpatterns = [
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', dashboard_site.urls),
     url(r'^', include(core_urls)),
 ]
