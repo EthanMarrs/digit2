@@ -10,6 +10,7 @@
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
 <script src="{% static 'core/events.js' %}"></script>
+<script src="{% static 'core/randomColor.js' %}"></script>
 <!--<link rel="stylesheet" type="text/css" href="{% static 'core/bootstrap.min.css' %}" />-->
 {% endblock %}
 
@@ -32,6 +33,7 @@
         <table class="table">
             {% for question in block.get_questions %}
             <tr>
+                <td class="color-block"></td>
                 <td><p>{{ question }}</p></td>
                 <td>{{ question.order }}</td>
                 <td>
@@ -75,6 +77,16 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    $(function () {
+        $(".table").each(function() {
+            var color = randomColor();
+            $(this).find(".color-block").css("background-color", color)
+                                        .css("border-color", color);
+        })
+    });
+</script>
 <!--{% for comment in question.get_comments %}-->
 <!--<p><b>{{ comment.user }}</b></p>-->
 <!--<p class="float-right grey-text">{{ comment.created_at|naturaltime }}</p>-->
