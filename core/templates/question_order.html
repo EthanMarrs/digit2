@@ -2,7 +2,6 @@
 {% load static %}
 
 
-
 {% load bootstrap3 %}
 
 {% block extrastyle %}
@@ -35,6 +34,28 @@
             <tr>
                 <td><p>{{ question }}</p></td>
                 <td>{{ question.order }}</td>
+                <td>
+                    <select class="state-select" about="{{ question.id }}">
+                        {% if question.state == 0 %}
+                        <option selected value="0">Incomplete</option>
+                        <option value="1">Review Ready</option>
+                        {% elif question.state == 1 %}
+                        <option selected value="1">Review Ready</option>
+                        <option value="2">Needs Reworking</option>
+                        <option value="3">Complete</option>
+                        {% elif question.state == 2 %}
+                        <option value="1">Review Ready</option>
+                        <option selected value="2">Needs Reworking</option>
+                        <option value="3">Complete</option>
+                        {% elif question.state == 3 %}
+                        <option selected value="3">Complete</option>
+                        <option value="4">Flagged</option>
+                        {% elif question.state == 4 %}
+                        <option value="3">Complete</option>
+                        <option selected value="4">Flagged</option>
+                        {% endif %}
+                    </select>
+                </td>
                 <td class="field-up">
                     <a class="move-link" href="javascript:void(null);"
                        url="/questions/{{ question.id }}/up/">

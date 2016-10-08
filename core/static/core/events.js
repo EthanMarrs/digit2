@@ -21,4 +21,28 @@ $(function () {
             }
         })
     });
+
+    $(".state-select").on("change", function () {
+        var code = $(this).find(":selected").attr("value");
+        var src = $(this).attr("about");
+
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        $.ajax({
+            url: "/questions/" + src + "/state/",
+            type: "POST",
+            data: {
+                "value": code
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log("Error: Can't update question state.")
+            }
+        })
+
+    });
 });

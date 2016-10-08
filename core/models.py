@@ -212,6 +212,26 @@ class Question(OrderedModel):
         else:
             raise StateException(self.state)
 
+    def change_state(self, state):
+        """A helper function to change change the state based on an integer."""
+        state = int(state)
+
+        try:
+            if state == 1:
+                self.change_to_review_ready()
+            elif state == 2:
+                self.change_to_needs_reworking()
+            elif state == 3:
+                self.change_to_complete()
+            elif state == 4:
+                self.change_to_flagged()
+
+            self.save()
+            return True
+
+        except StateException:
+            return False
+
     def get_comments(self):
         """
         Fetch all the comments associated with a question ordered

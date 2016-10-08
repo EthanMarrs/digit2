@@ -156,6 +156,23 @@ class QuestionDownView(View):
         return HttpResponse(status=200)
 
 
+class QuestionChangeStateView(View):
+    """
+    A view that updates a particular question's state.
+    """
+
+    def post(self, request, *args, **kwargs):
+        question = models.Question.objects.get(pk=kwargs["pk"])
+        value = request.POST["value"]
+
+        changed = question.change_state(value)
+
+        if changed:
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=400)
+
+
 class QuizView(View):
     def get(self, request):
         user = request.user
