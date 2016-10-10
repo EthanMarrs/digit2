@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from datetime import datetime, timedelta
 from django.db.models import F
 
+import json
+
 from core import models, forms
 
 
@@ -88,6 +90,22 @@ class BlockDetailView(DetailView):
         """ Get context for a block. """
 
         context = super(BlockDetailView, self).get_context_data(**kwargs)
+        return context
+
+
+class TopicDetailView(DetailView):
+    """
+    A detail view that displays the detail of a topic, namely
+    the blocks associated with it.
+    """
+
+    model = models.Topic
+    template_name = "topic.html"
+
+    def get_context_data(self, **kwargs):
+        """ Get context for a topic. """
+
+        context = super(TopicDetailView, self).get_context_data(**kwargs)
         return context
 
 
@@ -207,4 +225,32 @@ class QuizView(View):
 
         return render(request, "quiz.html", {"question": question})
 
+
+class SyllabusTimelineView(View):
+    def get(self, request, *args, **kwargs):
+        syllabus = models.Syllabus.objects.get(pk=kwargs["pk"])
+        topics = models.Topic.objects.filter(syllabus=syllabus)
+        now = datetime.now()
+        results = []
+
+        for topic in topics:
+            results.append({
+                "id": topic.id,
+                "name": topic.name,
+                "description": topic.description,
+                "week_start": topic.week_start,
+                # "date_start": "",
+                "space": topic.get_number_of_blocks() * 80,
+                "number_of_blocks": topic.get_number_of_blocks(),
+                "number_of_questions": topic.get_number_of_questions(),
+                "duration": topic.duration,
+                "week_end": topic.week_start + topic.duration,
+            })
+
+        json_results = json.dumps(results)
+
+        return render(request, "timeline.html",
+                      {"syllabus": syllabus,
+                       "data": results,
+                       "json": json_results})
 

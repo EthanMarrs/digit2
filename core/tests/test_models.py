@@ -251,3 +251,22 @@ class TestTopic(TestCase):
         questions = Question.objects.all()
         assert(len(questions) == 3 * 15)
         assert(questions[0].block.topic.name == "Financial Mathematics")
+
+    def test_topic_number_of_questions(self):
+        """
+        Confirm that the correct number of questions is returned by the helper
+        function.
+        """
+        questions = Question.objects.all()
+        topics = Topic.objects.all()
+        assert(len(questions) == topics[0].get_number_of_questions())
+
+    def test_topic_number_of_blocks(self):
+        """
+        Confirm that the correct number of blocks is returned by the helper
+        function.
+        """
+        blocks = Block.objects.all()
+        topics = Topic.objects.all()
+        assert(len(blocks) == topics[0].get_number_of_blocks())
+

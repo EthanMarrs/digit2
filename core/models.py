@@ -94,6 +94,25 @@ class Topic(models.Model):
         )
         return blocks
 
+    def get_number_of_blocks(self):
+        """Helper function which returns the number of blocks related to the topic."""
+        blocks = Block.objects.filter(
+            topic=self
+        )
+        return blocks.count()
+
+    def get_number_of_questions(self):
+        """Helper function which returns the number of questions related to the topic."""
+        blocks = Block.objects.filter(
+            topic=self
+        )
+        count = 0
+
+        for block in blocks:
+            count += block.get_number_of_questions()
+
+        return count
+
     def __str__(self):
         return str(self.name)
 

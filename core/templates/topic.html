@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+<script src="{% static 'core/jquery.cookie.js' %}"></script>
+<script src="{% static 'core/events.js' %}"></script>
+
+<h1>{{ object }}</h1>
+
+<div class="module">
+    <h3>Blocks</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ORDER</th>
+            <th>NAME</th>
+            <th>DESCRIPTION</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for block in object.get_blocks %}
+        <tr>
+            <td class="field-id"><a href="/admin/core/block/{{ block.id }}/change/">{{ block.id }}</a></td>
+            <td class="field-content">{{ block.order }}</td>
+            <td class="field-content">{{ block.name }}</td>
+            <td class="field-subject">{{ block.description|truncatechars:20 }}</td>
+            <td class="field-up">
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-up/?">
+                    <img src="/static/ordered_model/arrow-up.gif">
+                </a>
+            </td>
+            <td class="field-down">
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-down/?">
+                    <img src="/static/ordered_model/arrow-down.gif">
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/>
+</div>
+
+{% endblock %}

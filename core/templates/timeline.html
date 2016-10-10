@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+
+<script src="{% static 'core/d3.min.js' %}"></script>
+<script src="{% static 'core/jquery.min.js' %}"></script>
+<script src="{% static 'core/jquery.cookie.js' %}"></script>
+<script src="{% static 'core/randomColor.js' %}"></script>
+<script src="{% static 'core/timeline.js' %}"></script>
+
+{% endblock %}
+
+{% block coltype %}flex{% endblock %}
+{% block content %}
+<div class="g-d-c">
+    <h1>{{ syllabus }}</h1>
+    <div id="timeline">
+        {% for topic in data %}
+        <div class="topic" style="height: {{ topic.space }}px">
+            <div class="circle"></div>
+            <div class="vertical-line"></div>
+            <p>Week {{ topic.week_start }}</p>
+            <div class="topic-container" style="height: {{ topic.space|add:'-30' }}px">
+                <div class="color-block"></div>
+                <a class="topic-name" href="/topics/{{ topic.id }}/">{{ topic.name }}</a>
+                <p>{{ topic.duration }} week{{topic.duration|pluralize}}</p>
+                <p>{{ topic.number_of_questions }} question{{topic.number_of_questions|pluralize}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="circle"></div>
+    </div>
+</div>
+{% autoescape off %}
+<script>
+    $(".color-block").each(function () {
+        $(this).css("background-color", randomColor());
+    });
+</script>
+{% endautoescape %}
+{% endblock %}

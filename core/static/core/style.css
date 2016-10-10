@@ -5,3 +5,48 @@
 .hidden {
     display: none;
 }
+
+.vertical-line {
+    float: left;
+    width: 4px;
+    height: 100%;
+    background-color: #E0E0E0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.topic-container {
+    padding-top: 5px;
+}
+
+.topic-name {
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.color-block {
+    float: left;
+    width: 15px;
+    height: 100%;
+    background-color: #E0E0E0;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.circle {
+    position: absolute;
+    float: left;
+    background-color: #E0E0E0;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin-left: 4px;
+    margin-right: 15px;
+}
+
+.no-space {
+    margin: 0;
+    padding: 0;
+}
