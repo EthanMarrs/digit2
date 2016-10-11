@@ -240,7 +240,7 @@ class SyllabusTimelineView(View):
                 "description": topic.description,
                 "week_start": topic.week_start,
                 # "date_start": "",
-                "space": topic.get_number_of_blocks() * 80,
+                "space": topic.get_number_of_blocks() * 95,
                 "number_of_blocks": topic.get_number_of_blocks(),
                 "number_of_questions": topic.get_number_of_questions(),
                 "duration": topic.duration,

@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from core.admin import dashboard_site
 from core import urls as core_urls
 
 urlpatterns = [
     url(r'^grappelli/', include('grappelli.urls')),
-    url(r'^admin/', dashboard_site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^', include(core_urls)),
 ]
+
+admin.site.site_header = "Digit"

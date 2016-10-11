@@ -15,8 +15,8 @@
     margin-right: 10px;
 }
 
-.topic-container {
-    padding-top: 5px;
+.topic-container p {
+    margin-bottom: 0;
 }
 
 .topic-name {
@@ -24,6 +24,10 @@
     color: black;
     font-weight: 600;
     text-decoration: underline;
+}
+
+.topic-name:hover {
+    cursor: pointer;
 }
 
 .color-block {
