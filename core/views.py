@@ -1,21 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import View, DetailView
-from django.http import HttpResponse
-from datetime import datetime, timedelta
-from django.db.models import F
-from django.conf import settings
-
 import json
+from datetime import datetime, timedelta
+
+from django.db.models import F
+from django.http import HttpResponse
+from django.shortcuts import render, HttpResponseRedirect
+from django.views.generic import View, DetailView, ListView
 
 from core import models, forms
-
-
-class SyllabiView(View):
-    """ Overview screen for the Digit dashboard. Displays all syllabi."""
-
-    def get(self, request):
-        syllabi_list = models.Syllabus.objects.all()
-        return render(request, "dashboard.html", {"syllabi": syllabi_list})
 
 
 class QuestionOrderDetailView(DetailView):
@@ -201,20 +192,20 @@ class QuizView(View):
 
         # Get IDs of questions answered within the last 2 weeks
         answered = models.QuestionResponse.objects.filter(
-            time__gte=datetime.now()-timedelta(weeks=2),
+            time__gte=datetime.now() - timedelta(weeks=2),
             user=user
         ).values_list("question", flat=True)
 
         # Get topics in last 2 weeks for given syllabus
         topics = models.Topic.objects.annotate(
-            week_end=F("week_start") + F("duration"))\
+            week_end=F("week_start") + F("duration")) \
             .filter(week_end__gte=week - 2, syllabus=syllabus)
 
         # Get blocks for these topics
         blocks = models.Block.objects.filter(topic__in=topics)
 
         # Get IDs of questions in last 2 weeks
-        pool = models.Question.objects.filter(block__in=blocks, live=True)\
+        pool = models.Question.objects.filter(block__in=blocks, live=True) \
             .values_list("id", flat=True)
 
         # Get question to serve from pool - answered
@@ -260,3 +251,30 @@ class SyllabusTimelineView(View):
                        "data": results,
                        "json": json_results})
 
+
+class SyllabusListView(ListView):
+    model = models.Syllabus
+    template_name = "syllabi.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(SyllabusListView, self).get_context_data(**kwargs)
+        context['title'] = "Syllabus List"
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Digit"
+        return context
+
+
+class QuestionOrderListView(ListView):
+    model = models.QuestionOrder
+    template_name = "question_orders.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionOrderListView, self).get_context_data(**kwargs)
+        context['title'] = "Question Order List"
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Digit"
+        return context

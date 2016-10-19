@@ -1,0 +1,50 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+
+<div class="module full-width">
+    <div class="results">
+    <table id="result_list">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ASSIGNED BY</th>
+                <th>ASSIGNED TO</th>
+                <th>TOPIC</th>
+                <th>DESCRIPTION</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for question_order in object_list %}
+        <tr>
+            <td class="field-id"><a href="/question_orders/{{ question_order.id }}/">{{ question_order.id }}</a></td>
+            <td class="field-assigned-by">{{ question_order.assigned_by }}</td>
+            <td class="field-assigned-to">{{ question_order.assigned_to }}</td>
+            <td class="field-topic">{{ question_order.topic }}</td>
+            <td class="field-description">{{ question_order.description }}</td>
+            <td class="field-open">
+                {% if question_order.open %}
+                    Open
+                {% else %}
+                    Closed
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    <p class="paginator"></p>
+    <br/>
+</div>
+
+{% endblock %}
