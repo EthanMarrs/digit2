@@ -4,15 +4,20 @@
 
 {% load static %}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+{% endblock %}
+
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
 <script src="{% static 'core/events.js' %}"></script>
 
 <h1>{{ object }}</h1>
-<div class="module">
+<div class="module full-width">
     {% for topic in topic_list %}
     <h3>{{ topic }}</h3>
-    <table>
+    <div class="results">
+    <table id="result_list">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,15 +35,22 @@
             <td class="field-questions">{{ block.get_number_of_questions }} Question{{ block.get_number_of_questions|pluralize }}</td>
             <td class="field-up">
                 <a class="move-link" href="javascript:void(null);"
-                   url="/admin/core/block/{{ block.id }}/move-up/?">Up</a>
+                   url="/admin/core/block/{{ block.id }}/move-up/?">
+                    <img src="/static/ordered_model/arrow-up.gif">
+                </a>
             </td>
             <td class="field-down">
-                <a class="move-link" href="javascript:void(null);" url="/admin/core/block/{{ block.id }}/move-down/?">Down</a>
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-down/?">
+                    <img src="/static/ordered_model/arrow-down.gif">
+                </a>
             </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+        </div>
+    <p class="paginator"></p>
     <br/>
     {% endfor %}
 </div>

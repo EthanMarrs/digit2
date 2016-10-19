@@ -11,10 +11,17 @@
 
 {% endblock %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; {{ syllabus }} Timeline
+</div>
+{% endblock %}
+
 {% block coltype %}flex{% endblock %}
 {% block content %}
+{{ has_permission }}
 <div class="g-d-c">
-    <h1>{{ syllabus }}</h1>
     <div id="timeline">
         {% for topic in data %}
         <div class="topic" style="height: {{ topic.space }}px">

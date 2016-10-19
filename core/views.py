@@ -3,6 +3,7 @@ from django.views.generic import View, DetailView
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 from django.db.models import F
+from django.conf import settings
 
 import json
 
@@ -251,6 +252,11 @@ class SyllabusTimelineView(View):
 
         return render(request, "timeline.html",
                       {"syllabus": syllabus,
+                       "title": syllabus,
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Digit",
                        "data": results,
                        "json": json_results})
 

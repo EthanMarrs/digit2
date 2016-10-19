@@ -26,6 +26,15 @@
     text-decoration: underline;
 }
 
+.full-width {
+    width: 100%;
+    position: relative;
+}
+
+table {
+    width: 800px;
+}
+
 .topic-name:hover {
     cursor: pointer;
 }
