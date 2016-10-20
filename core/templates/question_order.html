@@ -21,8 +21,7 @@
 {% load humanize %}
 
 <div class="g-d-c">
-    <h1>{{ object }}</h1>
-    <p>Assigned to: {{ object.assigned_to }}</p>
+    <p>Assigned to: {{ object.assigned_to.get_full_name }}</p>
     <div class="grp-module">
         <p>{{ object.description }}</p>
     </div>
@@ -33,8 +32,8 @@
         <table class="table">
             {% for question in block.get_questions %}
             <tr>
-                <td class="color-block"></td>
-                <td><p>{{ question }}</p></td>
+                <td class="color-td"></td>
+                <td><a href="/questions/{{ question.id }}/edit/">{{ question }}</a></td>
                 <td>{{ question.order }}</td>
                 <td>
                     <select class="state-select" about="{{ question.id }}">
@@ -80,10 +79,12 @@
 
 <script>
     $(function () {
+        var count = 0;
         $(".table").each(function() {
-            var color = randomColor();
-            $(this).find(".color-block").css("background-color", color)
-                                        .css("border-color", color);
+            var color = randomColor({seed: count});
+            $(this).find(".color-td").css("background-color", color)
+                                        .css("border", color + " 1px solid");
+            count += 10;
         })
     });
 </script>

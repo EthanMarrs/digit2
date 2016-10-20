@@ -27,6 +27,11 @@ class QuestionOrderDetailView(DetailView):
         )
         context["block_list"] = blocks
         context["form"] = self.form_class
+        context['title'] = context['object']
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Digit"
 
         return context
 

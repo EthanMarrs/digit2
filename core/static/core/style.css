@@ -32,7 +32,9 @@
 }
 
 table {
-    width: 100%;
+    width: 80%;
+    border: #EEEEEE 1px solid;
+    border-left: none;
 }
 
 .topic-name:hover {
@@ -46,6 +48,12 @@ table {
     background-color: #E0E0E0;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.color-td {
+    width: 10px;
+    height: 100%;
+    background-color: #E0E0E0;
 }
 
 .circle {
