@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^questions/(?P<pk>[^/]+)/up/', views.QuestionUpView.as_view()),
     url(r'^questions/(?P<pk>[^/]+)/down/', views.QuestionDownView.as_view()),
     url(r'^questions/(?P<pk>[^/]+)/state/', views.QuestionChangeStateView.as_view()),
+    url(r'^questions/(?P<pk>[^/]+)/edit/', views.QuestionEditView.as_view()),
     url(r'^syllabi/(?P<pk>[^/]+)/timeline/', views.SyllabusTimelineView.as_view()),
     url(r'^syllabi/(?P<pk>[^/]+)', views.SyllabusDetailView.as_view()),
     url(r'^syllabi/', views.SyllabusListView.as_view()),

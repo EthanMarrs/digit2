@@ -63,3 +63,18 @@ table {
     margin: 0;
     padding: 0;
 }
+
+#edit-panel {
+    width: 47.5%;
+    background-color: #e0e0e0;
+    float: left;
+    height: 400px;
+    margin-right: 5%;
+}
+
+#preview-panel {
+    width: 47.5%;
+    background-color: #e0e0e0;
+    float: left;
+    height: 400px;
+}

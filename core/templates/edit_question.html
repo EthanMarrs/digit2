@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+
+<div class="module full-width">
+    <p><b>State: </b>{{ question.get_state }}</p>
+    <div id="edit-panel">
+
+    </div>
+    <div id="preview-panel">
+
+    </div>
+    <div class="module">
+        &nbsp;
+    </div>
+    <div class="submit-row">
+        <input type="submit" value="Save and send to moderator">
+        <input type="submit" value="Save and continue editing">
+        <input class="default" type="submit" value="Save">
+    </div>
+</div>
+
+{% endblock %}

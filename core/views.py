@@ -278,3 +278,16 @@ class QuestionOrderListView(ListView):
         context['site_url'] = "/",
         context['site_header'] = "Digit"
         return context
+
+
+class QuestionEditView(View):
+    def get(self, request, *args, **kwargs):
+        question = models.Question.objects.get(id=kwargs["pk"])
+
+        return render(request, "edit_question.html",
+                      {"title": "Edit Question",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Digit",
+                       "question": question})
