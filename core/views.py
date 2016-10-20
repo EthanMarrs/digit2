@@ -14,7 +14,6 @@ class QuestionOrderDetailView(DetailView):
 
     model = models.QuestionOrder
     template_name = "question_order.html"
-    form_class = forms.CommentForm
 
     def get_context_data(self, **kwargs):
         """ Get context for all questions relating to a question order. """
@@ -26,7 +25,6 @@ class QuestionOrderDetailView(DetailView):
             block__in=blocks
         )
         context["block_list"] = blocks
-        context["form"] = self.form_class
         context['title'] = context['object']
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
@@ -295,4 +293,5 @@ class QuestionEditView(View):
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
                        "site_header": "Digit",
+                       "form": forms.CommentForm,
                        "question": question})

@@ -88,18 +88,6 @@
         })
     });
 </script>
-<!--{% for comment in question.get_comments %}-->
-<!--<p><b>{{ comment.user }}</b></p>-->
-<!--<p class="float-right grey-text">{{ comment.created_at|naturaltime }}</p>-->
-<!--<p>{{ comment.text }}</p>-->
-<!--{% endfor %}-->
-<!--<form class="hidden" action="/comments/" method="post">-->
-<!--{% csrf_token %}-->
-<!--{{ form.text }}-->
-<!--{{ form.text.errors }}-->
-<!--{% render_field form.question_id value=question.id %}-->
-<!--<input type="submit" value="Send" />-->
-<!--</form>-->
 
 
 {% endblock %}
