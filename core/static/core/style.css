@@ -60,6 +60,11 @@ table {
     width: 100%;
 }
 
+.table td {
+    /*padding-top: 0;*/
+    /*padding-bottom: 0;*/
+}
+
 .comments p {
     margin: 0;
 }

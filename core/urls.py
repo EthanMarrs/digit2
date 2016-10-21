@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from django.contrib.auth.views import login, logout
-from django.contrib.auth.decorators import login_required
 
 from core import views
 
@@ -22,5 +21,8 @@ urlpatterns = [
     url(r'^comments/', views.CommentView.as_view()),
     url(r'^comment_success/', TemplateView.as_view(template_name='comment_success.html')),
     url(r'^blocks/(?P<pk>[^/]+)', views.BlockDetailView.as_view()),
-    url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view())
+    url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view()),
+    url(r'^login/$', login),
+    url(r'^logout/$', logout),
+    url(r'^not_configured/', TemplateView.as_view(template_name='not_configured.html'))
 ]

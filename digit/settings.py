@@ -126,6 +126,4 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-GRAPPELLI_INDEX_DASHBOARD = {
-    'core.admin.dashboard_site': 'core.dashboard.CustomIndexDashboard',
-}
+LOGIN_REDIRECT_URL = '/'
