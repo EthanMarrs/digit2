@@ -1,0 +1,12 @@
+.mq-editable-field, .mq-math-mode .mq-editable-field {
+    border-radius: 0.5em;
+    background-color: lightgray;
+    padding: 0.5em;
+    max-width: 500px;
+    min-width: 100px;
+}
+
+.uploaded-image {
+    max-width: 200px;
+    max-height: 300px;
+}

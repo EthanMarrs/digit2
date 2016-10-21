@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^comments/', views.CommentView.as_view()),
     url(r'^comment_success/', TemplateView.as_view(template_name='comment_success.html')),
     url(r'^blocks/(?P<pk>[^/]+)', views.BlockDetailView.as_view()),
-    url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view())
+    url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view()),
+    url(r'^question_content/$', views.QuestionContentView.as_view()),
+    url(r'^question_content/file_upload/$', views.FileUploadView.as_view()),
 ]

@@ -2,9 +2,10 @@ import json
 from datetime import datetime, timedelta
 
 from django.db.models import F
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView
+from django.views.decorators.csrf import csrf_exempt
 
 from core import models, forms
 
@@ -295,3 +296,19 @@ class QuestionEditView(View):
                        "site_header": "Digit",
                        "form": forms.CommentForm,
                        "question": question})
+
+
+class QuestionContentView(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode(encoding='UTF-8'))
+        for item in data:
+            print("**" + item + "**\n" + str(data[item]))
+
+        return JsonResponse(data={},status=200)
+
+
+class FileUploadView(View):
+    def post(self, request, *args, **kwargs):
+        print("")
+
+        return HttpResponse(status=200)
