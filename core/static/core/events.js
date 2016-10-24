@@ -50,5 +50,51 @@ $(function () {
         var text = $(this).siblings(".description").text();
         $(this).siblings("form").children("textarea").text(text);
         $(this).siblings("form.hidden").removeClass("hidden");
+    });
+
+    $(".update-button").on("click", function () {
+        var text = $(this).siblings("textarea").val();
+        var id = $(this).attr("datasrc");
+
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        $.ajax({
+            url: "/blocks/" + id + "/",
+            type: "POST",
+            data: {
+                "text": text
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log("Error: Can't update block.")
+            }
+        })
+    })
+
+    $(".comment-button").on("click", function () {
+        var text = $(this).siblings("textarea").val();
+        var id = $(this).attr("datasrc");
+
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        $.ajax({
+            url: "/comments/" + id + "/",
+            type: "POST",
+            data: {
+                "text": text
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log("Error: Can't add comment.")
+            }
+        })
     })
 });

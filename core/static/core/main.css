@@ -29,6 +29,11 @@ th > a, td > a, .changelink > a, .addlink > a, .deletelink > a {
     color: #616161 !important;
 }
 
+th > a:hover, td > a:hover, .changelink > a:hover, .addlink > a:hover, .deletelink > a:hover {
+    text-decoration: underline;
+    text-decoration-color: #616161;
+}
+
 .breadcrumbs {
     background-color: #bfbfbf !important;
     color: #e0e0e0 !important;
@@ -44,4 +49,12 @@ th > a, td > a, .changelink > a, .addlink > a, .deletelink > a {
 
 .submit-row input {
     background-color: #79d28f !important;
+}
+
+.object-tools > li > a:hover {
+    background-color: #666666;
+}
+
+input {
+    background-color: #bfbfbf !important;
 }

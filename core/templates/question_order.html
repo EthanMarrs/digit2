@@ -36,12 +36,12 @@
                 {{ block.description|markdown }}
             </div>
             <a class="edit-description" href="javascript:void(null);">Edit Description</a>
-            <form class="hidden" action="/blocks/" method="post">
+            <form class="hidden" onsubmit="return false;">
                 {% csrf_token %}
                 {{ form.text }}
                 {{ form.text.errors }}
                 {% render_field form.block_id value=block.id %}
-                <input class="float-right clear" type="submit" value="Update"/>
+                <input class="float-right clear update-button" datasrc="{{ block.id }}" type="submit" value="Update"/>
             </form>
         </div>
 

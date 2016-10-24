@@ -24,4 +24,4 @@ urlpatterns = [
     url(r'^', include(core_urls)),
 ]
 
-admin.site.site_header = "Digit"
+admin.site.site_header = "Dig-it"

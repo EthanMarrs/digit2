@@ -5,18 +5,6 @@ from django.conf.urls import url
 from ordered_model.admin import OrderedModelAdmin
 
 
-# class DashboardSite(admin.AdminSite):
-#
-#     def get_urls(self):
-#         urls = super(DashboardSite, self).get_urls()
-#         urls += [
-#             url(r'^dashboard/$', views.SyllabiView.as_view())
-#         ]
-#         return urls
-#
-# dashboard_site = DashboardSite()
-
-
 @admin.register(models.Question)
 class QuestionAdmin(OrderedModelAdmin):
     list_display = ('id', 'content', 'explanation', 'state', 'move_up_down_links')
