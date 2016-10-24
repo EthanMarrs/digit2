@@ -21,8 +21,12 @@
     border-bottom-color: #9D9D9D !important;
 }
 
-.module caption {
+.module caption, .module h2 {
     background: #bfbfbf !important;
+}
+
+caption > a {
+    color: white !important;
 }
 
 th > a, td > a, .changelink > a, .addlink > a, .deletelink > a {
@@ -39,6 +43,14 @@ th > a:hover, td > a:hover, .changelink > a:hover, .addlink > a:hover, .deleteli
     color: #e0e0e0 !important;
 }
 
+.breadcrumbs > a {
+    color: white !important;
+}
+
+.breadcrumbs > a:hover {
+    text-decoration: none !important;
+}
+
 .breadcrumbs > a:hover {
     color: #e0e0e0 !important;
 }
@@ -51,10 +63,31 @@ th > a:hover, td > a:hover, .changelink > a:hover, .addlink > a:hover, .deleteli
     background-color: #79d28f !important;
 }
 
+.object-tools > li > a {
+    color: white !important;
+}
+
+.object-tools > li > a:hover {
+    text-decoration: none !important;
+}
+
 .object-tools > li > a:hover {
     background-color: #666666;
 }
 
+#recent-actions-module > h2 {
+    background-color: #f8f8f8 !important;
+}
+
 input {
     background-color: #bfbfbf !important;
+}
+
+a {
+    color: #616161 !important;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-color: #616161;
 }

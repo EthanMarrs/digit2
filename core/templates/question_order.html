@@ -7,6 +7,7 @@
 {% block extrastyle %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
@@ -35,7 +36,7 @@
             <div class="markdown">
                 {{ block.description|markdown }}
             </div>
-            <a class="edit-description" href="javascript:void(null);">Edit Description</a>
+            <a class="edit-description" href="javascript:void(null);"><i class="material-icons md-18">mode_edit</i>Edit Description</a>
             <form class="hidden" onsubmit="return false;">
                 {% csrf_token %}
                 {{ form.text }}
