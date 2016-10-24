@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'core',
     'ordered_model',
     'widget_tweaks',
-    'bootstrap3'
+    'bootstrap3',
+    'markdown_deux'
 ]
 
 MIDDLEWARE = [

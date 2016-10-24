@@ -32,9 +32,31 @@
 }
 
 table {
-    width: 80%;
+    width: 50%;
     border: #EEEEEE 1px solid;
     border-left: none;
+}
+
+.description-container {
+    width: 45%;
+    margin: 2.5%;
+    float: right;
+}
+
+.markdown h1 {
+    font-weight: 400;
+}
+
+.markdown h2 {
+    padding: 0;
+    background-color: transparent;
+    font-weight: 400;
+    font-size: 18px;
+    color: #666;
+}
+
+.markdown li {
+    list-style-type: disc;
 }
 
 .topic-name:hover {

@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^syllabi/(?P<pk>[^/]+)', views.SyllabusDetailView.as_view()),
     url(r'^syllabi/', views.SyllabusListView.as_view()),
     url(r'^comments/', views.CommentView.as_view()),
+    url(r'^blocks/', views.BlockView.as_view()),
     url(r'^comment_success/', TemplateView.as_view(template_name='comment_success.html')),
     url(r'^blocks/(?P<pk>[^/]+)', views.BlockDetailView.as_view()),
     url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view()),

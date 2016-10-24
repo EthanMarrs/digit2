@@ -30,6 +30,7 @@ class QuestionOrderDetailView(DetailView):
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
         context['site_header'] = "Digit"
+        context['form'] = forms.BlockDescriptionForm
 
         return context
 
@@ -66,6 +67,26 @@ class CommentView(View):
             models.Comment.objects.create(text=text,
                                           question_id=question_id,
                                           user=user)
+
+            return HttpResponseRedirect("/comment_success")
+
+        return render(request, self.template_name, {'form': form})
+
+
+class BlockView(View):
+    form_class = forms.BlockDescriptionForm
+    initial = {"key": "value"}
+    template_name = "block_form.html"
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data["text"]
+            block_id = form.cleaned_data["block_id"]
+
+            block = models.Block.objects.get(id=block_id)
+            block.description = text
+            block.save()
 
             return HttpResponseRedirect("/comment_success")
 

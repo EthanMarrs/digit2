@@ -45,4 +45,10 @@ $(function () {
         })
 
     });
+
+    $(".edit-description").on("click", function () {
+        var text = $(this).siblings(".description").text();
+        $(this).siblings("form").children("textarea").text(text);
+        $(this).siblings("form.hidden").removeClass("hidden");
+    })
 });

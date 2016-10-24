@@ -5,6 +5,7 @@
 {% load bootstrap3 %}
 
 {% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
@@ -19,6 +20,7 @@
 
 {% load widget_tweaks %}
 {% load humanize %}
+{% load markdown_deux_tags %}
 
 <div class="g-d-c">
     <p>Assigned to: {{ object.assigned_to.get_full_name }}</p>
@@ -28,8 +30,22 @@
 
     <div class="module">
         {% for block in block_list %}
-        <p> {{ block.description}}</p>
-        <table class="table">
+        <div class="description-container">
+            <p class="description hidden">{{ block.description }}</p>
+            <div class="markdown">
+                {{ block.description|markdown }}
+            </div>
+            <a class="edit-description" href="javascript:void(null);">Edit Description</a>
+            <form class="hidden" action="/blocks/" method="post">
+                {% csrf_token %}
+                {{ form.text }}
+                {{ form.text.errors }}
+                {% render_field form.block_id value=block.id %}
+                <input class="float-right clear" type="submit" value="Update"/>
+            </form>
+        </div>
+
+        <table class="table pull-left">
             {% for question in block.get_questions %}
             <tr>
                 <td class="color-td"></td>
@@ -80,10 +96,10 @@
 <script>
     $(function () {
         var count = 0;
-        $(".table").each(function() {
+        $(".table").each(function () {
             var color = randomColor({seed: count});
             $(this).find(".color-td").css("background-color", color)
-                                        .css("border", color + " 1px solid");
+                    .css("border", color + " 1px solid");
             count += 10;
         })
     });

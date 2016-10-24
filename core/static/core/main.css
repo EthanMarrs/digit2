@@ -1,0 +1,47 @@
+#header {
+    background-color: #F1F1F1;
+}
+
+#site-name > a {
+    color: #9D9D9D !important;
+    font-weight: 500 !important;
+}
+
+#user-tools {
+    color: #9D9D9D !important;
+    font-weight: 500 !important;
+}
+
+#user-tools a {
+    color: #9D9D9D !important;
+    font-weight: 500 !important;
+}
+
+#user-tools a:hover {
+    border-bottom-color: #9D9D9D !important;
+}
+
+.module caption {
+    background: #bfbfbf !important;
+}
+
+th > a, td > a, .changelink > a, .addlink > a, .deletelink > a {
+    color: #616161 !important;
+}
+
+.breadcrumbs {
+    background-color: #bfbfbf !important;
+    color: #e0e0e0 !important;
+}
+
+.breadcrumbs > a:hover {
+    color: #e0e0e0 !important;
+}
+
+.submit-row input.default {
+    background-color: #39AA56 !important;
+}
+
+.submit-row input {
+    background-color: #79d28f !important;
+}
