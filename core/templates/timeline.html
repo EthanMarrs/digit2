@@ -25,6 +25,11 @@
 <div class="g-d-c">
     <div id="timeline">
         {% for topic in data %}
+        {% if topic.spaced %}
+            <div class="spacer">
+                <div class="circle"></div>
+            </div>
+        {% endif %}
         <div class="topic" style="height: {{ topic.space }}px">
             <div class="circle"></div>
             <div class="vertical-line"></div>

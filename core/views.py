@@ -237,16 +237,26 @@ class QuizView(View):
 class SyllabusTimelineView(View):
     def get(self, request, *args, **kwargs):
         syllabus = models.Syllabus.objects.get(pk=kwargs["pk"])
-        topics = models.Topic.objects.filter(syllabus=syllabus)
+        topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
         now = datetime.now()
         results = []
 
-        for topic in topics:
+        for index, topic in enumerate(topics):
+            spaced = False
+
+            if index > 0:
+                week_end = topics[index - 1].week_start + topics[index - 1].duration
+
+                # If there's a space between two topics
+                if (topic.week_start - 1) > week_end:
+                    spaced = True
+
             results.append({
                 "id": topic.id,
                 "name": topic.name,
                 "description": topic.description,
                 "week_start": topic.week_start,
+                "spaced": spaced,
                 # "date_start": "",
                 "space": topic.get_number_of_blocks() * 95,
                 "number_of_blocks": topic.get_number_of_blocks(),
@@ -254,7 +264,7 @@ class SyllabusTimelineView(View):
                 "duration": topic.duration,
                 "week_end": topic.week_start + topic.duration,
             })
-
+        print(results)
         json_results = json.dumps(results)
 
         return render(request, "timeline.html",

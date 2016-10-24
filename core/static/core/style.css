@@ -32,6 +32,10 @@ i {
     margin-bottom: 0;
 }
 
+.spacer {
+    height: 50px;
+}
+
 .topic-name {
     font-size: 16px;
     color: #616161 !important;
