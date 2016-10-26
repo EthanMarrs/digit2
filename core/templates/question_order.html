@@ -7,6 +7,7 @@
 {% block extrastyle %}
 <link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
@@ -23,14 +24,27 @@
 {% load humanize %}
 {% load markdown_deux_tags %}
 
-<div class="g-d-c">
+<div class="content">
+    <div id="changelist-filter">
+        <h2>Filter</h2>
+        <h3>By state</h3>
+        <ul>
+            <li class="{% if filter == None %}selected{% endif %} filter-option"><a href="/question_orders/{{ object.id }}/">All</a></li>
+            <li class="{% if filter == 0 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=0">Incomplete</a></li>
+            <li class="{% if filter == 1 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=1">Ready for Review</a></li>
+            <li class="{% if filter == 2 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=2">Needs Reworking</a></li>
+            <li class="{% if filter == 3 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=3">Complete</a></li>
+            <li class="{% if filter == 4 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=4">Flagged</a></li>
+        </ul>
+    </div>
     <p>Assigned to: {{ object.assigned_to.get_full_name }}</p>
     <div class="grp-module">
         <p>{{ object.description }}</p>
     </div>
 
-    <div class="module">
+    <div class="module clear">
         {% for block in block_list %}
+        <h3 class="large-h3">{{ block }}</h3>
         <div class="description-container">
             <p class="description hidden">{{ block.description }}</p>
             <div class="markdown">
@@ -48,6 +62,7 @@
 
         <table class="table pull-left">
             {% for question in block.get_questions %}
+            {% if filter == None or question.state == filter %}
             <tr>
                 <td class="color-td"></td>
                 <td><a href="/questions/{{ question.id }}/edit/">{{ question }}</a></td>
@@ -87,6 +102,7 @@
                     </a>
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </table>
         <br/>

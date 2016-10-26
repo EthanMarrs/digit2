@@ -20,10 +20,11 @@ class QuestionOrderDetailView(DetailView):
 
         context = super(QuestionOrderDetailView, self).get_context_data(**kwargs)
         blocks = models.Block.objects.filter(topic=context["object"].topic)
+        filter_option = self.request.GET.get('filter')
 
-        context["question_list"] = models.Question.objects.filter(
-            block__in=blocks
-        )
+        if filter_option:
+            filter_option = int(filter_option)
+
         context["block_list"] = blocks
         context['title'] = context['object']
         context['user'] = self.request.user
@@ -31,6 +32,7 @@ class QuestionOrderDetailView(DetailView):
         context['site_url'] = "/",
         context['site_header'] = "Digit"
         context['form'] = forms.BlockDescriptionForm
+        context['filter'] = filter_option
 
         return context
 
@@ -48,6 +50,11 @@ class SyllabusDetailView(DetailView):
         context["topic_list"] = models.Topic.objects.filter(
             syllabus=context["object"]
         )
+        context['title'] = context['object']
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Digit"
 
         return context
 
@@ -75,6 +82,17 @@ class BlockView(View):
         block.save()
 
         return HttpResponse(status=200)
+
+    def get(self, request, *args, **kwargs):
+        block = models.Block.objects.get(id=kwargs["pk"])
+
+        return render(request, "block.html",
+                      {"object": block,
+                       "title": block,
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Digit"})
 
 
 class BlockDetailView(DetailView):

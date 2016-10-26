@@ -73,7 +73,7 @@ $(function () {
                 console.log("Error: Can't update block.")
             }
         })
-    })
+    });
 
     $(".comment-button").on("click", function () {
         var text = $(this).siblings("textarea").val();
@@ -97,4 +97,6 @@ $(function () {
             }
         })
     })
+
+    $(".")
 });
