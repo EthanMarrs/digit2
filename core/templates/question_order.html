@@ -42,7 +42,7 @@
         <p>{{ object.description }}</p>
         <div>
             <div class="checkbox-spaced">
-                <input id="id_open" type="checkbox">
+                <input id="id_open" datasrc="{{ object.id }}" type="checkbox" {% if object.open %}checked{% endif %}>
                 <label  for="id_open">Open</label>
             </div>
             <input id="live-button" datasrc="{{ object.id }}" class="green-button float-left" type="submit" value="Make Live">

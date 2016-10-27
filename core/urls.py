@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^login/$', login, {'template_name': 'admin/login.html'}),
     url(r'^logout/$', logout),
     url(r'^question_orders/(?P<pk>[^/])/live/', views.QuestionOrderLiveView.as_view()),
+    url(r'^question_orders/(?P<pk>[^/])/open/', views.QuestionOrderOpenView.as_view()),
     url(r'^question_orders/(?P<pk>[^/])', views.QuestionOrderDetailView.as_view()),
     url(r'^question_orders/$', views.QuestionOrderListView.as_view()),
     url(r'^questions/(?P<pk>[^/]+)/up/', views.QuestionUpView.as_view()),

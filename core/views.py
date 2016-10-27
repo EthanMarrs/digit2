@@ -336,6 +336,21 @@ class QuestionOrderLiveView(View):
         return HttpResponse(status=200)
 
 
+class QuestionOrderOpenView(View):
+    def post(self, request, *args, **kwargs):
+        question_order = models.QuestionOrder.objects.get(pk=kwargs["pk"])
+        state = request.POST["state"]
+
+        if state == "true":
+            question_order.open = True
+        else:
+            question_order.open = False
+
+        question_order.save()
+
+        return HttpResponse(status=200)
+
+
 class QuestionEditView(View):
     def get(self, request, *args, **kwargs):
         question = models.Question.objects.get(id=kwargs["pk"])

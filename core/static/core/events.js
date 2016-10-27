@@ -120,13 +120,36 @@ $(function () {
                     location.reload();
                 },
                 error: function () {
-                    console.log("Error: Can't update block.")
+                    console.log("Error: Can't update question liveness.")
                 }
             })
         }
         else {
             alert("Cannot make questions live. There are questions with a state that is not 'Complete'.")
         }
+    });
+
+    $("#id_open").on("change", function () {
+        var state = $(this).is(":checked");
+        var id = $(this).attr("datasrc");
+
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        $.ajax({
+            url: "/question_orders/" + id + "/open/",
+            type: "POST",
+            data: {
+                "state": state
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log("Error: Can't update question order state.")
+            }
+        })
     });
 
 });
