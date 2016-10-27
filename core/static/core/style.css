@@ -194,3 +194,11 @@ table {
     float: left;
     height: 400px;
 }
+
+.green-button {
+    background-color: #39AA56 !important;
+}
+
+.checkbox-spaced {
+    margin-bottom: 15px;
+}

@@ -96,7 +96,37 @@ $(function () {
                 console.log("Error: Can't add comment.")
             }
         })
-    })
+    });
 
-    $(".")
+    $("#live-button").on("click", function () {
+        var flag = true;
+        var id = $(this).attr("datasrc");
+
+        $(".state-select :selected").each(function (index, value) {
+            if (value.text != "Complete") {
+                flag = false;
+            }
+        });
+
+        if (flag) {
+            $.ajaxSetup({
+                headers: {"X-CSRFToken": $.cookie("csrftoken")}
+            });
+
+            $.ajax({
+                url: "/question_orders/" + id + "/live/",
+                type: "POST",
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    console.log("Error: Can't update block.")
+                }
+            })
+        }
+        else {
+            alert("Cannot make questions live. There are questions with a state that is not 'Complete'.")
+        }
+    });
+
 });

@@ -113,6 +113,19 @@ class Topic(models.Model):
 
         return count
 
+    def get_questions(self):
+        """Helper function which returns all the questions associated with the topic."""
+        questions = Question.objects.none()
+
+        blocks = Block.objects.filter(
+            topic=self
+        )
+
+        for block in blocks:
+            questions = questions | block.get_questions()  # Union of the 2 query sets
+
+        return questions
+
     def __str__(self):
         return str(self.name)
 

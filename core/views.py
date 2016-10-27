@@ -324,6 +324,18 @@ class QuestionOrderListView(ListView):
         return context
 
 
+class QuestionOrderLiveView(View):
+    def post(self, *args, **kwargs):
+        question_order = models.QuestionOrder.objects.get(pk=kwargs["pk"])
+        topic = question_order.topic
+
+        for question in topic.get_questions():
+            question.live = True
+            question.save()
+
+        return HttpResponse(status=200)
+
+
 class QuestionEditView(View):
     def get(self, request, *args, **kwargs):
         question = models.Question.objects.get(id=kwargs["pk"])
