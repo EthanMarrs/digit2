@@ -322,17 +322,31 @@ class QuestionOrderListView(ListView):
         context['site_url'] = "/",
         context['site_header'] = "Digit"
         context['open'] = self.request.GET.get('open')
+        context['assigned_to'] = self.request.GET.get('assigned_to')
         return context
 
     def get_queryset(self, *args, **kwargs):
         active_filter = self.request.GET.get('open')
+        assigned_to = self.request.GET.get('assigned_to')
 
-        if active_filter == 'true':
-            return models.QuestionOrder.objects.filter(open=True)
-        elif active_filter == 'false':
-            return models.QuestionOrder.objects.filter(open=False)
+        # Filter based on assignment and open status
+        if assigned_to:
+            user = self.request.user
+
+            if active_filter == 'true':
+                return models.QuestionOrder.objects.filter(open=True, assigned_to=user)
+            elif active_filter == 'false':
+                return models.QuestionOrder.objects.filter(open=False, assigned_to=user)
+            else:
+                return models.QuestionOrder.objects.filter(assigned_to=user)
+
         else:
-            return models.QuestionOrder.objects.all()
+            if active_filter == 'true':
+                return models.QuestionOrder.objects.filter(open=True)
+            elif active_filter == 'false':
+                return models.QuestionOrder.objects.filter(open=False)
+            else:
+                return models.QuestionOrder.objects.all()
 
 
 class QuestionOrderLiveView(View):

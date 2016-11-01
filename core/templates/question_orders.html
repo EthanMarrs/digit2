@@ -30,6 +30,13 @@
                 <li class="{% if open == 'false' %}selected{% endif %}"><a
                         href="/question_orders/?open=false">Closed</a></li>
             </ul>
+            <h3>By assignment</h3>
+            <ul>
+                <li class="{% if assigned_to == None %}selected{% endif %} filter-option"><a
+                        href="/question_orders/">All</a></li>
+                <li class="{% if assigned_to %}selected{% endif %}"><a
+                        href="/question_orders/?assigned_to=true">{{ user.get_full_name }}</a></li>
+            </ul>
         </div>
         <table id="result_list">
             <thead>
