@@ -48,6 +48,17 @@ class Syllabus(models.Model):
         return "Grade " + str(self.grade.name) + " Syllabus"
 
 
+class Class(models.Model):
+    """A means of categorizing students in a particular syllabus."""
+
+    name = models.TextField()
+    syllabus = models.ForeignKey(Syllabus)
+    users = models.ManyToManyField(User)
+
+    class Meta:
+        verbose_name_plural = "classes"
+
+
 class Topic(models.Model):
     """Class that describes a unit of math content with time and duration."""
 

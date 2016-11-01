@@ -26,4 +26,5 @@ admin.site.register(models.Grade)
 admin.site.register(models.Topic)
 admin.site.register(models.Subject)
 admin.site.register(models.QuestionOrder)
+admin.site.register(models.Class)
 
