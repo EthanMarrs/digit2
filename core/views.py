@@ -321,7 +321,18 @@ class QuestionOrderListView(ListView):
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
         context['site_header'] = "Digit"
+        context['open'] = self.request.GET.get('open')
         return context
+
+    def get_queryset(self, *args, **kwargs):
+        active_filter = self.request.GET.get('open')
+
+        if active_filter == 'true':
+            return models.QuestionOrder.objects.filter(open=True)
+        elif active_filter == 'false':
+            return models.QuestionOrder.objects.filter(open=False)
+        else:
+            return models.QuestionOrder.objects.all()
 
 
 class QuestionOrderLiveView(View):
