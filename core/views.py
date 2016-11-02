@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import View, DetailView, ListView
+from django.views.generic import View, DetailView, ListView, FormView
+from django.forms import ValidationError
 
 from core import models, forms
 
@@ -279,9 +280,9 @@ class SyllabusTimelineView(View):
                 "number_of_blocks": topic.get_number_of_blocks(),
                 "number_of_questions": topic.get_number_of_questions(),
                 "duration": topic.duration,
-                "week_end": topic.week_start + topic.duration,
+                "week_end": topic.week_start + topic.duration - 1,
             })
-        print(results)
+
         json_results = json.dumps(results)
 
         return render(request, "timeline.html",
@@ -384,6 +385,63 @@ class QuestionEditView(View):
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
-                       "site_header": "Digit",
+                       "site_header": "Dig-it",
                        "form": forms.CommentForm,
                        "question": question})
+
+
+class TopicCreateWizardView(FormView):
+    template_name = "topic_create_wizard.html"
+    success_url = "/admin/"
+    form_class = forms.TopicForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TopicCreateWizardView, self).get_context_data(**kwargs)
+        context['title'] = "Topic Creation Wizard"
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Dig-it"
+
+        syllabus_id = self.request.GET.get("syllabus")
+
+        if syllabus_id:
+            syllabus = models.Syllabus.objects.get(id=syllabus_id)
+            context['syllabus'] = syllabus_id
+        else:
+            syllabus = models.Syllabus.objects.first()
+
+        topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
+        results = []
+
+        for index, topic in enumerate(topics):
+
+            results.append({
+                "id": topic.id,
+                "name": topic.name,
+                "week_start": topic.week_start,
+                "duration": topic.duration,
+                "week_end": topic.week_start + topic.duration - 1,
+            })
+
+        json_results = json.dumps(results)
+        context['weeks'] = json_results
+
+        return context
+
+    def form_valid(self, form):
+        topic = models.Topic(
+            name=form.cleaned_data['name'],
+            description=form.cleaned_data['description'],
+            syllabus_id=form.cleaned_data['syllabus'],
+            week_start=form.cleaned_data['week_start'],
+            duration=form.cleaned_data['duration']
+        )
+
+        try:
+            topic.save()
+        except ValidationError:
+            pass
+
+        return super(TopicCreateWizardView, self).form_valid(form)
+

@@ -76,8 +76,8 @@ class Topic(models.Model):
         topics = Topic.objects.filter(syllabus=self.syllabus)
 
         for topic in topics:
-            week_end = topic.week_start + topic.duration
-            print(topic.week_start, self.week_start, week_end)
+            week_end = topic.week_start + topic.duration - 1
+
             # Topic occurs in another topic's time frame
             if topic.week_start <= self.week_start <= week_end:
                 raise ValidationError(
@@ -90,6 +90,7 @@ class Topic(models.Model):
         Saves model, automatically creates the associated blocks
         for the topic and empty questions.
         """
+        self.clean()
         super(Topic, self).save(*args, **kwargs)
 
         for i in range(int(self.duration)):

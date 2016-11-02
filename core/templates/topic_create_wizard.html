@@ -1,0 +1,101 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+{% endblock %}
+<form action="/topic_create_wizard/" method="post">
+    {% csrf_token %}
+    <fieldset class="module aligned">
+        <div class="form-row field-syllabus">
+            <div>
+                <label class="required">Syllabus:</label>
+                {{ form.syllabus }}
+            </div>
+        </div>
+        <div class="form-row field-name">
+            <div>
+                <label class="required">Name:</label>
+                {{ form.name }}
+            </div>
+        </div>
+        <div class="form-row field-description">
+            <div>
+                <label class="required">Description:</label>
+                {{ form.description }}
+            </div>
+        </div>
+        <div class="form-row">
+            <label id="calendar-label" class="required">Year Overview:</label>
+            <div id="calendar">
+
+            </div>
+        </div>
+        <div class="form-row field-weekstart">
+            <div>
+                <label class="required">Week Start:</label>
+                {{ form.week_start }}
+            </div>
+        </div>
+        <div class="form-row field-duration">
+            <div>
+                <label class="required">Duration:</label>
+                {{ form.duration }}
+            </div>
+        </div>
+    </fieldset>
+    <div class="submit-row">
+        <input class="default" type="submit" value="Save">
+    </div>
+</form>
+{% autoescape off %}
+<script>
+    $(function () {
+        var syllabus = parseInt('{{syllabus}}');
+
+        if(syllabus) {
+            $('#id_syllabus option[value="'+ syllabus + '"]').attr("selected", "selected");
+        }
+
+        var weeks = '{{weeks}}';
+        weeks = JSON.parse(weeks);
+
+        var labelWidth = parseInt($("#calendar-label").css("width").slice(0, -2));
+        var width = parseInt($("#calendar").css("width").slice(0, -2)) - parseInt(labelWidth) - 10;
+        var blockWidth = width / 52 - 2; // Less border width
+        var count = 0;
+
+        // Loop through all weeks and determine if blocks colouring in
+        for (var i = 1; i <= 52; i++) {
+            if (count >= weeks.length) {
+                $("#calendar").append('<div class="calendar-none" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else if (i < weeks[count]['week_start']) {
+                $("#calendar").append('<div class="calendar-none" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else if (i >= weeks[count]['week_start'] && i <= weeks[count]['week_end']) {
+                $("#calendar").append('<div class="calendar-fill" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else {
+                count++;
+                i--;
+            }
+        }
+
+        $("#id_syllabus").on("change", function () {
+            var value = $(this).find(":selected").attr("value");
+            window.location.href = "/topic_create_wizard/?syllabus=" + value;
+        });
+    });
+</script>
+{% endautoescape %}
+{% endblock %}

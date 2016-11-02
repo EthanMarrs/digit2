@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^topics/(?P<pk>[^/]+)', views.TopicDetailView.as_view()),
     url(r'^login/$', login),
     url(r'^logout/$', logout),
-    url(r'^not_configured/', TemplateView.as_view(template_name='not_configured.html'))
+    url(r'^not_configured/', TemplateView.as_view(template_name='not_configured.html')),
+    url(r'^topic_create_wizard/', views.TopicCreateWizardView.as_view()),
 ]
