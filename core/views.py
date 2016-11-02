@@ -215,12 +215,11 @@ class QuizView(View):
         week = int(datetime.now().strftime("%V"))
 
         if user.is_authenticated:
-            syllabus = models.Syllabus.objects.filter(users=user)
+            klass = models.Class.objects.get(users=user)
+            syllabus = klass.syllabus
 
             if not syllabus:
                 return HttpResponseRedirect('/not_configured')
-            else:
-                syllabus = syllabus[0]
 
             # Get IDs of questions answered within the last 2 weeks
             answered = models.QuestionResponse.objects.filter(
@@ -334,19 +333,19 @@ class QuestionOrderListView(ListView):
             user = self.request.user
 
             if active_filter == 'true':
-                return models.QuestionOrder.objects.filter(open=True, assigned_to=user)
+                return models.QuestionOrder.objects.filter(open=True, assigned_to=user).order_by('-id')
             elif active_filter == 'false':
-                return models.QuestionOrder.objects.filter(open=False, assigned_to=user)
+                return models.QuestionOrder.objects.filter(open=False, assigned_to=user).order_by('-id')
             else:
-                return models.QuestionOrder.objects.filter(assigned_to=user)
+                return models.QuestionOrder.objects.filter(assigned_to=user).order_by('-id')
 
         else:
             if active_filter == 'true':
-                return models.QuestionOrder.objects.filter(open=True)
+                return models.QuestionOrder.objects.filter(open=True).order_by('-id')
             elif active_filter == 'false':
-                return models.QuestionOrder.objects.filter(open=False)
+                return models.QuestionOrder.objects.filter(open=False).order_by('-id')
             else:
-                return models.QuestionOrder.objects.all()
+                return models.QuestionOrder.objects.all().order_by('-id')
 
 
 class QuestionOrderLiveView(View):
