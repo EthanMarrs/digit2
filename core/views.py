@@ -96,22 +96,6 @@ class BlockView(View):
                        "site_header": "Digit"})
 
 
-class BlockDetailView(DetailView):
-    """
-    A detail view that displays the detail of a block, namely
-    the questions associated with it.
-    """
-
-    model = models.Block
-    template_name = "block.html"
-
-    def get_context_data(self, **kwargs):
-        """ Get context for a block. """
-
-        context = super(BlockDetailView, self).get_context_data(**kwargs)
-        return context
-
-
 class TopicDetailView(DetailView):
     """
     A detail view that displays the detail of a topic, namely
