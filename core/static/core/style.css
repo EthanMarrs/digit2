@@ -61,8 +61,11 @@ i {
 }
 
 table {
-    width: 50%;
     border: #EEEEEE 1px solid;
+}
+
+.table {
+    width: 50% !important;
 }
 
 .description-container {
@@ -227,3 +230,8 @@ table {
 .cal-txt {
     padding-left: 1px !important;
 }
+
+.spaced-table {
+    padding-right: 280px;
+}
+

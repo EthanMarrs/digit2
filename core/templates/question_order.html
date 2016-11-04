@@ -55,7 +55,11 @@
         <div class="description-container">
             <p class="description hidden">{{ block.description }}</p>
             <div class="markdown">
-                {{ block.description|markdown }}
+                {% if block.description == '' %}
+                    No description
+                {% else %}
+                    {{ block.description|markdown }}
+                {% endif %}
             </div>
             <a class="edit-description" href="javascript:void(null);"><i class="material-icons md-18">mode_edit</i>Edit Description</a>
             <form class="hidden" onsubmit="return false;">
@@ -73,7 +77,6 @@
             <tr>
                 <td class="color-td"></td>
                 <td><a href="/questions/{{ question.id }}/edit/">{{ question }}</a></td>
-                <td>{{ question.order }}</td>
                 <td>{% if question.live %}
                     Live
                     {% else %}

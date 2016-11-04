@@ -39,7 +39,6 @@ class Syllabus(models.Model):
     """Overarching container that conceptually organises topics for a year."""
 
     grade = models.OneToOneField(Grade)
-    users = models.ManyToManyField(User)
 
     class Meta:
         verbose_name_plural = "syllabi"
@@ -177,7 +176,7 @@ class QuestionOrder(models.Model):
     topic = models.ForeignKey(Topic)
     description = models.TextField()
     open = models.BooleanField(default=True)
-    # due_date = models.DateField()
+    due_date = models.DateField(null=True)
 
     def __str__(self):
         return str(self.topic.name) + " Question Order"

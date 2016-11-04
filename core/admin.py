@@ -37,7 +37,7 @@ class QuestionAdmin(admin.ModelAdmin):
 
 @admin.register(models.QuestionOrder)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'assigned_by', 'assigned_to', 'topic', 'open')
+    list_display = ('id', 'assigned_by', 'assigned_to', 'topic', 'open', 'due_date')
 
 
 @admin.register(models.Class)

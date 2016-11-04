@@ -8,7 +8,6 @@
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
 <script src="{% static 'core/randomColor.js' %}"></script>
-<script src="{% static 'core/timeline.js' %}"></script>
 
 {% endblock %}
 
@@ -23,6 +22,11 @@
 {% block content %}
 
 <div class="g-d-c">
+    <div class="full-width">
+        <div id="calendar">
+        </div>
+    </div>
+    <br>
     <div id="timeline">
         {% for topic in data %}
         {% if topic.spaced %}
@@ -49,6 +53,37 @@
 <script>
     $(".color-block").each(function () {
         $(this).css("background-color", randomColor());
+    });
+
+    $(function () {
+        var weeks = '{{json}}';
+        weeks = JSON.parse(weeks);
+
+        var width = parseInt($("#calendar").css("width").slice(0, -2)) - 10;
+        var blockWidth = width / 52 - 2; // Less border width
+        var count = 0;
+
+        // Loop through all weeks and determine if blocks colouring in
+        for (var i = 1; i <= 52; i++) {
+            if (count >= weeks.length) {
+                $("#calendar").append('<div class="calendar-none" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else if (i < weeks[count]['week_start']) {
+                $("#calendar").append('<div class="calendar-none" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else if (i >= weeks[count]['week_start'] && i <= weeks[count]['week_end']) {
+                $("#calendar").append('<div class="calendar-fill" style="width:' + blockWidth + 'px;' + '"><p class="cal-txt">' + i + '</p></div>');
+            }
+            else {
+                count++;
+                i--;
+            }
+        }
+
+        $("#id_syllabus").on("change", function () {
+            var value = $(this).find(":selected").attr("value");
+            window.location.href = "/topic_create_wizard/?syllabus=" + value;
+        });
     });
 </script>
 {% endautoescape %}

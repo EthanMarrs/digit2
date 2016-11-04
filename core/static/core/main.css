@@ -91,3 +91,7 @@ a:hover {
     text-decoration: underline;
     text-decoration-color: #616161;
 }
+
+.deletelink-box > a {
+    color: white !important;
+}
