@@ -433,7 +433,7 @@ class TopicCreateWizardView(FormView):
         topic = models.Topic(
             name=form.cleaned_data['name'],
             description=form.cleaned_data['description'],
-            syllabus_id=form.cleaned_data['syllabus'],
+            syllabus=form.cleaned_data['syllabus'],
             week_start=form.cleaned_data['week_start'],
             duration=form.cleaned_data['duration']
         )

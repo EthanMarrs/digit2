@@ -177,6 +177,7 @@ class QuestionOrder(models.Model):
     topic = models.ForeignKey(Topic)
     description = models.TextField()
     open = models.BooleanField(default=True)
+    # due_date = models.DateField()
 
     def __str__(self):
         return str(self.topic.name) + " Question Order"
