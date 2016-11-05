@@ -11,7 +11,7 @@ from core import models, forms
 
 
 class QuestionOrderDetailView(DetailView):
-    """ Overview screen for the Digit dashboard. Displays all syllabi."""
+    """ Overview screen for the Dig-it dashboard. Displays all syllabi."""
 
     model = models.QuestionOrder
     template_name = "question_order.html"
@@ -31,7 +31,7 @@ class QuestionOrderDetailView(DetailView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
         context['form'] = forms.BlockDescriptionForm
         context['filter'] = filter_option
 
@@ -55,7 +55,7 @@ class SyllabusDetailView(DetailView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
 
         return context
 
@@ -93,7 +93,7 @@ class BlockView(View):
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
-                       "site_header": "Digit"})
+                       "site_header": "Dig-it"})
 
 
 class TopicDetailView(DetailView):
@@ -275,7 +275,7 @@ class SyllabusTimelineView(View):
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
-                       "site_header": "Digit",
+                       "site_header": "Dig-it",
                        "data": results,
                        "json": json_results})
 
@@ -290,7 +290,7 @@ class SyllabusListView(ListView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
         return context
 
 
@@ -304,7 +304,7 @@ class QuestionOrderListView(ListView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
         context['open'] = self.request.GET.get('open')
         context['assigned_to'] = self.request.GET.get('assigned_to')
         return context

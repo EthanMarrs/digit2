@@ -21,6 +21,7 @@ class BlockViewTests(TestCase):
     Test all Block views.
     """
     def setUp(self):
+        user = User.objects.create_user('temp', 'temporary@temp.com', 'temporary')
         grade_test = Grade.objects.create(name="Grade Example")
         syllabus_test = Syllabus.objects.create(grade=grade_test)
         Topic.objects.create(name="Financial Mathematics",
@@ -33,6 +34,7 @@ class BlockViewTests(TestCase):
         """
         Test that blocks are listed.
         """
+        self.client.login(username='temp', password='temporary')
         response = self.client.get('/blocks/1/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Financial Mathematics")
@@ -45,6 +47,7 @@ class BlockViewTests(TestCase):
         """
         Test updating block description.
         """
+        self.client.login(username='temp', password='temporary')
         data = {"text": "yep!"}
         response = self.client.post('/blocks/1/', data=data)
         self.assertEqual(response.status_code, 200)
