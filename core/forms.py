@@ -4,6 +4,9 @@ from core import models
 
 
 class CommentForm(forms.Form):
+    """
+    A simple form for creating a text comment.
+    """
     text = forms.CharField(widget=forms.Textarea(attrs=
                                                  {"rows": 2,
                                                   "style": "resize:none;"
@@ -13,6 +16,9 @@ class CommentForm(forms.Form):
 
 
 class BlockDescriptionForm(forms.Form):
+    """
+    A simple form for updating a Block's description text.
+    """
     text = forms.CharField(widget=forms.Textarea(attrs=
                                                  {"rows": 4,
                                                   "style": "resize:none;width:98%;"
@@ -22,6 +28,11 @@ class BlockDescriptionForm(forms.Form):
 
 
 class TopicForm(forms.Form):
+    """
+    A complex form used in the topic creation wizard.
+    Most fields are fairly standard, however the 'syllabus' field uses a ModelChoiceField.
+    This displays all the current syllabi available.
+    """
     name = forms.CharField(widget=forms.Textarea())
     description = forms.CharField(widget=forms.Textarea())
     syllabus = forms.ModelChoiceField(queryset=models.Syllabus.objects.all())
