@@ -173,6 +173,7 @@ class Subject(models.Model):
 class QuestionOrder(models.Model):
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
+    moderator = models.ForeignKey(User, related_name="moderator", default=None)
     topic = models.ForeignKey(Topic)
     description = models.TextField()
     open = models.BooleanField(default=True)

@@ -37,7 +37,9 @@
             <li class="{% if filter == 4 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=4">Flagged</a></li>
         </ul>
     </div>
-    <p>Assigned to: {{ object.assigned_to.get_full_name }}</p>
+    <p><b>Assigned by:</b> {{ object.assigned_by.get_full_name }}</p>
+    <p><b>Assigned to:</b> {{ object.assigned_to.get_full_name }}</p>
+    <p><b>Moderator:</b> {{ object.moderator.get_full_name }}</p>
     <div class="grp-module">
         <p>{{ object.description }}</p>
         <div>

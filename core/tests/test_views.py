@@ -8,6 +8,7 @@ from core.models import (Grade,
                          Topic,
                          Block,
                          Syllabus,
+                         QuestionOrder,
                          StateException,
                          CorrectOptionExistsError,
                          )
@@ -52,3 +53,19 @@ class BlockViewTests(TestCase):
         response = self.client.post('/blocks/1/', data=data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Block.objects.first().description, "yep!")
+
+
+class QuestionOrderTests(TestCase):
+    """
+    Test all Question Order views.
+    """
+    def setUp(self):
+        user = User.objects.create_user('temp', 'temporary@temp.com', 'temporary')
+        grade_test = Grade.objects.create(name="Grade Example")
+        syllabus_test = Syllabus.objects.create(grade=grade_test)
+        Topic.objects.create(name="Financial Mathematics",
+                             description="Topic that involves sinking funds "
+                                         "and loan calculations",
+                             syllabus=syllabus_test, week_start=1,
+                             duration=3)
+        # QuestionOrder.objects.create()
