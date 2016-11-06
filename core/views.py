@@ -195,16 +195,25 @@ class QuestionChangeStateView(View):
 
 
 class QuizView(View):
+    """
+    The view for students answering questions. This is a fairly complex view, since it
+    needs to calculate which questions to show to a student.
+    Firstly, the questions answered within the last 2 weeks are selected.
+    Then the available questions for the last 2 weeks are selected.
+    The answered questions are removed from the available pool.
+    A question is randomly selected from the pool.
+    """
     def get(self, request):
         user = request.user
         week = int(datetime.now().strftime("%V"))
 
         if user.is_authenticated:
-            klass = models.Class.objects.get(users=user)
-            syllabus = klass.syllabus
+            klass = models.Class.objects.filter(users=user).first()
 
-            if not syllabus:
+            if not klass:
                 return HttpResponseRedirect('/not_configured')
+
+            syllabus = klass.syllabus
 
             # Get IDs of questions answered within the last 2 weeks
             answered = models.QuestionResponse.objects.filter(
