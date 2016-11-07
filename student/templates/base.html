@@ -1,21 +1,22 @@
 <html>
 <head>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'core/student.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'student/student.css' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Dig-it</title>
 </head>
 <body>
 <div id="navbar">
-    {% if user.is_authenticated %}
     <div id="controls">
-        <p class="left">Welcome, <b>{{ user.first_name }}</b>&emsp;|&emsp;</p>
-
-        <a href="/logout/">Logout</a>
+        {% if user.is_authenticated %}
+            <p class="left">Welcome, <b>{{ user.first_name }}</b>&emsp;|&emsp;</p>
+            <a href="/logout/">Logout</a>
+        {% else %}
+            <a href="/login/">Login</a>
+        {% endif %}
     </div>
-    {% endif %}
     <div class="half">
-        <h1 id="nav-text">Dig-it</h1>
+        <h1 id="nav-text"><a href="/">Dig-it</a></h1>
     </div>
 </div>
 <div id="content">

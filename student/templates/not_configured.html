@@ -1,1 +1,12 @@
-<p>Sorry, your account has not been configured just yet.</p>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="half">
+        <h2>Sorry! We're still busy placing you.</h2>
+        <p>
+            Our administrators are hard at work placing you in a class.
+            This could take a few days, but be sure to check back soon.
+        </p>
+    </div>
+{% endblock %}

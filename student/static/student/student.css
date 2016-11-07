@@ -22,6 +22,11 @@ body {
     padding-top: 10px;
 }
 
+#nav-text a {
+    color: white;
+    text-decoration: none;
+}
+
 #controls {
     margin-right: 20px;
     float: right;
@@ -70,7 +75,6 @@ body {
     border-radius: 4px;
     font-size: 18px;
     text-decoration: none;
-    float: right;
 }
 
 .blue {
@@ -85,7 +89,23 @@ body {
     float: left;
 }
 
-#id_password, #id_username {
+.right {
+    float: right;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.margin-right {
+    margin-right: 20px;
+}
+
+.auto {
+    text-align: left;
+}
+
+#id_password, #id_username, #id_first_name, #id_last_name, #id_email {
     border: black 1px solid;
     height: 40px;
     border-radius: 4px;
@@ -93,6 +113,14 @@ body {
 }
 
 form {
-    margin: 0 auto;
-    width: 20%;
+    display: inline-block;
+}
+
+.parent {
+    text-align: center;
+}
+
+.errorlist li {
+    list-style: none;
+    color: darkred;
 }

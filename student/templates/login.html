@@ -2,12 +2,11 @@
 {% load static %}
 
 {% block content %}
-  <form class="login" method="POST" action="/login/">
-
-  {% csrf_token %}
-
-  {{ form.as_p }}
-
-  <input type="submit" class="logBut" value="Log in"/>
-  </form>
+    <div class="parent">
+        <form class="login" method="POST" action="/login/">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="text-right"><input type="submit" class="logBut" value="Log in"/></p>
+        </form>
+    </div>
 {% endblock content %}

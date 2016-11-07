@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^login/$', login, {'template_name': 'login.html'}),
     url(r'^logout/$', logout),
     url(r'^not_configured/', TemplateView.as_view(template_name='not_configured.html')),
+    url(r'^welcome/', TemplateView.as_view(template_name='welcome.html')),
+    url(r'^signup/', views.SignupView.as_view())
 ]

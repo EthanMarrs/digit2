@@ -1,11 +1,15 @@
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View, FormView
 from django.shortcuts import render, HttpResponseRedirect
 from django.db.models import F
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.forms import ValidationError
 
 from datetime import datetime, timedelta
 
-from core import models, forms
+from core import models
+from student import forms
 
 
 class HomeView(View):
@@ -70,3 +74,25 @@ class QuizView(View):
             return render(request, "quiz.html", {"question": question})
         else:
             return HttpResponseRedirect('/login/')
+
+
+class SignupView(FormView):
+    template_name = "signup.html"
+    success_url = "/quiz/"
+    form_class = forms.SignupForm
+
+    def form_valid(self, form):
+        user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name'],
+            email=form.cleaned_data['email'],
+            password=form.cleaned_data['password']
+        )
+
+        try:
+            user.save()
+        except ValidationError:
+            pass
+
+        return super(SignupView, self).form_valid(form)
