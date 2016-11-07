@@ -14,12 +14,34 @@ body {
     height: 60px;
     background-color: black;
     color: white;
-    margin: 0 auto;
     text-align: center;
+    display: block;
 }
 
 #nav-text {
     padding-top: 10px;
+}
+
+#controls {
+    margin-right: 20px;
+    float: right;
+    display: block;
+}
+
+#controls a {
+    margin-top: 20px;
+    float: right;
+    text-decoration: none;
+    color: white;
+}
+
+#controls a:hover {
+    text-decoration: underline;
+}
+
+#controls p {
+    margin-top: 20px;
+    float: left;
 }
 
 #content {
@@ -40,6 +62,17 @@ body {
     text-decoration: none;
 }
 
+.logBut {
+    padding: 10px;
+    background-color: #39AA56;
+    color: white;
+    border: 0 none;
+    border-radius: 4px;
+    font-size: 18px;
+    text-decoration: none;
+    float: right;
+}
+
 .blue {
     background-color: #2B90D9;
 }
@@ -50,4 +83,16 @@ body {
 
 .left {
     float: left;
+}
+
+#id_password, #id_username {
+    border: black 1px solid;
+    height: 40px;
+    border-radius: 4px;
+    padding-left: 10px;
+}
+
+form {
+    margin: 0 auto;
+    width: 20%;
 }

@@ -7,9 +7,9 @@ from core import views
 
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='home.html')),
+    url(r'^$', views.HomeView.as_view()),
     url(r'^quiz/', views.QuizView.as_view()),
-    url(r'^login/$', login, {'template_name': 'admin/login.html'}),
+    url(r'^login/$', login, {'template_name': 'login.html'}),
     url(r'^logout/$', logout),
     url(r'^question_orders/(?P<pk>[^/])/live/', login_required(views.QuestionOrderLiveView.as_view())),
     url(r'^question_orders/(?P<pk>[^/])/open/', login_required(views.QuestionOrderOpenView.as_view())),
@@ -26,7 +26,6 @@ urlpatterns = [
     url(r'^blocks/(?P<pk>[^/]+)', login_required(views.BlockView.as_view())),
     url(r'^comment_success/', login_required(TemplateView.as_view(template_name='comment_success.html'))),
     url(r'^topics/(?P<pk>[^/]+)', login_required(views.TopicDetailView.as_view())),
-    url(r'^login/$', login),
     url(r'^logout/$', logout),
     url(r'^not_configured/', TemplateView.as_view(template_name='not_configured.html')),
     url(r'^topic_create_wizard/', login_required(views.TopicCreateWizardView.as_view())),

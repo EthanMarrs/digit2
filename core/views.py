@@ -207,7 +207,7 @@ class QuizView(View):
         user = request.user
         week = int(datetime.now().strftime("%V"))
 
-        if user.is_authenticated:
+        if user.is_authenticated():
             klass = models.Class.objects.filter(users=user).first()
 
             if not klass:
@@ -437,3 +437,16 @@ class TopicCreateWizardView(FormView):
             pass
 
         return super(TopicCreateWizardView, self).form_valid(form)
+
+
+class HomeView(View):
+    """
+    A simple view that displays the Dig-it welcome screen.
+    Also has links to login and signup.
+    """
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect("/quiz/")
+        else:
+            return render(request, "home.html",
+                          {"user": request.user})
