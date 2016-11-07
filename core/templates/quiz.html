@@ -1,20 +1,10 @@
-<html>
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'core/quiz.css' %}"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-</head>
-<body>
-<div id="navbar">
-    <h1 id="nav-text">Dig-it</h1>
-</div>
-<div id="content">
+{% extends 'base.html' %}
+
+{% block content %}
     {% if question %}
-        <p>{{ question.content }}</p>
+    <p>{{ question.content }}</p>
     {% else %}
-        <p>You have completed all questions in the available pool.</p>
+    <p>You have completed all questions in the available pool.</p>
     {% endif %}
-</div>
-</body>
-</html>
+{% endblock %}
 

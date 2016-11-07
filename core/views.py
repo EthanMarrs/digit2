@@ -437,4 +437,3 @@ class TopicCreateWizardView(FormView):
             pass
 
         return super(TopicCreateWizardView, self).form_valid(form)
-
