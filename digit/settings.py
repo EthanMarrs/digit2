@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'core',
+    'student',
     'ordered_model',
     'widget_tweaks',
     'bootstrap3',
