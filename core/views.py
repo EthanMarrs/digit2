@@ -1,10 +1,12 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
+from django.contrib.auth.models import User
+from django.db.models import F, Count
 
 from core import models, forms
 
@@ -385,3 +387,26 @@ class TopicCreateWizardView(FormView):
             pass
 
         return super(TopicCreateWizardView, self).form_valid(form)
+
+
+class StudentScoresView(View):
+    """
+    A view that displays the student scores for the week.
+    """
+    def get(self, request, *args, **kwargs):
+        # Get week starting date
+        now = date.today()
+        week_start = now - timedelta(now.weekday())
+
+        # Fetch all users that responded this week
+        student_list = models.QuestionResponse.objects.filter(time__gte=week_start)\
+            .values('user', 'user__username', 'user__first_name', 'user__last_name')\
+            .annotate(responses=Count('user'))
+
+        return render(request, "student_scores.html",
+                      {"title": "Student Scores",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it",
+                       "student_list": student_list})
