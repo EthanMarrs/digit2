@@ -1,4 +1,8 @@
-var array_of_questions = {};
+var getUUID = function(){
+  return uuid()
+}
+
+var dict_of_questions = {};
 var MQ = MathQuill.getInterface(2);
 var mathField;
 
@@ -6,10 +10,26 @@ var count = 0;
 // create a function that creates a span, textfield and mathfield
 // then add them to the array
 // then add them to the document
+
+// appends buttons that control the handling of the blocks
+var addControlButtons = function(object, uuid){
+  var buttonContainer = $("<div></div>")
+    .addClass("button-container");
+
+  buttonContainer
+    .append("<div class='control-button' ><input type='checkbox' class='control-checkbox'>Make inline</input></div>")
+    .append("<button type='button' class='control-button' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'>Move up</i></button>")
+    .append("<button type='button' class='control-button' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'>Move Down</i></button>")
+    .append("<button type='button' class='control-button' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'>Delete</i></button>");
+
+  return(object.append(buttonContainer));
+}
+
 var addEquationField = function(div_name, math_content){
 
-  var mathquill_block_id = "mathquill_block_" + count;
-  var mathquill_text_block_id = "mathquill_text_block_" + count;
+  var uuid = getUUID();
+  var mathquill_block_id = "mathquill_block_" + uuid;
+  var mathquill_text_block_id = "mathquill_text_block_" + uuid;
 
   var mathFieldSpan = $("<span>" + math_content + "</span>")
     .addClass("mathquill-field mq-editable-field mq-math-mode mq-editable-field")
@@ -28,18 +48,27 @@ var addEquationField = function(div_name, math_content){
   var textSpan = $("<span></span>").append(textField);
   var outer_math_span = $("<span></span>")
     .addClass("outer_math_span")
-    .append(mathFieldSpan)
-    .append("<button type='button' onClick='toggleTextField(\"" + mathquill_text_block_id + "\")'>Toggle TextField</button>")
-    .append("<button type='button' onClick='copyEquationField(\"" + mathquill_block_id + "\")'>Add a copy</button>");
+    .append(mathFieldSpan);
+
+  var contentDiv = $("<div></div>")
+    .addClass("content-container")
+    .append(outer_math_span)
+    .append("<button type='button' class='equation-button' onClick='toggleTextField(\"" + mathquill_text_block_id + "\")'>Toggle TextField</button>");
+
+    // This allows added functionality
+    // They will be added later
+    // .append("<button type='button' class='equation-button' onClick='copyEquationField(\"" + mathquill_block_id + "\")'>Add a copy</button>");
 
   // add the elements to the page
 
   var content_field = $("<div></div>")
+    .attr("id", uuid)
     .addClass("content_field")
     .addClass("math_field")
-    .append(outer_math_span)
-    .append("<br />")
+    .append(contentDiv)
     .append(textSpan);
+
+  var content_field = addControlButtons(content_field, uuid);
 
   $(div_name).append(content_field);
 
@@ -56,17 +85,14 @@ var addEquationField = function(div_name, math_content){
     }
   });
 
-  array_of_questions[mathquill_text_block_id] = mathField;
+  dict_of_questions[mathquill_text_block_id] = mathField;
 
   ++count;
 }
 
-// add a copy of the existing equation and add it beneath the existing equation
-var copyEquationField = function(div_name){
-  // create a new equation by getting the content of the
-}
-
 var addTextField = function(div_name){
+  var uuid = getUUID();
+
   var text_block_id = "text_block_" + count;
   // create the textfield
   var textField = $("<textarea></textarea>")
@@ -76,10 +102,17 @@ var addTextField = function(div_name){
     .addClass("question_content_textfield")
     .attr("id", text_block_id);
 
+  var contentDiv = $("<div></div>")
+    .addClass("content-container")
+    .append(textField);
+
   var content_field = $("<div></div>")
+    .attr("id", uuid)
     .addClass("content_field")
     .addClass("text_field")
-    .append(textField);
+    .append(contentDiv);
+
+  content_field = addControlButtons(content_field, uuid);
 
   // add it to the field
   $("."+div_name)
@@ -90,6 +123,8 @@ var addTextField = function(div_name){
 }
 
 var addImageField = function(div_name){
+  var uuid = getUUID();;
+
   var input_field = $("<input />")
     .attr("type","file")
     .addClass("fileInput")
@@ -98,10 +133,13 @@ var addImageField = function(div_name){
     .attr("onchange","handleFiles('" + div_name + "', this.files)");
 
   var content_field = $("<div></div>")
+    .attr("id", uuid)
     .addClass("content_field")
     .addClass("image_field")
     .css("display", "none")
     .append(input_field);
+
+  content_field = addControlButtons(content_field, uuid);
 
   $("." + div_name)
     .append(content_field);
@@ -133,11 +171,18 @@ handleFiles = function(div_name, files){
     .addClass("uploaded-image")
     .attr("file", file);
 
+  var contentDiv = $("<div></div>")
+    .addClass("content-container")
+    .append(img);
+
+
   // add to the last div, which has been created already and added to the bottom
   // assumes that div is always the last one - no deletes or changes :/
+  // TODO
+  // Make changes so that UUID is used to append the image
   $("."+div_name).children().last()
-    .append(img)
-    .css("display","inline");
+    .prepend(contentDiv)
+    .css("display","flex");
 
   var reader = new FileReader();
   reader.onload = (function(aImg){
@@ -156,14 +201,45 @@ var toggleTextField = function(textfield_id){
   }
 }
 
-/*
-The way this function currently works is to find all of blocks of content
-For each block of content, find all of the textfields
-If the textfield is linked to an eqation field,
-  use the id to find the mathField object which has been stored in the array_of_questions
-Pull the content and add it to an array of strings.
-*/
-var postInfo = function(){
+var deleteBlock = function(uuid){
+  // remove the mathquill objects if nec
+  if($("#" + uuid).hasClass("math_field")){
+    delete dict_of_questions["mathquill_block_" + uuid];
+  }
+  // remove the html
+  $("#" + uuid).remove()
+}
+
+var moveUp = function(uuid){
+  // check if there is a previous element
+  var blockToMove = $("#"+uuid);
+  var previousElement = blockToMove.prev();
+  // JQuesy selector will never return false
+  // if length === 0 then nothing has been found
+  if(previousElement.length){
+    previousElement.before(blockToMove);
+  }
+  else{
+    // do nothing
+  }
+}
+
+var moveDown = function(uuid){
+  // check if there is a previous element
+  var blockToMove = $("#"+uuid);
+  var previousElement = blockToMove.next();
+  // JQuesy selector will never return false
+  // if length === 0 then nothing has been found
+  if(previousElement.length){
+    previousElement.after(blockToMove);
+  }
+  else{
+    // do nothing
+    console.log("do nothing");
+  }
+}
+
+var getContent = function(){
   data = {}
   data["name"] = $("#question_name_textfield").val()
 
@@ -190,23 +266,32 @@ var postInfo = function(){
     $(content_fields).each(function( index ) {
       if($(this).hasClass("text_field")){
         var text = $(this).find(".question_content_textfield").val();
+        var inline_boolean = $($(this) )
+        // check if its checked
+        var inline_boolean = $(this).find(".control-checkbox").first().is(":checked");
         values.push(
-          {"text": text}
+          {"text": text,
+           "inline": inline_boolean,
+          }
         );
       }
       else if($(this).hasClass("math_field")){
         // fetch the math content
         var mathquill_field = $(this).find(".question_content_textfield");
-        // console.log(array_of_questions[mathquill_field.attr("id")].latex());
+        // console.log(dict_of_questions[mathquill_field.attr("id")].latex());
+        // check if block is inline
+        var inline_boolean = $(this).find(".control-checkbox").first().is(":checked");
         values.push(
-          { "latex": array_of_questions[mathquill_field.attr("id")].latex() }
+          {"latex": dict_of_questions[mathquill_field.attr("id")].latex(),
+           "inline": inline_boolean,
+          }
         );
       }
       else if($(this).hasClass("image_field")){
         // check whether the img exists, otherwise cancel was called and the image was not put in the block
         if ($(this).has("img")){
           // generate a uuid for the image
-          var pic_uuid = uuid.v4()
+          var pic_uuid = getUUID();
           //  get the file type
           var files = $(this).find(".fileInput")[0].files;
           var file = files[files.length - 1];
@@ -231,6 +316,25 @@ var postInfo = function(){
     // add the elements to data
     data[class_name] = values;
   });
+
+  return({
+    "data": data,
+    "image_data": image_data,
+  });
+}
+
+/*
+The way this function currently works is to find all of blocks of content
+For each block of content, find all of the textfields
+If the textfield is linked to an eqation field,
+  use the id to find the mathField object which has been stored in the dict_of_questions
+Pull the content and add it to an array of strings.
+*/
+var postInfo = function(){
+  fetched_data = getContent();
+
+  data=fetched_data.data;
+  image_data=fetched_data.image_data;
 
   var data_invalid = false;
   // validate the data
@@ -265,6 +369,16 @@ var postInfo = function(){
   if(!data_invalid){
     //  CLEAN UP
     // clear the blocks so that more content can be created
+    // TODO: create a global reference for the sections - this violates DRY
+    var sections = [
+      "question_content",
+      "answer_explanation_content",
+      "additional_information",
+      "option_content_1",
+      "option_content_2",
+      "option_content_3",
+    ]
+
     sections.map(function(class_name){
       $("."+class_name).empty();
     });
@@ -272,7 +386,7 @@ var postInfo = function(){
     // reset count value
     count = 0;
     // clear the array that stores mathFields
-    array_of_questions = {};
+    dict_of_questions = {};
 
     // post the data to the server
 
@@ -282,31 +396,123 @@ var postInfo = function(){
     });
 
     $.ajax({
-      url: "../../../question_content/",
+      url: "/",
       type: 'POST',
       contentType:'application/json',
       data: JSON.stringify(data),
       dataType:'json',
       success: function(data){
-        $.ajax({
-          url: '../../../question_content/file_upload/',
-          data: image_data,
-          cache: false,
-          contentType: false,
-          processData: false,
-          type: 'POST',
-          success: function(data){
-            // alert("Images posted to server")
-          },
-          error: function(data){
-            alert("Posting images posting went wrong");
-          },
-        });
+        if(image_data !== []){
+          $.ajax({
+            url: '/file',
+            data: image_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+              // alert("Images posted to server")
+            },
+            error: function(data){
+              alert("Posting images posting went wrong");
+            },
+          });
+        }
       },
       error: function(data){
         alert("Posting data to server went wrong!")
       },
     });
     console.dir(image_data);
+  }
+}
+
+// wraps input in 'p' tags
+var renderText = function(text){
+  return $("<p></p>")
+    .addClass("preview-text")
+    .text(text);
+}
+
+var renderLatex = function(latex){
+  var katex_span = $("<span></span>")
+    .addClass("katex-span")[0];
+  katex.render(latex, katex_span);
+
+  // TODO
+  // handle case where there is text as well as
+  // TODO
+  // handle case where the latex is nt valid
+  return katex_span;
+}
+
+var renderImage = function(){
+  return $("<div></div>")
+    .addClass("image-placeholder")
+}
+
+// items is an array of objects that either have a key of
+// "text", "latex", "image"
+var renderBlock = function(items, block_name){
+  // create a root jquery div
+  var block = $("<div></div>")
+    .addClass(block_name);
+
+  // iterate through the items and append them
+  for (var i = 0; i < items.length; ++i) {
+    key = Object.keys(items[i])[0]
+    switch(key){
+      case "text":
+        block.append(renderText(items[i][key]));
+        break;
+      case "latex":
+        block.append(renderLatex(items[i][key]));
+        break;
+      case "image":
+        block.append(renderImage(items[i][key]));
+        break;
+      default:
+        console.log();
+    }
+    block.append($("<br />"))
+  }
+  return block;
+}
+
+var createPreview = function(data){
+  var root_div = $("#preview-panel");
+
+  // pull the data from the edit-panel
+  fetched_data = getContent();
+
+  data=fetched_data.data;
+  image_data=fetched_data.image_data;
+
+  console.dir(data);
+
+  root_div.append("<h3>Question</h3>");
+  // State the question
+  root_div.append(renderBlock(data.question_content, "question_block"));
+  // State the possible answers
+  root_div.append("<h3>Options</h3>");
+  root_div.append(renderBlock(data.option_content_1, "option block_1"));
+  root_div.append(renderBlock(data.option_content_1, "option block_2"));
+  root_div.append(renderBlock(data.option_content_1, "option block_3"));
+
+  // add a 'submit' button that will change question section to hidden
+
+  // add the correct answer
+
+  //
+}
+
+var togglePreview = function(){
+  var preview_panel = $("#preview-panel");
+  var display_value = preview_panel.css("display");
+  if(display_value === "block"){
+    preview_panel.css("display", "none");
+  }
+  else{
+    preview_panel.css("display", "block");
   }
 }

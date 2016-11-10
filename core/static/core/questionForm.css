@@ -1,3 +1,10 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
 .mq-editable-field, .mq-math-mode .mq-editable-field {
     border-radius: 0.5em;
     background-color: lightgray;
@@ -9,4 +16,82 @@
 .uploaded-image {
     max-width: 200px;
     max-height: 300px;
+}
+
+
+#content-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.panel {
+    background-color: grey;
+    flex: 1;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.panel:last-child {
+    /*margin-right: 0px;*/
+}
+
+#edit-panel{
+
+}
+
+#preview-panel{
+    display: none;
+}
+
+.image-placeholder {
+    height: 100px;
+    width: 100px;
+    background-color: gray;
+}
+
+.control-button {
+    flex: 1;
+    height: 100%;
+    border-radius: 0;
+    background-color: lightgray;
+    border-top: none;
+    border-right: none;
+    border-left: 2px solid #34E0C2;
+    border-bottom: 2px solid #34E0C2;
+}
+
+.control-button:last-child {
+    border-bottom: none;
+}
+
+.content_field {
+    display: flex;
+    flex-direction: row;
+    border: 4px solid #34E0C2;
+    margin-top: 10px;
+}
+
+.button-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-container {
+    flex: 9;
+}
+
+img {
+    align-self: center;
+    margin: 10px;
+}
+
+.create-block-buttons-container{
+
+}
+
+.create-block-buttons{
+    border-radius: 0;
+    background-color: none;
+    border: 2px solid #34E0C2;
 }
