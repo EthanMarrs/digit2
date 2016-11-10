@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View, FormView
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.db.models import F
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -74,6 +74,19 @@ class QuizView(View):
             return render(request, "quiz.html", {"question": question})
         else:
             return HttpResponseRedirect('/login/')
+
+    def post(self, request, *args, **kwargs):
+        question = request.POST["question"]  # Question ID
+        answer = request.POST["answer"]  # Answer ID
+        if question and answer:
+            models.QuestionResponse.objects.create(
+                question_id=question,
+                answer_id=answer,
+                user=request.user
+            )
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=400)
 
 
 class SignupView(FormView):
