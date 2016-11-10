@@ -1,0 +1,8 @@
+<form action="/comments/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    {% if article_id %}
+        <input type="hidden" value='{{ article_id }}' id='article_id' name='article_id'/>
+    {% endif %}
+    <input type="submit" value="Send" />
+</form>

@@ -1,4 +1,5 @@
 Models
 ======
-.. automodule:: digit.core.models
+.. automodule:: core.models
     :members:
+

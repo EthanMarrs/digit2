@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+<script src="{% static 'core/jquery.cookie.js' %}"></script>
+<script src="{% static 'core/events.js' %}"></script>
+
+<div class="module full-width">
+    <p><b>State: </b>{{ question.get_state }}</p>
+    <div id="edit-panel">
+
+    </div>
+    <div id="preview-panel">
+
+    </div>
+    <div class="module">
+        &nbsp;
+    </div>
+    <div class="comments">
+        {% for comment in question.get_comments %}
+        <div>
+            <p class="float-left large-p"><b>{{ comment.user.get_full_name }}</b></p>
+            <p class="float-left small-p grey-text">{{ comment.created_at|naturaltime }}</p>
+            <p class="clear">{{ comment.text }}</p>
+        </div>
+        {% endfor %}
+        <form onsubmit="return false;">
+            {% csrf_token %}
+            {{ form.text }}
+            {{ form.text.errors }}
+            <input class="float-right comment-button" datasrc="{{ question.id }}" type="submit" value="Comment"/>
+        </form>
+    </div>
+
+    <div class="module">
+        &nbsp;
+    </div>
+    <div class="module">
+        &nbsp;
+    </div>
+    <div class="submit-row">
+        <input type="submit" value="Save and send to moderator">
+        <input type="submit" value="Save and continue editing">
+        <input class="default" type="submit" value="Save">
+    </div>
+</div>
+
+{% endblock %}

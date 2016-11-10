@@ -1,0 +1,62 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+<script src="{% static 'core/jquery.cookie.js' %}"></script>
+<script src="{% static 'core/events.js' %}"></script>
+
+<div class="module full-width">
+    {% for topic in topic_list %}
+    <div class="half">
+        <h3 class="pull-left large-h3">{{ topic }}</h3>
+        <a class="inline-block pull-right" href="/admin/core/topic/{{ topic.id }}/change/">Edit</a>
+        <p class="no-margin">{{ topic.description }}</p>
+    </div>
+    <div class="results">
+    <table id="result_list">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>BLOCK</th>
+                <th>QUESTIONS</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for block in topic.get_blocks %}
+        <tr>
+            <td class="field-id"><a href="/blocks/{{ block.id }}/">{{ block.id }}</a></td>
+            <td class="field-order">Block {{ block.order|add:1 }}</td>
+            <td class="field-questions">{{ block.get_number_of_questions }} Question{{ block.get_number_of_questions|pluralize }}</td>
+            <td class="field-up">
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-up/?">
+                    <img src="/static/ordered_model/arrow-up.gif">
+                </a>
+            </td>
+            <td class="field-down">
+                <a class="move-link" href="javascript:void(null);"
+                   url="/admin/core/block/{{ block.id }}/move-down/?">
+                    <img src="/static/ordered_model/arrow-down.gif">
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    <p class="paginator"></p>
+    <br/>
+    {% endfor %}
+</div>
+
+{% endblock %}

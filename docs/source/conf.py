@@ -27,8 +27,10 @@ import os
 # -- General configuration ------------------------------------------------
 
 from django.conf import settings
-sys.path.insert(0, os.path.abspath(".."))
-settings.configure()
+import django
+sys.path.insert(0, os.path.abspath("../.."))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'digit.settings'
+django.setup()
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #

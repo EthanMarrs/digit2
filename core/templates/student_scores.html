@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+
+<div class="module full-width">
+    <div class="results">
+        <div class="spaced-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>USERNAME</th>
+                    <th>FIRST NAME</th>
+                    <th>LAST NAME</th>
+                    <th>ANSWERED</th>
+                    <th>CORRECT</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for student in student_list %}
+                <tr>
+                    <td class="field-id"><a href="/admin/auth/user/{{ student.user }}/change/">{{ student.user }}</a>
+                    </td>
+                    <td class="field-username">{{ student.user__username }}</td>
+                    <td class="field-first-name">{{  student.user__first_name }}</td>
+                    <td class="field-last-name">{{  student.user__last_name }}</td>
+                    <td class="field-answered">{{  student.responses }}</td>
+                    <td class="field-correct">{{  student.responses }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--<p class="paginator"></p>-->
+    <br/>
+</div>
+
+{% endblock %}

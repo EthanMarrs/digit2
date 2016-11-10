@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+
+<div class="module full-width">
+    <ul class="object-tools">
+        <li>
+            <a href="/admin/core/syllabus/add/" class="addlink">Add Syllabus</a>
+        </li>
+    </ul>
+    <div class="results">
+    <table id="result_list">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>GRADE</th>
+                <th>USERS</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for syllabi in object_list %}
+        <tr>
+            <td class="field-id"><a href="/syllabi/{{ syllabi.id }}/">{{ syllabi.id }}</a></td>
+            <td class="field-grade">{{ syllabi.grade }}</td>
+            <td class="field-users">{{ syllabi.users|length }}</td>
+            <td class="field-timeline">
+                <a class="move-link" href="/syllabi/{{ syllabi.id }}/timeline/"><i class="material-icons md-14">timeline</i> Timeline</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        </div>
+    <p class="paginator"></p>
+    <br/>
+</div>
+
+{% endblock %}

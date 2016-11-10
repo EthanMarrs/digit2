@@ -9,9 +9,11 @@ Welcome to Dig-it's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 
+   :maxdepth: 2
 
    models
+   views
+   forms
 
 
 
