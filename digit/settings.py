@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
-    # 'grappelli.dashboard',
-    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -41,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'core',
+    'student',
     'ordered_model',
     'widget_tweaks',
-    'bootstrap3'
+    'bootstrap3',
+    'markdown_deux'
 ]
 
 MIDDLEWARE = [
@@ -126,6 +126,8 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-GRAPPELLI_INDEX_DASHBOARD = {
-    'core.admin.dashboard_site': 'core.dashboard.CustomIndexDashboard',
-}
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = '/admin/login/'

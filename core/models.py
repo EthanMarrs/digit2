@@ -39,13 +39,23 @@ class Syllabus(models.Model):
     """Overarching container that conceptually organises topics for a year."""
 
     grade = models.OneToOneField(Grade)
-    users = models.ManyToManyField(User)
 
     class Meta:
         verbose_name_plural = "syllabi"
 
     def __str__(self):
         return "Grade " + str(self.grade.name) + " Syllabus"
+
+
+class Class(models.Model):
+    """A means of categorizing students in a particular syllabus."""
+
+    name = models.TextField()
+    syllabus = models.ForeignKey(Syllabus)
+    users = models.ManyToManyField(User)
+
+    class Meta:
+        verbose_name_plural = "classes"
 
 
 class Topic(models.Model):
@@ -65,8 +75,8 @@ class Topic(models.Model):
         topics = Topic.objects.filter(syllabus=self.syllabus)
 
         for topic in topics:
-            week_end = topic.week_start + topic.duration
-            print(topic.week_start, self.week_start, week_end)
+            week_end = topic.week_start + topic.duration - 1
+
             # Topic occurs in another topic's time frame
             if topic.week_start <= self.week_start <= week_end:
                 raise ValidationError(
@@ -79,6 +89,7 @@ class Topic(models.Model):
         Saves model, automatically creates the associated blocks
         for the topic and empty questions.
         """
+        self.clean()
         super(Topic, self).save(*args, **kwargs)
 
         for i in range(int(self.duration)):
@@ -112,6 +123,19 @@ class Topic(models.Model):
             count += block.get_number_of_questions()
 
         return count
+
+    def get_questions(self):
+        """Helper function which returns all the questions associated with the topic."""
+        questions = Question.objects.none()
+
+        blocks = Block.objects.filter(
+            topic=self
+        )
+
+        for block in blocks:
+            questions = questions | block.get_questions()  # Union of the 2 query sets
+
+        return questions
 
     def __str__(self):
         return str(self.name)
@@ -149,9 +173,11 @@ class Subject(models.Model):
 class QuestionOrder(models.Model):
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
+    moderator = models.ForeignKey(User, related_name="moderator", default=None)
     topic = models.ForeignKey(Topic)
     description = models.TextField()
     open = models.BooleanField(default=True)
+    due_date = models.DateField(null=True)
 
     def __str__(self):
         return str(self.topic.name) + " Question Order"

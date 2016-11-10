@@ -17,11 +17,12 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from core import urls as core_urls
+from student import urls as student_urls
 
 urlpatterns = [
-    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^', include(core_urls)),
+    url(r'^', include(student_urls)),
 ]
 
-admin.site.site_header = "Digit"
+admin.site.site_header = "Dig-it"

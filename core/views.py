@@ -1,17 +1,18 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
-from django.db.models import F
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import View, DetailView, ListView
-from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import View, DetailView, ListView, FormView
+from django.forms import ValidationError
+from django.contrib.auth.models import User
+from django.db.models import F, Count
 
 from core import models, forms
 
 
 class QuestionOrderDetailView(DetailView):
-    """ Overview screen for the Digit dashboard. Displays all syllabi."""
+    """ Overview screen for the Dig-it dashboard. Displays all syllabi."""
 
     model = models.QuestionOrder
     template_name = "question_order.html"
@@ -21,16 +22,19 @@ class QuestionOrderDetailView(DetailView):
 
         context = super(QuestionOrderDetailView, self).get_context_data(**kwargs)
         blocks = models.Block.objects.filter(topic=context["object"].topic)
+        filter_option = self.request.GET.get('filter')
 
-        context["question_list"] = models.Question.objects.filter(
-            block__in=blocks
-        )
+        if filter_option:
+            filter_option = int(filter_option)
+
         context["block_list"] = blocks
         context['title'] = context['object']
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
+        context['form'] = forms.BlockDescriptionForm
+        context['filter'] = filter_option
 
         return context
 
@@ -48,45 +52,49 @@ class SyllabusDetailView(DetailView):
         context["topic_list"] = models.Topic.objects.filter(
             syllabus=context["object"]
         )
+        context['title'] = context['object']
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Dig-it"
 
         return context
 
 
 class CommentView(View):
-    form_class = forms.CommentForm
-    initial = {"key": "value"}
-    template_name = "question_form.html"
-
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            text = form.cleaned_data["text"]
-            question_id = form.cleaned_data["question_id"]
-            user = request.user
+        text = request.POST["text"]
+        question_id = kwargs["pk"]
+        user = request.user
 
-            models.Comment.objects.create(text=text,
-                                          question_id=question_id,
-                                          user=user)
+        models.Comment.objects.create(text=text,
+                                      question_id=question_id,
+                                      user=user)
 
-            return HttpResponseRedirect("/comment_success")
-
-        return render(request, self.template_name, {'form': form})
+        return HttpResponse(status=200)
 
 
-class BlockDetailView(DetailView):
-    """
-    A detail view that displays the detail of a block, namely
-    the questions associated with it.
-    """
+class BlockView(View):
+    def post(self, request, *args, **kwargs):
+        text = request.POST["text"]
+        block_id = kwargs["pk"]
 
-    model = models.Block
-    template_name = "block.html"
+        block = models.Block.objects.get(id=block_id)
+        block.description = text
+        block.save()
 
-    def get_context_data(self, **kwargs):
-        """ Get context for a block. """
+        return HttpResponse(status=200)
 
-        context = super(BlockDetailView, self).get_context_data(**kwargs)
-        return context
+    def get(self, request, *args, **kwargs):
+        block = models.Block.objects.get(id=kwargs["pk"])
+
+        return render(request, "block.html",
+                      {"object": block,
+                       "title": block,
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it"})
 
 
 class TopicDetailView(DetailView):
@@ -187,60 +195,35 @@ class QuestionChangeStateView(View):
             return HttpResponse(status=400)
 
 
-class QuizView(View):
-    def get(self, request):
-        user = request.user
-        week = int(datetime.now().strftime("%V"))
-
-        syllabus = models.Syllabus.objects.filter(users=user)[0]
-
-        # Get IDs of questions answered within the last 2 weeks
-        answered = models.QuestionResponse.objects.filter(
-            time__gte=datetime.now() - timedelta(weeks=2),
-            user=user
-        ).values_list("question", flat=True)
-
-        # Get topics in last 2 weeks for given syllabus
-        topics = models.Topic.objects.annotate(
-            week_end=F("week_start") + F("duration")) \
-            .filter(week_end__gte=week - 2, syllabus=syllabus)
-
-        # Get blocks for these topics
-        blocks = models.Block.objects.filter(topic__in=topics)
-
-        # Get IDs of questions in last 2 weeks
-        pool = models.Question.objects.filter(block__in=blocks, live=True) \
-            .values_list("id", flat=True)
-
-        # Get question to serve from pool - answered
-        question_set = set(pool) - set(answered)
-        question = None
-
-        if question_set:
-            question = models.Question.objects.get(id=question_set.pop())
-
-        return render(request, "quiz.html", {"question": question})
-
-
 class SyllabusTimelineView(View):
     def get(self, request, *args, **kwargs):
         syllabus = models.Syllabus.objects.get(pk=kwargs["pk"])
-        topics = models.Topic.objects.filter(syllabus=syllabus)
+        topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
         now = datetime.now()
         results = []
 
-        for topic in topics:
+        for index, topic in enumerate(topics):
+            spaced = False
+
+            if index > 0:
+                week_end = topics[index - 1].week_start + topics[index - 1].duration
+
+                # If there's a space between two topics
+                if (topic.week_start - 1) > week_end:
+                    spaced = True
+
             results.append({
                 "id": topic.id,
                 "name": topic.name,
                 "description": topic.description,
                 "week_start": topic.week_start,
+                "spaced": spaced,
                 # "date_start": "",
                 "space": topic.get_number_of_blocks() * 95,
                 "number_of_blocks": topic.get_number_of_blocks(),
                 "number_of_questions": topic.get_number_of_questions(),
                 "duration": topic.duration,
-                "week_end": topic.week_start + topic.duration,
+                "week_end": topic.week_start + topic.duration - 1,
             })
 
         json_results = json.dumps(results)
@@ -251,7 +234,7 @@ class SyllabusTimelineView(View):
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
-                       "site_header": "Digit",
+                       "site_header": "Dig-it",
                        "data": results,
                        "json": json_results})
 
@@ -266,7 +249,7 @@ class SyllabusListView(ListView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
         return context
 
 
@@ -280,8 +263,60 @@ class QuestionOrderListView(ListView):
         context['user'] = self.request.user
         context['has_permission'] = self.request.user.is_staff
         context['site_url'] = "/",
-        context['site_header'] = "Digit"
+        context['site_header'] = "Dig-it"
+        context['open'] = self.request.GET.get('open')
+        context['assigned_to'] = self.request.GET.get('assigned_to')
         return context
+
+    def get_queryset(self, *args, **kwargs):
+        active_filter = self.request.GET.get('open')
+        assigned_to = self.request.GET.get('assigned_to')
+
+        # Filter based on assignment and open status
+        if assigned_to:
+            user = self.request.user
+
+            if active_filter == 'true':
+                return models.QuestionOrder.objects.filter(open=True, assigned_to=user).order_by('-id')
+            elif active_filter == 'false':
+                return models.QuestionOrder.objects.filter(open=False, assigned_to=user).order_by('-id')
+            else:
+                return models.QuestionOrder.objects.filter(assigned_to=user).order_by('-id')
+
+        else:
+            if active_filter == 'true':
+                return models.QuestionOrder.objects.filter(open=True).order_by('-id')
+            elif active_filter == 'false':
+                return models.QuestionOrder.objects.filter(open=False).order_by('-id')
+            else:
+                return models.QuestionOrder.objects.all().order_by('-id')
+
+
+class QuestionOrderLiveView(View):
+    def post(self, *args, **kwargs):
+        question_order = models.QuestionOrder.objects.get(pk=kwargs["pk"])
+        topic = question_order.topic
+
+        for question in topic.get_questions():
+            question.live = True
+            question.save()
+
+        return HttpResponse(status=200)
+
+
+class QuestionOrderOpenView(View):
+    def post(self, request, *args, **kwargs):
+        question_order = models.QuestionOrder.objects.get(pk=kwargs["pk"])
+        state = request.POST["state"]
+
+        if state == "true":
+            question_order.open = True
+        else:
+            question_order.open = False
+
+        question_order.save()
+
+        return HttpResponse(status=200)
 
 
 class QuestionEditView(View):
@@ -293,22 +328,85 @@ class QuestionEditView(View):
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
-                       "site_header": "Digit",
+                       "site_header": "Dig-it",
                        "form": forms.CommentForm,
                        "question": question})
 
 
-class QuestionContentView(View):
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body.decode(encoding='UTF-8'))
-        for item in data:
-            print("**" + item + "**\n" + str(data[item]))
+class TopicCreateWizardView(FormView):
+    template_name = "topic_create_wizard.html"
+    success_url = "/admin/"
+    form_class = forms.TopicForm
 
-        return JsonResponse(data={},status=200)
+    def get_context_data(self, **kwargs):
+        context = super(TopicCreateWizardView, self).get_context_data(**kwargs)
+        context['title'] = "Topic Creation Wizard"
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Dig-it"
+
+        syllabus_id = self.request.GET.get("syllabus")
+
+        if syllabus_id:
+            syllabus = models.Syllabus.objects.get(id=syllabus_id)
+            context['syllabus'] = syllabus_id
+        else:
+            syllabus = models.Syllabus.objects.first()
+
+        topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
+        results = []
+
+        for index, topic in enumerate(topics):
+
+            results.append({
+                "id": topic.id,
+                "name": topic.name,
+                "week_start": topic.week_start,
+                "duration": topic.duration,
+                "week_end": topic.week_start + topic.duration - 1,
+            })
+
+        json_results = json.dumps(results)
+        context['weeks'] = json_results
+
+        return context
+
+    def form_valid(self, form):
+        topic = models.Topic(
+            name=form.cleaned_data['name'],
+            description=form.cleaned_data['description'],
+            syllabus=form.cleaned_data['syllabus'],
+            week_start=form.cleaned_data['week_start'],
+            duration=form.cleaned_data['duration']
+        )
+
+        try:
+            topic.save()
+        except ValidationError:
+            pass
+
+        return super(TopicCreateWizardView, self).form_valid(form)
 
 
-class FileUploadView(View):
-    def post(self, request, *args, **kwargs):
-        print("")
+class StudentScoresView(View):
+    """
+    A view that displays the student scores for the week.
+    """
+    def get(self, request, *args, **kwargs):
+        # Get week starting date
+        now = date.today()
+        week_start = now - timedelta(now.weekday())
 
-        return HttpResponse(status=200)
+        # Fetch all users that responded this week
+        student_list = models.QuestionResponse.objects.filter(time__gte=week_start)\
+            .values('user', 'user__username', 'user__first_name', 'user__last_name')\
+            .annotate(responses=Count('user'))
+
+        return render(request, "student_scores.html",
+                      {"title": "Student Scores",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it",
+                       "student_list": student_list})

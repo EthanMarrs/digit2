@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="parent">
+        <form method="POST" action="/signup/">
+            <div class="text-right">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p class="text-right"><input type="submit" class="logBut" value="Signup"/></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

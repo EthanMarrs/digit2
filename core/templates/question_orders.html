@@ -5,45 +5,74 @@
 {% load static %}
 
 {% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}"/>
 {% endblock %}
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
 
 <div class="module full-width">
+    <ul class="object-tools">
+        <li>
+            <a href="/admin/core/questionorder/add/" class="addlink">Add Question Order</a>
+        </li>
+    </ul>
     <div class="results">
-    <table id="result_list">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ASSIGNED BY</th>
-                <th>ASSIGNED TO</th>
-                <th>TOPIC</th>
-                <th>DESCRIPTION</th>
-                <th>STATUS</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for question_order in object_list %}
-        <tr>
-            <td class="field-id"><a href="/question_orders/{{ question_order.id }}/">{{ question_order.id }}</a></td>
-            <td class="field-assigned-by">{{ question_order.assigned_by }}</td>
-            <td class="field-assigned-to">{{ question_order.assigned_to }}</td>
-            <td class="field-topic">{{ question_order.topic }}</td>
-            <td class="field-description">{{ question_order.description }}</td>
-            <td class="field-open">
-                {% if question_order.open %}
-                    Open
-                {% else %}
-                    Closed
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div id="changelist-filter">
+            <h2>Filter</h2>
+            <h3>By status</h3>
+            <ul>
+                <li class="{% if open == None %}selected{% endif %} filter-option"><a
+                        href="/question_orders/">All</a></li>
+                <li class="{% if open == 'true' %}selected{% endif %}"><a
+                        href="/question_orders/?open=true">Open</a></li>
+                <li class="{% if open == 'false' %}selected{% endif %}"><a
+                        href="/question_orders/?open=false">Closed</a></li>
+            </ul>
+            <h3>By assignment</h3>
+            <ul>
+                <li class="{% if assigned_to == None %}selected{% endif %} filter-option"><a
+                        href="/question_orders/">All</a></li>
+                <li class="{% if assigned_to %}selected{% endif %}"><a
+                        href="/question_orders/?assigned_to=true">{{ user.get_full_name }}</a></li>
+            </ul>
         </div>
-    <p class="paginator"></p>
+        <div class="spaced-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ASSIGNED BY</th>
+                    <th>ASSIGNED TO</th>
+                    <th>TOPIC</th>
+                    <th>DESCRIPTION</th>
+                    <th>STATUS</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for question_order in object_list %}
+                <tr>
+                    <td class="field-id"><a href="/question_orders/{{ question_order.id }}/">{{ question_order.id }}</a>
+                    </td>
+                    <td class="field-assigned-by">{{ question_order.assigned_by }}</td>
+                    <td class="field-assigned-to">{{ question_order.assigned_to }}</td>
+                    <td class="field-topic">{{ question_order.topic }}</td>
+                    <td class="field-description">{{ question_order.description }}</td>
+                    <td class="field-open">
+                        {% if question_order.open %}
+                        Open
+                        {% else %}
+                        Closed
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--<p class="paginator"></p>-->
     <br/>
 </div>
 

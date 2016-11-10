@@ -5,12 +5,19 @@
 {% load static %}
 
 {% block extrastyle %}
-<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
 
 <div class="module full-width">
+    <ul class="object-tools">
+        <li>
+            <a href="/admin/core/syllabus/add/" class="addlink">Add Syllabus</a>
+        </li>
+    </ul>
     <div class="results">
     <table id="result_list">
         <thead>
@@ -28,7 +35,7 @@
             <td class="field-grade">{{ syllabi.grade }}</td>
             <td class="field-users">{{ syllabi.users|length }}</td>
             <td class="field-timeline">
-                <a class="move-link" href="/syllabi/{{ syllabi.id }}/timeline/">View Timeline</a>
+                <a class="move-link" href="/syllabi/{{ syllabi.id }}/timeline/"><i class="material-icons md-14">timeline</i> Timeline</a>
             </td>
         </tr>
         {% endfor %}

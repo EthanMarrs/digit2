@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="half">
+        <h2>Welcome to Dig-it</h2>
+        <a href="/signup/" class="button">Signup</a>
+
+        <a href="/login/" class="button blue">Login</a>
+        <p>
+            Quality maths education is critical to the future success of any country.
+            In resource-poor environments, mobile technology presents us with an opportunity
+            to make sure people have access to the education they deserve.
+        </p>
+        <img id="map" src="{% static 'core/map.jpg' %}"/>
+        <p>
+            Dig-it is a gamified mobile maths challenge platform for High School learners.
+            Learners earn points, badges and airtime by solving maths challenges with an emphasis on
+            content from all sections of the syllabus. Using Human-Centred Design processes our team
+            developed an e-learning platform which recognised the needs, incentives and behaviours
+            of our target users.
+        </p>
+    </div>
+{% endblock %}
