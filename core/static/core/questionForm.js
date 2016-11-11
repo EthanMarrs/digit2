@@ -1,3 +1,5 @@
+console.log(global_question_id);
+
 var getUUID = function(){
   return uuid()
 }
@@ -396,34 +398,37 @@ var postInfo = function(){
     });
 
     $.ajax({
-      url: "/",
+      url: '../../../question_content/',
       type: 'POST',
       contentType:'application/json',
       data: JSON.stringify(data),
       dataType:'json',
       success: function(data){
-        if(image_data !== []){
-          $.ajax({
-            url: '/file',
-            data: image_data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(data){
-              // alert("Images posted to server")
-            },
-            error: function(data){
-              alert("Posting images posting went wrong");
-            },
-          });
-        }
+        alert("succes posting data")
       },
       error: function(data){
         alert("Posting data to server went wrong!")
       },
     });
-    console.dir(image_data);
+
+    // TODO incorporate images if necessary
+    // if(false){
+      $.ajax({
+        url: '../../../question_content/file_upload/',
+        data: image_data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data){
+          alert("Images posted to server")
+        },
+        error: function(data){
+          alert("Posting images posting went wrong");
+        },
+      });
+    // }
+    // console.dir(image_data);
   }
 }
 

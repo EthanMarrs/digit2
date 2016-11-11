@@ -60,7 +60,11 @@
         <input class="default" type="submit" onClick="postInfo()" >
     </div>
 </div>
-
+{% autoescape off %}
+<script>
+    var global_question_id = '{{question.id}}';
+</script>
+{% endautoescape %}
 <script src="{% static 'core/setupQuestionForm.js' %}"></script>
 <script src="{% static 'core/questionForm.js' %}"></script>
 

@@ -18,7 +18,7 @@ class QuestionOrderDetailView(DetailView):
     template_name = "question_order.html"
 
     def get_context_data(self, **kwargs):
-        """ Get context for all questions relating to a question order. """
+        """ Get context for all questions relating to a question order."""
 
         context = super(QuestionOrderDetailView, self).get_context_data(**kwargs)
         blocks = models.Block.objects.filter(topic=context["object"].topic)
@@ -410,3 +410,29 @@ class StudentScoresView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "student_list": student_list})
+
+
+class QuestionContentView(View):
+    """
+    A View that accepts json to create and update question content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """Post view for question content."""
+        data = json.loads(request.body.decode(encoding='UTF-8'))
+        for item in data:
+            print("**" + item + "**\n" + str(data[item]))
+
+        return HttpResponse(status=200)
+
+
+class FileUploadView(View):
+    """
+    A View that processes image content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """Post view for file uploads."""
+        print("")
+
+        return HttpResponse(status=200)
