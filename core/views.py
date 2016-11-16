@@ -6,7 +6,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
 from django.contrib.auth.models import User
-from django.db.models import F, Count
+from django.db.models import F, Count, Sum, Case, When, IntegerField
 
 from core import models, forms
 
@@ -401,7 +401,11 @@ class StudentScoresView(View):
         # Fetch all users that responded this week
         student_list = models.QuestionResponse.objects.filter(time__gte=week_start)\
             .values('user', 'user__username', 'user__first_name', 'user__last_name')\
-            .annotate(responses=Count('user'))
+            .annotate(responses=Count('user'),
+                      correct=Sum(
+                          Case(When(correct=True, then=1)),
+                          output_field=IntegerField()
+                      ))
 
         return render(request, "student_scores.html",
                       {"title": "Student Scores",
