@@ -346,6 +346,7 @@ var postInfo = function(){
     data_invalid = true;
   }
   */
+  data.name=global_question_id
   if(data.question_content==""){
     console.log("NO CONTENT: question_content");
     data_invalid = true;

@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db.models import F, Count
 
 from core import models, forms
+from core.contentHandler import ContentHandler
 
 
 class QuestionOrderDetailView(DetailView):
@@ -420,8 +421,39 @@ class QuestionContentView(View):
     def post(self, request, *args, **kwargs):
         """Post view for question content."""
         data = json.loads(request.body.decode(encoding='UTF-8'))
-        for item in data:
-            print("**" + item + "**\n" + str(data[item]))
+        '''
+        for thing in data:
+            print(thing)
+            print(data[thing])
+            print("---------")
+        '''
+        ch = ContentHandler()
+
+        # get question object
+        question = models.Question.objects.get(id=int(data["name"]))
+
+        question.question_content = ch.get_formatted_content(data["question_content"])
+        question.answer_content = ch.get_formatted_content(data["answer_explanation_content"])
+        if "answer_explanation_content" in data:
+            question.additional_info_content = ch.get_formatted_content(
+                data["answer_explanation_content"])
+        question.save()
+
+        # create the options
+        for i in range(1,4):
+            # CHANGE THIS!
+            boolean_value = False
+            if i is 1:
+                boolean_value = True
+
+            # format the content
+            formatted_content = ch.get_formatted_content(data["option_content_" + str(i)])
+            option = models.Option(
+                question=question,
+                correct=boolean_value,
+                content=formatted_content)
+            option.save()
+        # '''
 
         return HttpResponse(status=200)
 

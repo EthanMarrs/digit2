@@ -7,7 +7,7 @@ from ordered_model.admin import OrderedModelAdmin
 
 @admin.register(models.Question)
 class QuestionAdmin(OrderedModelAdmin):
-    list_display = ('id', 'content', 'explanation', 'state', 'move_up_down_links')
+    list_display = ('id', 'question_content', 'answer_content', 'additional_info_content', 'state', 'move_up_down_links')
 
 
 @admin.register(models.Syllabus)

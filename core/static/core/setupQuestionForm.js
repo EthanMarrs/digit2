@@ -70,7 +70,7 @@
   ]
 
   // add "question" h3
-  root_div.append("<h3>Question</h3>").append('Question Name:<input id="question_name_textfield" type="text" name="name" size="40"/><br/>')
+  root_div.append("<h3>Question</h3>"); //.append('Question Name:<input id="question_name_textfield" type="text" name="name" size="40"/><br/>')
   // append the 3 sections of the question
   root_div.append(createContentSections(question_sections));
   // add "options" h3
