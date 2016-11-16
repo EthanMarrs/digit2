@@ -76,12 +76,16 @@ class QuizView(View):
             return HttpResponseRedirect('/login/')
 
     def post(self, request, *args, **kwargs):
-        question = request.POST["question"]  # Question ID
-        answer = request.POST["answer"]  # Answer ID
-        if question and answer:
+        question_id = request.POST["question"]  # Question ID
+        option_id = request.POST["option"]  # Option ID
+
+        option = models.Option.objects.filter(id=option_id)
+
+        if question_id and option:
             models.QuestionResponse.objects.create(
-                question_id=question,
-                answer_id=answer,
+                question_id=question_id,
+                option_id=option_id,
+                correct=option.correct,
                 user=request.user
             )
             return HttpResponse(status=200)

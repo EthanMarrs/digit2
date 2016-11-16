@@ -325,6 +325,7 @@ class QuestionResponse(models.Model):
     response = models.ForeignKey(Option)
     user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now_add=True)
+    correct = models.BooleanField(default=False)
 
 
 class Comment(models.Model):
