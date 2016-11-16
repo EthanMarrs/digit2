@@ -8,7 +8,7 @@ from core.models import (Grade,
                          Topic,
                          Block,
                          Syllabus,
-                         QuestionOrder,
+                         Task,
                          StateException,
                          CorrectOptionExistsError,
                          )
@@ -71,63 +71,63 @@ class QuestionOrderTests(TestCase):
                                                  "and loan calculations",
                                      syllabus=syllabus_test, week_start=1,
                                      duration=3)
-        QuestionOrder.objects.create(assigned_to=creator,
-                                     assigned_by=user,
-                                     moderator=moderator,
-                                     topic=topic,
-                                     description="Create some financial math questions please.",
-                                     due_date=date.today()+timedelta(days=30))
+        Task.objects.create(assigned_to=creator,
+                            assigned_by=user,
+                            moderator=moderator,
+                            topic=topic,
+                            description="Create some financial math questions please.",
+                            due_date=date.today()+timedelta(days=30))
 
-    def test_get_question_order(self):
+    def test_get_task(self):
         """
-        Test that question order is displayed.
+        Test that task is displayed.
         """
         self.client.login(username='temp', password='temporary')
-        response = self.client.get('/question_orders/1/')
+        response = self.client.get('/tasks/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'question_order.html')
+        self.assertTemplateUsed(response, 'task.html')
         self.assertContains(response, "Financial Mathematics")
         self.assertIn(b"Create some financial math questions please.", response.content)
         self.assertQuerysetEqual(
             [response.context['object']],
-            ['<QuestionOrder: Financial Mathematics Question Order>']
+            ['<Task: Financial Mathematics Task>']
         )
 
-    def test_get_question_orders(self):
+    def test_get_tasks(self):
         """
-        Test that question orders list is displayed.
+        Test that tasks list is displayed.
         """
         self.client.login(username='temp', password='temporary')
-        response = self.client.get('/question_orders/')
+        response = self.client.get('/tasks/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'question_orders.html')
+        self.assertTemplateUsed(response, 'tasks.html')
         self.assertIn(b"Financial Mathematics", response.content)
         self.assertQuerysetEqual(
             [response.context['object_list']],
-            ['<QuerySet [<QuestionOrder: Financial Mathematics Question Order>]>']
+            ['<QuerySet [<Task: Financial Mathematics Task>]>']
         )
 
-    def test_post_question_order_live(self):
+    def test_post_task_live(self):
         """
-        Test that question order's questions are live when the endpoint is hit.
+        Test that task's questions are live when the endpoint is hit.
         """
         self.client.login(username='temp', password='temporary')
-        response = self.client.post('/question_orders/1/live/')
+        response = self.client.post('/tasks/1/live/')
         self.assertEqual(response.status_code, 200)
         block = Block.objects.filter(topic_id=1).first()
         question = block.get_questions().first()
         self.assertTrue(question.live)
 
-    def test_post_question_order_open(self):
+    def test_post_task_open(self):
         """
         Test that question order is open when the endpoint is hit.
         """
         data = {"state": "true"}
         self.client.login(username='temp', password='temporary')
-        response = self.client.post('/question_orders/1/open/', data=data)
+        response = self.client.post('/tasks/1/open/', data=data)
         self.assertEqual(response.status_code, 200)
-        order = QuestionOrder.objects.first()
-        self.assertTrue(order.open)
+        task = Task.objects.first()
+        self.assertTrue(task.open)
 
 
 class TopicViewTests(TestCase):

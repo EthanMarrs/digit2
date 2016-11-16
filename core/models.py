@@ -170,7 +170,7 @@ class Subject(models.Model):
         return str(self.name)
 
 
-class QuestionOrder(models.Model):
+class Task(models.Model):
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     moderator = models.ForeignKey(User, related_name="moderator", default=None)
@@ -180,7 +180,7 @@ class QuestionOrder(models.Model):
     due_date = models.DateField(null=True)
 
     def __str__(self):
-        return str(self.topic.name) + " Question Order"
+        return str(self.topic.name) + " Task"
 
 
 class Question(OrderedModel):

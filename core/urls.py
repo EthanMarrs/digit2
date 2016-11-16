@@ -6,10 +6,10 @@ from core import views
 
 
 urlpatterns = [
-    url(r'^question_orders/(?P<pk>[^/])/live/', login_required(views.QuestionOrderLiveView.as_view())),
-    url(r'^question_orders/(?P<pk>[^/])/open/', login_required(views.QuestionOrderOpenView.as_view())),
-    url(r'^question_orders/(?P<pk>[^/])', login_required(views.QuestionOrderDetailView.as_view())),
-    url(r'^question_orders/$', login_required(views.QuestionOrderListView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])/live/', login_required(views.TaskLiveView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])/open/', login_required(views.TaskOpenView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])', login_required(views.TaskDetailView.as_view())),
+    url(r'^tasks/$', login_required(views.TaskListView.as_view())),
     url(r'^questions/(?P<pk>[^/]+)/up/', login_required(views.QuestionUpView.as_view())),
     url(r'^questions/(?P<pk>[^/]+)/down/', login_required(views.QuestionDownView.as_view())),
     url(r'^questions/(?P<pk>[^/]+)/state/', login_required(views.QuestionChangeStateView.as_view())),

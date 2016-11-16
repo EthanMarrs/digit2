@@ -15,7 +15,7 @@
 <div class="module full-width">
     <ul class="object-tools">
         <li>
-            <a href="/admin/core/questionorder/add/" class="addlink">Add Question Order</a>
+            <a href="/admin/core/task/add/" class="addlink">Add Task</a>
         </li>
     </ul>
     <div class="results">
@@ -24,18 +24,18 @@
             <h3>By status</h3>
             <ul>
                 <li class="{% if open == None %}selected{% endif %} filter-option"><a
-                        href="/question_orders/">All</a></li>
+                        href="/tasks/">All</a></li>
                 <li class="{% if open == 'true' %}selected{% endif %}"><a
-                        href="/question_orders/?open=true">Open</a></li>
+                        href="/tasks/?open=true">Open</a></li>
                 <li class="{% if open == 'false' %}selected{% endif %}"><a
-                        href="/question_orders/?open=false">Closed</a></li>
+                        href="/tasks/?open=false">Closed</a></li>
             </ul>
             <h3>By assignment</h3>
             <ul>
                 <li class="{% if assigned_to == None %}selected{% endif %} filter-option"><a
-                        href="/question_orders/">All</a></li>
+                        href="/tasks/">All</a></li>
                 <li class="{% if assigned_to %}selected{% endif %}"><a
-                        href="/question_orders/?assigned_to=true">{{ user.get_full_name }}</a></li>
+                        href="/tasks/?assigned_to=true">{{ user.get_full_name }}</a></li>
             </ul>
         </div>
         <div class="spaced-table">
@@ -51,16 +51,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for question_order in object_list %}
+                {% for task in object_list %}
                 <tr>
-                    <td class="field-id"><a href="/question_orders/{{ question_order.id }}/">{{ question_order.id }}</a>
+                    <td class="field-id"><a href="/tasks/{{ task.id }}/">{{ task.id }}</a>
                     </td>
-                    <td class="field-assigned-by">{{ question_order.assigned_by }}</td>
-                    <td class="field-assigned-to">{{ question_order.assigned_to }}</td>
-                    <td class="field-topic">{{ question_order.topic }}</td>
-                    <td class="field-description">{{ question_order.description }}</td>
+                    <td class="field-assigned-by">{{ task.assigned_by }}</td>
+                    <td class="field-assigned-to">{{ task.assigned_to }}</td>
+                    <td class="field-topic">{{ task.topic }}</td>
+                    <td class="field-description">{{ task.description }}</td>
                     <td class="field-open">
-                        {% if question_order.open %}
+                        {% if task.open %}
                         Open
                         {% else %}
                         Closed
