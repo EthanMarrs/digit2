@@ -6,7 +6,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
 from django.contrib.auth.models import User
-from django.db.models import F, Count, Sum, Case, When, IntegerField
+from django.db.models import Q, Count, Sum, Case, When, IntegerField
 
 from core import models, forms
 
@@ -414,3 +414,23 @@ class StudentScoresView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "student_list": student_list})
+
+
+class MyWorkView(View):
+    """
+    A view that displays the tasks set for the user currently logged in.
+    Only returns tasks that are still open.
+    """
+    def get(self, request, *args, **kwargs):
+        tasks = models.Task.objects.filter(Q(assigned_to=request.user) |
+                                           Q(moderator=request.user),
+                                           open=True)
+        print(tasks)
+
+        return render(request, "my_work.html",
+                      {"title": "My Work",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it",
+                       "task_list": tasks})
