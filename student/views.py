@@ -2,11 +2,10 @@ from django.shortcuts import render
 from django.views.generic import View, FormView
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.db.models import F
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from core import models
 from student import forms
@@ -43,6 +42,16 @@ class QuizView(View):
 
             if not klass:
                 return HttpResponseRedirect('/not_configured')
+
+            # Get number of responses today
+            responses_today = models.QuestionResponse.objects.filter(
+                time__gte=date.today(),
+                user=user
+            ).count()
+
+            # If max reached, don't give question
+            if responses_today > 2:
+                return render(request, "quiz.html", {"question": None})
 
             syllabus = klass.syllabus
 
