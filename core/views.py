@@ -7,18 +7,23 @@ from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
 from django.contrib.auth.models import User
 from django.db.models import Q, Count, Sum, Case, When, IntegerField
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from core import models, forms
 
 
 class TaskDetailView(DetailView):
-    """ Overview screen for the Dig-it dashboard. Displays all syllabi."""
+    """
+    Screen that displays all information for a specific task.
+    Allows for moving of blocks, moderation etc.
+    """
 
     model = models.Task
     template_name = "task.html"
 
     def get_context_data(self, **kwargs):
-        """ Get context for all questions relating to a question order. """
+        """ Get context for all questions relating to a task. """
 
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         blocks = models.Block.objects.filter(topic=context["object"].topic)
@@ -113,69 +118,22 @@ class TopicDetailView(DetailView):
         return context
 
 
-class QuestionUpView(View):
+class QuestionMoveBlockView(View):
     """
-    A view that intelligently increments the ordering of a question.
-    If the question is currently at the top of its block, then
-    the question is moved to the bottom of the next block (if it exists).
+    A view that moves a question to the specified block.
+    Returns 400 if the destination block doesn't exist.
     """
-
     def post(self, request, *args, **kwargs):
+        block_order = request.POST["block"]
         question = models.Question.objects.get(pk=kwargs["pk"])
-        first_question = models.Question.objects.filter(block=question.block).first()
+        blocks = models.Block.objects.filter(topic=question.block.topic)
 
-        # At top of block, so move up to next block
-        if question == first_question:
-            block = models.Block.objects.get(pk=question.block.id)
-            first_block = models.Block.objects.filter(topic=question.block.topic).first()
-
-            # Not the top block, otherwise do nothing
-            if block != first_block:
-                new_block = models.Block.objects.get(topic=block.topic,
-                                                     order=block.order - 1)
-                pos = models.Question.objects.filter(block=new_block).count()
-
-                question.block = new_block
-                question.order = pos
-                question.save()
-
-        else:
-            question.up()
-
-        return HttpResponse(status=200)
-
-
-class QuestionDownView(View):
-    """
-    A view that intelligently decrements the ordering of a question.
-    If the question is currently at the bottom of its block, then
-    the question is moved to the top of the next block (if it exists).
-    """
-
-    def post(self, request, *args, **kwargs):
-        question = models.Question.objects.get(pk=kwargs["pk"])
-        last_question = models.Question.objects.filter(block=question.block).last()
-
-        # At bottom of block, so move down to previous block
-        if question == last_question:
-            block = models.Block.objects.get(pk=question.block.id)
-            last_block = models.Block.objects.filter(topic=question.block.topic).last()
-
-            # Not the bottom block, otherwise do nothing
-            if block != last_block:
-                new_block = models.Block.objects.get(topic=block.topic,
-                                                     order=block.order + 1)
-                pos = models.Question.objects.filter(block=new_block).count()
-
-                question.block = new_block
-                question.order = pos
-                question.save()
-                question.top()
-
-        else:
-            question.down()
-
-        return HttpResponse(status=200)
+        try:
+            question.block = blocks[int(block_order)]
+            question.save()
+            return HttpResponse(status=200)
+        except IndexError:
+            return HttpResponse(status=400)
 
 
 class QuestionChangeStateView(View):

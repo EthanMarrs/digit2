@@ -235,3 +235,21 @@ table {
     padding-right: 280px;
 }
 
+.highlight-box {
+    background-color: black;
+    color: white;
+    padding: 7px;
+    margin-top: 10px;
+}
+
+.box {
+    padding: 7px;
+    margin-top: 10px;
+}
+
+.box:hover {
+    cursor: pointer;
+    -webkit-box-shadow:inset 0px 0px 0px 1px black;
+    -moz-box-shadow:inset 0px 0px 0px 1px black;
+    box-shadow:inset 0px 0px 0px 1px black;
+}

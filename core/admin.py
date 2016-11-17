@@ -6,42 +6,42 @@ from ordered_model.admin import OrderedModelAdmin
 
 
 @admin.register(models.Question)
-class QuestionAdmin(OrderedModelAdmin):
-    list_display = ('id', 'content', 'explanation', 'state', 'move_up_down_links')
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'explanation', 'state')
 
 
 @admin.register(models.Syllabus)
-class QuestionAdmin(admin.ModelAdmin):
+class SyllabusAdmin(admin.ModelAdmin):
     list_display = ('id', 'grade')
 
 
 @admin.register(models.Block)
-class QuestionAdmin(OrderedModelAdmin):
+class BlockAdmin(OrderedModelAdmin):
     list_display = ('id', 'topic', 'move_up_down_links')
 
 
 @admin.register(models.Comment)
-class QuestionAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'text', 'question', 'created_at')
 
 
 @admin.register(models.Grade)
-class QuestionAdmin(admin.ModelAdmin):
+class GradeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
 @admin.register(models.Topic)
-class QuestionAdmin(admin.ModelAdmin):
+class TopicAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'syllabus', 'week_start', 'duration')
 
 
 @admin.register(models.Task)
-class QuestionAdmin(admin.ModelAdmin):
+class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'assigned_by', 'assigned_to', 'topic', 'open', 'due_date')
 
 
 @admin.register(models.Class)
-class QuestionAdmin(admin.ModelAdmin):
+class ClassAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'syllabus')
 
 

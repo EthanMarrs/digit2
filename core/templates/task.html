@@ -107,17 +107,15 @@
                         {% endif %}
                     </select>
                 </td>
-                <td class="field-up">
-                    <a class="move-link" href="javascript:void(null);"
-                       url="/questions/{{ question.id }}/up/">
-                        <img src="/static/ordered_model/arrow-up.gif">
-                    </a>
-                </td>
-                <td class="field-down">
-                    <a class="move-link" href="javascript:void(null);"
-                       url="/questions/{{ question.id }}/down/">
-                        <img src="/static/ordered_model/arrow-down.gif">
-                    </a>
+                <td>
+                    {% for i in block_list %}
+                        {% if forloop.counter0 == block.order %}
+                            <span class="highlight-box">{{ forloop.counter }}</span>
+                        {% else %}
+                            <span block="{{ forloop.counter0 }}" question="{{ question.id }}" class="box">
+                                {{ forloop.counter }}</span>
+                        {% endif %}
+                    {% endfor %}
                 </td>
             </tr>
             {% endif %}

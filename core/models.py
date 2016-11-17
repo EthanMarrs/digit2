@@ -199,7 +199,7 @@ class Task(models.Model):
         return str(self.topic.name) + " Task"
 
 
-class Question(OrderedModel):
+class Question(models.Model):
     """Question class containing challenge."""
 
     INCOMPLETE = 0
@@ -225,7 +225,6 @@ class Question(OrderedModel):
     state = models.PositiveIntegerField("State",
                                         choices=QUESTION_STATES,
                                         default=INCOMPLETE)
-    order_with_respect_to = 'block'
 
     def change_to_review_ready(self):
         """Change state of question.
