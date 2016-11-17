@@ -13,8 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.static import static
 
 from core import urls as core_urls
 from student import urls as student_urls
@@ -24,5 +26,8 @@ urlpatterns = [
     url(r'^', include(core_urls)),
     url(r'^', include(student_urls)),
 ]
+
+if settings.DEBUG is True:
+    urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = "Dig-it"

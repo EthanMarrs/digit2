@@ -125,7 +125,7 @@ var addTextField = function(div_name){
 }
 
 var addImageField = function(div_name){
-  var uuid = getUUID();;
+  var uuid = getUUID();
 
   var input_field = $("<input />")
     .attr("type","file")
@@ -157,7 +157,6 @@ var addImageField = function(div_name){
 
 handleFiles = function(div_name, files){
   // add the image before uploading
-
 
   // get the last file that has been added within the block.
   var file = files[files.length - 1];
@@ -290,13 +289,14 @@ var getContent = function(){
         );
       }
       else if($(this).hasClass("image_field")){
-        // check whether the img exists, otherwise cancel was called and the image was not put in the block
+        // check whether the img exists, otherwise cancel was called
+        // and the image was not put in the block
         if ($(this).has("img")){
           // generate a uuid for the image
           var pic_uuid = getUUID();
           //  get the file type
           var files = $(this).find(".fileInput")[0].files;
-          var file = files[files.length - 1];
+          var file = files[files.length - 1]; // get the last file
           var file_suffix = file.name.split('.').pop();
           var new_file_name = pic_uuid + "." + file_suffix;
           // console.log(new_file_name);
@@ -347,6 +347,8 @@ var postInfo = function(){
   }
   */
   data.name=global_question_id
+
+  /*
   if(data.question_content==""){
     console.log("NO CONTENT: question_content");
     data_invalid = true;
@@ -367,6 +369,7 @@ var postInfo = function(){
     console.log("NO CONTENT: option_content_3");
     data_invalid = true;
   }
+  */
 
   // Send the data and clean it up
   if(!data_invalid){
@@ -390,46 +393,46 @@ var postInfo = function(){
     count = 0;
     // clear the array that stores mathFields
     dict_of_questions = {};
+    // END OF CLEAN UP
 
     // post the data to the server
-
+    json_data = data
     // add the CSRF token to the headers
     $.ajaxSetup({
       headers: {"X-CSRFToken": $.cookie("csrftoken")}
     });
 
+    // Check if there are images
+
+
     $.ajax({
-      url: '../../../question_content/',
+      url: '../../../question_content/file_upload/', // TODO: This needs to be passed in as an attribute
+      data: image_data,
+      cache: false,
+      contentType: false,
+      processData: false,
       type: 'POST',
-      contentType:'application/json',
-      data: JSON.stringify(data),
-      dataType:'json',
       success: function(data){
-        alert("succes posting data")
+        alert("Images posted to server")
+        // post the data to the server
+        $.ajax({
+          url: '../../../question_content/', // TODO: This needs to be passed in as an attribute
+          type: 'POST',
+          contentType:'application/json',
+          data: JSON.stringify(json_data),
+          dataType:'json',
+          success: function(data){
+            alert("succes posting data")
+          },
+          error: function(data){
+            alert("Posting data to server went wrong!")
+          },
+        });
       },
       error: function(data){
-        alert("Posting data to server went wrong!")
+        alert("Posting images posting went wrong");
       },
     });
-
-    // TODO incorporate images if necessary
-    // if(false){
-      $.ajax({
-        url: '../../../question_content/file_upload/',
-        data: image_data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function(data){
-          alert("Images posted to server")
-        },
-        error: function(data){
-          alert("Posting images posting went wrong");
-        },
-      });
-    // }
-    // console.dir(image_data);
   }
 }
 

@@ -1,7 +1,8 @@
 import json
+import os
 from datetime import datetime, timedelta, date
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
@@ -9,8 +10,9 @@ from django.contrib.auth.models import User
 from django.db.models import F, Count
 
 from core import models, forms
-from core.contentHandler import ContentHandler
+# from mathcontentconverter import ContentHandler
 
+from django.conf import settings
 
 class QuestionOrderDetailView(DetailView):
     """ Overview screen for the Dig-it dashboard. Displays all syllabi."""
@@ -426,7 +428,7 @@ class QuestionContentView(View):
             print(thing)
             print(data[thing])
             print("---------")
-        '''
+
         ch = ContentHandler()
 
         # get question object
@@ -453,9 +455,9 @@ class QuestionContentView(View):
                 correct=boolean_value,
                 content=formatted_content)
             option.save()
-        # '''
+        '''
 
-        return HttpResponse(status=200)
+        return JsonResponse(data={}, status=200)
 
 
 class FileUploadView(View):
@@ -465,6 +467,12 @@ class FileUploadView(View):
 
     def post(self, request, *args, **kwargs):
         """Post view for file uploads."""
-        print("")
+        for file_name in request.FILES:
+
+            file_object = request.FILES[file_name]
+            file = os.path.join(settings.MEDIA_ROOT, "uploaded_media", file_name)
+            with open(file, 'wb+') as destination:
+                for chunk in file_object.chunks():
+                    destination.write(chunk)
 
         return HttpResponse(status=200)
