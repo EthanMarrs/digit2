@@ -104,7 +104,7 @@ class QuizView(View):
 
 class SignupView(FormView):
     template_name = "signup.html"
-    success_url = "/quiz/"
+    success_url = "/welcome/"
     form_class = forms.SignupForm
 
     def form_valid(self, form):
