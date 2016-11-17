@@ -54,7 +54,7 @@ class QuizView(View):
 
             # Get topics in last 2 weeks for given syllabus
             topics = models.Topic.objects.annotate(
-                week_end=F("week_start") + F("duration")) \
+                week_end=F("week_start") + F("duration") - 1) \
                 .filter(week_end__gte=week - 2, syllabus=syllabus)
 
             # Get blocks for these topics

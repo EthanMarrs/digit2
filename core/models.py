@@ -124,6 +124,18 @@ class Topic(models.Model):
 
         return count
 
+    def get_number_of_live_questions(self):
+        """Helper function which returns the number of live questions related to the topic."""
+        blocks = Block.objects.filter(
+            topic=self
+        )
+        count = 0
+
+        for block in blocks:
+            count += block.get_number_of_live_questions()
+
+        return count
+
     def get_questions(self):
         """Helper function which returns all the questions associated with the topic."""
         questions = Question.objects.none()
@@ -151,6 +163,10 @@ class Block(OrderedModel):
     def get_number_of_questions(self):
         """Helper function which returns the count of related questions."""
         return Question.objects.filter(block=self).count()
+
+    def get_number_of_live_questions(self):
+        """Helper function which returns the count of live related questions."""
+        return Question.objects.filter(block=self, live=True).count()
 
     def get_questions(self):
         """Helper function which returns all related questions."""

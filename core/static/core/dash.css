@@ -1,0 +1,10 @@
+#warning {
+    float: left;
+    background-color: #FFCDD2;
+    width: 100%;
+    height: 50px;
+}
+
+#warning-text {
+    padding-top: 10px;
+}
