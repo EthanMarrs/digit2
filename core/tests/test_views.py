@@ -229,6 +229,7 @@ class QuestionContentViewTest(TestCase):
 
         data = {
             "name": question_id,
+            "correct": "option_content_2",
             "question_content": [
                 {"text": "This is a test question", "inline": False},
             ],
@@ -264,6 +265,7 @@ class QuestionContentViewTest(TestCase):
 
         new_data = {
             "name": question_id,
+            "correct": "option_content_2",
             "question_content": [
                 {"text": "new question text", "inline": False},
             ],
