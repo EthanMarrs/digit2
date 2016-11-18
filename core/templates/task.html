@@ -41,7 +41,7 @@
     <p><b>Assigned to:</b> {{ object.assigned_to.get_full_name|default:object.assigned_to }}</p>
     <p><b>Moderator:</b> {{ object.moderator.get_full_name|default:object.moderator }}</p>
     <div class="grp-module">
-        <p>{{ object.description }}</p>
+        <p>{{ object.topic.description }}</p>
         <div>
             <div class="checkbox-spaced">
                 <input id="id_open" datasrc="{{ object.id }}" type="checkbox" {% if object.open %}checked{% endif %}>

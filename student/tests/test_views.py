@@ -65,7 +65,7 @@ class QuestionViewTests(TestCase):
         self.assertTemplateUsed(response, 'quiz.html')
         self.assertQuerysetEqual(
             [response.context['question']],
-            ['<Question: Question 1>']
+            ['<Question: Question ' + str(question.uuid)[0:8] + '>']
         )
 
     def test_get_quiz_empty_question_pool(self):

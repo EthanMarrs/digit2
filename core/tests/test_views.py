@@ -57,9 +57,9 @@ class BlockViewTests(TestCase):
         self.assertEqual(Block.objects.first().description, "yep!")
 
 
-class QuestionOrderTests(TestCase):
+class TaskTests(TestCase):
     """
-    Test all Question Order views.
+    Test all Task views.
     """
     def setUp(self):
         user = User.objects.create_user('temp', 'temporary@temp.com', 'temporary')
@@ -76,7 +76,6 @@ class QuestionOrderTests(TestCase):
                             assigned_by=user,
                             moderator=moderator,
                             topic=topic,
-                            description="Create some financial math questions please.",
                             due_date=date.today()+timedelta(days=30))
 
     def test_get_task(self):
@@ -88,7 +87,7 @@ class QuestionOrderTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'task.html')
         self.assertContains(response, "Financial Mathematics")
-        self.assertIn(b"Create some financial math questions please.", response.content)
+        self.assertIn(b"Topic that involves sinking funds", response.content)
         self.assertQuerysetEqual(
             [response.context['object']],
             ['<Task: Financial Mathematics Task>']

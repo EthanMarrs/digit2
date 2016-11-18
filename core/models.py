@@ -79,7 +79,8 @@ class Topic(models.Model):
             week_end = topic.week_start + topic.duration - 1
 
             # Topic occurs in another topic's time frame
-            if topic.week_start <= self.week_start <= week_end:
+            if topic.week_start <= self.week_start <= week_end \
+                and topic != self:
                 raise ValidationError(
                     "The topic starts during an existing "
                     "topic in the same syllabus."
@@ -192,7 +193,6 @@ class Task(models.Model):
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     moderator = models.ForeignKey(User, related_name="moderator", default=None)
     topic = models.ForeignKey(Topic)
-    description = models.TextField()
     open = models.BooleanField(default=True)
     due_date = models.DateField(null=True)
 
