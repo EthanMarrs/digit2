@@ -41,10 +41,5 @@ class Migration(migrations.Migration):
             model_name='option',
             name='content',
             field=models.TextField(default=''),
-        ),
-        migrations.AlterField(
-            model_name='questionorder',
-            name='moderator',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='moderator', to=settings.AUTH_USER_MODEL),
-        ),
+        )
     ]

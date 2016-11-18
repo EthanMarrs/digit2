@@ -135,6 +135,6 @@ LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = '/admin/login/'
 
-KATEX_CONVERSION_URL = 'http:localhost:8888/'
+KATEX_CONVERSION_URL = 'http://localhost:8888/'
 
-DOMAIN = 'http:localhost:8000/'
+DOMAIN = 'http://localhost:8000/'
