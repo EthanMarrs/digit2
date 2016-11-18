@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^student_scores/', login_required(views.StudentScoresView.as_view())),
     url(r'^question_content/$', login_required(views.QuestionContentView.as_view())),
     url(r'^question_content/file_upload/$', login_required(views.FileUploadView.as_view())),
-    url(r'^my_work/', login_required(views.MyWorkView.as_view()))
+    url(r'^my_tasks/', login_required(views.MyTasksView.as_view()))
 ]

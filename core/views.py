@@ -452,7 +452,7 @@ class GetQuestionContent(View):
         pass
 
 
-class MyWorkView(View):
+class MyTasksView(View):
     """
     A view that displays the tasks set for the user currently logged in.
     Only returns tasks that are still open.
@@ -461,10 +461,9 @@ class MyWorkView(View):
         tasks = models.Task.objects.filter(Q(assigned_to=request.user) |
                                            Q(moderator=request.user),
                                            open=True)
-        print(tasks)
 
-        return render(request, "my_work.html",
-                      {"title": "My Work",
+        return render(request, "my_tasks.html",
+                      {"title": "My Tasks",
                        "user": request.user,
                        "has_permission": request.user.is_staff,
                        "site_url": "/",
