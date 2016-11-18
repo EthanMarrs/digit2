@@ -216,8 +216,9 @@ class Question(models.Model):
         (FLAGGED, "Flagged for review")
     )
 
-    content = models.TextField()
-    explanation = models.TextField()
+    question_content = models.TextField(default="")
+    answer_content = models.TextField(default="")
+    additional_info_content = models.TextField(default="")
     block = models.ForeignKey(Block, blank=True, null=True)
     subject = models.ForeignKey(Subject, null=True)
     live = models.BooleanField(default=False)
@@ -313,7 +314,7 @@ class Question(models.Model):
 class Option(models.Model):
     """One or more incorrect options for each Question."""
 
-    content = models.TextField()
+    content = models.TextField(default="")
     question = models.ForeignKey(Question)
     correct = models.BooleanField()
 

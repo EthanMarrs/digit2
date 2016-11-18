@@ -9,4 +9,5 @@
 .idea/
 
 /docs/build/
-/media
+
+/media_cdn/

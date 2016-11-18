@@ -178,25 +178,12 @@ table {
     padding: 0;
 }
 
-#edit-panel {
-    width: 47.5%;
-    background-color: #e0e0e0;
-    float: left;
-    height: 400px;
-    margin-right: 5%;
-}
 
 .edit-description {
     margin-top: 5px;
     float: right;
 }
 
-#preview-panel {
-    width: 47.5%;
-    background-color: #e0e0e0;
-    float: left;
-    height: 400px;
-}
 
 .green-button {
     background-color: #39AA56 !important;

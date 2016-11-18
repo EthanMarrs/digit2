@@ -1,7 +1,8 @@
 import json
+import os
 from datetime import datetime, timedelta, date
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import View, DetailView, ListView, FormView
 from django.forms import ValidationError
@@ -11,6 +12,9 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from core import models, forms
+from mathcontentconverter import ContentHandler
+
+from django.conf import settings
 
 
 class TaskDetailView(DetailView):
@@ -23,7 +27,7 @@ class TaskDetailView(DetailView):
     template_name = "task.html"
 
     def get_context_data(self, **kwargs):
-        """ Get context for all questions relating to a task. """
+        """ Get context for all questions relating to a question order."""
 
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         blocks = models.Block.objects.filter(topic=context["object"].topic)
@@ -372,6 +376,79 @@ class StudentScoresView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "student_list": student_list})
+
+
+class QuestionContentView(View):
+    """
+    A View that accepts json to create and update question content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """Post view for question content."""
+        data = json.loads(request.body.decode(encoding='UTF-8'))
+        ch = ContentHandler(
+            src_image_file_path=os.path.join(settings.MEDIA_ROOT, "uploaded_media"),
+            dest_image_file_path=os.path.join(settings.MEDIA_ROOT, "optimised_media"),
+            reference_url=(settings.DOMAIN + settings.MEDIA_URL + "optimised_media"),
+            katex_conversion_url=settings.KATEX_CONVERSION_URL,
+            create_images=True,
+            reuse_images=True
+        )
+
+        # get question object
+        question = models.Question.objects.get(id=int(data["name"]))
+
+        question.question_content = ch.get_formatted_content(data["question_content"])
+        question.answer_content = ch.get_formatted_content(data["answer_explanation_content"])
+        if "answer_explanation_content" in data:
+            question.additional_info_content = ch.get_formatted_content(
+                data["answer_explanation_content"])
+        question.save()
+
+        # delete old options
+        # THIS MUST CHANGE FOR RELIABLE SAVING AND PROCESSING OF QUESTIONS
+        for option in models.Option.objects.filter(question=question):
+            option.delete()
+
+        # create the options
+        for i in range(1, 4):
+            # format the content
+            option_name = "option_content_" + str(i)
+            formatted_content = ch.get_formatted_content(data[option_name])
+            option = models.Option(
+                question=question,
+                # TODO refactor how to selec the correct answer
+                correct=(data["correct"]==option_name),
+                content=formatted_content)
+            option.save()
+
+        return JsonResponse(data={}, status=200)
+
+
+class FileUploadView(View):
+    """
+    A View that processes image content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        """Post view for file uploads."""
+        for file_name in request.FILES:
+
+            file_object = request.FILES[file_name]
+            file = os.path.join(settings.MEDIA_ROOT, "uploaded_media", file_name)
+            with open(file, 'wb+') as destination:
+                for chunk in file_object.chunks():
+                    destination.write(chunk)
+
+        return HttpResponse(status=200)
+
+class GetQuestionContent(View):
+    """
+    A view to fetch image content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        pass
 
 
 class MyWorkView(View):

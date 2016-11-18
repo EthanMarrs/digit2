@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/katex.min.css' %}"/>
+{% endblock %}
 {% block content %}
     {% if question %}
-    <p>{{ question.content }}</p>
+    {{ question.question_content | safe}}
     {% else %}
     <p>You have completed all questions in the available pool.</p>
     {% endif %}
