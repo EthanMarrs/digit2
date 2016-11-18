@@ -319,6 +319,16 @@ var getContent = function(){
     data[class_name] = values;
   });
 
+  // get the correct option
+  options = [
+    "option_content_1",
+    "option_content_2",
+    "option_content_3",
+  ]
+
+  // check for a correct answer
+  data["correct"] = $("input[name='correct_option']:checked").val()
+
   return({
     "data": data,
     "image_data": image_data,

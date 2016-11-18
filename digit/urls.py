@@ -25,9 +25,13 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(core_urls)),
     url(r'^', include(student_urls)),
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG is True:
-    urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG is True:
+#     urlpatterns += patterns('',
+#         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+#             'document_root': settings.MEDIA_ROOT,
+#         })
+#     )
 
 admin.site.site_header = "Dig-it"

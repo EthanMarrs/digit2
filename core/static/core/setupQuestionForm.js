@@ -9,9 +9,8 @@
     a div is created with that string used as the class of that div
     the resulting html is returned
   */
-  var createContentSections = function(array){
-    var parentDiv = $("<div></div>")
-      .addClass("boop");
+  var createContentSections = function(array, is_option){
+    var parentDiv = $("<div></div>");
 
     array.forEach(function(value, index){
       var class_name = value[0];
@@ -21,6 +20,10 @@
 
       var content_block = $("<div></div>")
         .addClass(value[0])
+      if(is_option){
+        content_block.addClass("is_option")
+          .append("<div class='option-Dive' >Correct<input type = 'radio' name = 'correct_option' id = '" + class_name + "' value = '" + class_name + "' /></div>")
+      }
 
       var add_equation_button = $("<button></button>")
         .attr("type", "button")
@@ -72,11 +75,11 @@
   // add "question" h3
   root_div.append("<h3>Question</h3>"); //.append('Question Name:<input id="question_name_textfield" type="text" name="name" size="40"/><br/>')
   // append the 3 sections of the question
-  root_div.append(createContentSections(question_sections));
+  root_div.append(createContentSections(question_sections, false));
   // add "options" h3
   root_div.append("<h3>Options</h3>")
   // add the 3 option sections
-  root_div.append(createContentSections(option_sections));
+  root_div.append(createContentSections(option_sections, true));
 
   root_div.append("<br />")
   root_div.append("<br />")

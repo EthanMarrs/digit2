@@ -10,9 +10,10 @@ from django.contrib.auth.models import User
 from django.db.models import F, Count
 
 from core import models, forms
-# from mathcontentconverter import ContentHandler
+from mathcontentconverter import ContentHandler
 
 from django.conf import settings
+
 
 class QuestionOrderDetailView(DetailView):
     """ Overview screen for the Dig-it dashboard. Displays all syllabi."""
@@ -423,13 +424,14 @@ class QuestionContentView(View):
     def post(self, request, *args, **kwargs):
         """Post view for question content."""
         data = json.loads(request.body.decode(encoding='UTF-8'))
-        '''
-        for thing in data:
-            print(thing)
-            print(data[thing])
-            print("---------")
-
-        ch = ContentHandler()
+        ch = ContentHandler(
+            src_image_file_path=os.path.join(settings.MEDIA_ROOT, "uploaded_media"),
+            dest_image_file_path=os.path.join(settings.MEDIA_ROOT, "optimised_media"),
+            reference_url=(settings.DOMAIN + settings.MEDIA_URL + "optimised_media"),
+            katex_conversion_url=settings.KATEX_CONVERSION_URL,
+            create_images=True,
+            reuse_images=True
+        )
 
         # get question object
         question = models.Question.objects.get(id=int(data["name"]))
@@ -441,21 +443,22 @@ class QuestionContentView(View):
                 data["answer_explanation_content"])
         question.save()
 
-        # create the options
-        for i in range(1,4):
-            # CHANGE THIS!
-            boolean_value = False
-            if i is 1:
-                boolean_value = True
+        # delete old options
+        # THIS MUST CHANGE FOR RELIABLE SAVING AND PROCESSING OF QUESTIONS
+        for option in models.Option.objects.filter(question=question):
+            option.delete()
 
+        # create the options
+        for i in range(1, 4):
             # format the content
-            formatted_content = ch.get_formatted_content(data["option_content_" + str(i)])
+            option_name = "option_content_" + str(i)
+            formatted_content = ch.get_formatted_content(data[option_name])
             option = models.Option(
                 question=question,
-                correct=boolean_value,
+                # TODO refactor how to selec the correct answer
+                correct=(data["correct"]==option_name),
                 content=formatted_content)
             option.save()
-        '''
 
         return JsonResponse(data={}, status=200)
 
@@ -476,3 +479,12 @@ class FileUploadView(View):
                     destination.write(chunk)
 
         return HttpResponse(status=200)
+
+class GetQuestionContent(View):
+    """
+    A view to fetch image content.
+    """
+
+    def post(self, request, *args, **kwargs):
+        pass
+

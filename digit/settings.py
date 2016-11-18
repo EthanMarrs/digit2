@@ -126,7 +126,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 LOGIN_REDIRECT_URL = '/'
@@ -134,3 +134,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = '/admin/login/'
+
+KATEX_CONVERSION_URL = 'http:localhost:8888/'
+
+DOMAIN = 'http:localhost:8000/'
