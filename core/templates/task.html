@@ -37,9 +37,9 @@
             <li class="{% if filter == 4 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=4">Flagged</a></li>
         </ul>
     </div>
-    <p><b>Assigned by:</b> {{ object.assigned_by.get_full_name }}</p>
-    <p><b>Assigned to:</b> {{ object.assigned_to.get_full_name }}</p>
-    <p><b>Moderator:</b> {{ object.moderator.get_full_name }}</p>
+    <p><b>Assigned by:</b> {{ object.assigned_by.get_full_name|default:object.assigned_by }}</p>
+    <p><b>Assigned to:</b> {{ object.assigned_to.get_full_name|default:object.assigned_to }}</p>
+    <p><b>Moderator:</b> {{ object.moderator.get_full_name|default:object.moderator }}</p>
     <div class="grp-module">
         <p>{{ object.description }}</p>
         <div>
