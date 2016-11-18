@@ -79,8 +79,16 @@ class QuizView(View):
 
             if question_set:
                 question = models.Question.objects.get(id=question_set.pop())
+                options = models.Option.objects.filter(question=question)
+                form = forms.QuizForm(initial={"question": question.id, "options": options})
+            else:
+                options = None
+                form = forms.QuizForm()
 
-            return render(request, "quiz.html", {"question": question})
+            return render(request, "quiz.html",
+                          {"question": question,
+                           "options": options,
+                           "form": form})
         else:
             return HttpResponseRedirect('/login/')
 

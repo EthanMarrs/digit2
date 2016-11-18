@@ -5,7 +5,14 @@
 {% endblock %}
 {% block content %}
     {% if question %}
-    {{ question.question_content | safe}}
+        {{ question.question_content | safe}}
+        {{ form.question }}
+        {% for option in options %}
+            <input name="options" id="{{ forloop.counter }}" type="radio">
+            {{ option.content | safe}}
+
+        {% endfor %}
+        <input type="submit" class="logBut" value="Submit Answer"/>
     {% else %}
     <p>You have completed all questions in the available pool.</p>
     {% endif %}
