@@ -389,7 +389,7 @@ class QuestionContentView(View):
         ch = ContentHandler(
             src_image_file_path=os.path.join(settings.MEDIA_ROOT, "uploaded_media"),
             dest_image_file_path=os.path.join(settings.MEDIA_ROOT, "optimised_media"),
-            reference_url=(settings.DOMAIN + settings.MEDIA_URL + "optimised_media"),
+            reference_url=(settings.MEDIA_URL + "optimised_media"),
             katex_conversion_url=settings.KATEX_CONVERSION_URL,
             create_images=True,
             reuse_images=True
