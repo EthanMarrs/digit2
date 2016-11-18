@@ -25,9 +25,9 @@ class TestQuestion(TestCase):
         subject_test = Subject(name="addition",
                                grade=grade_test)
         subject_test.save()
-        question1 = Question(content='what is 1 + 1?',
-                             explanation='This is an addition question',
-                             subject=subject_test,)
+        question1 = Question(question_content='what is 1 + 1?',
+                             answer_content='This is an addition question',
+                             subject=subject_test)
         question1.save()
 
     def test_question_default_state(self):
