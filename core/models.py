@@ -185,7 +185,7 @@ class Subject(models.Model):
     grade = models.ForeignKey(Grade)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.grade) + ' ' + str(self.name)
 
 
 class Task(models.Model):
