@@ -15,16 +15,6 @@ class SyllabusAdmin(admin.ModelAdmin):
     list_display = ('id', 'grade')
 
 
-@admin.register(models.Block)
-class BlockAdmin(OrderedModelAdmin):
-    list_display = ('id', 'topic', 'move_up_down_links')
-
-
-@admin.register(models.Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'text', 'question', 'created_at')
-
-
 @admin.register(models.Grade)
 class GradeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
