@@ -32,7 +32,7 @@ class Grade(models.Model):
     name = models.TextField(max_length=10)
 
     def __str__(self):
-        return "Grade " + str(self.name)
+        return str(self.name)
 
 
 class Syllabus(models.Model):
