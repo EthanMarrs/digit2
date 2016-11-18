@@ -6,12 +6,11 @@ from core import views
 
 
 urlpatterns = [
-    url(r'^question_orders/(?P<pk>[^/])/live/', login_required(views.QuestionOrderLiveView.as_view())),
-    url(r'^question_orders/(?P<pk>[^/])/open/', login_required(views.QuestionOrderOpenView.as_view())),
-    url(r'^question_orders/(?P<pk>[^/])', login_required(views.QuestionOrderDetailView.as_view())),
-    url(r'^question_orders/$', login_required(views.QuestionOrderListView.as_view())),
-    url(r'^questions/(?P<pk>[^/]+)/up/', login_required(views.QuestionUpView.as_view())),
-    url(r'^questions/(?P<pk>[^/]+)/down/', login_required(views.QuestionDownView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])/live/', login_required(views.TaskLiveView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])/open/', login_required(views.TaskOpenView.as_view())),
+    url(r'^tasks/(?P<pk>[^/])', login_required(views.TaskDetailView.as_view())),
+    url(r'^tasks/$', login_required(views.TaskListView.as_view())),
+    url(r'^questions/(?P<pk>[^/]+)/move/', login_required(views.QuestionMoveBlockView.as_view())),
     url(r'^questions/(?P<pk>[^/]+)/state/', login_required(views.QuestionChangeStateView.as_view())),
     url(r'^questions/(?P<pk>[^/]+)/edit/', login_required(views.QuestionEditView.as_view())),
     url(r'^syllabi/(?P<pk>[^/]+)/timeline/', login_required(views.SyllabusTimelineView.as_view())),
@@ -25,4 +24,5 @@ urlpatterns = [
     url(r'^student_scores/', login_required(views.StudentScoresView.as_view())),
     url(r'^question_content/$', login_required(views.QuestionContentView.as_view())),
     url(r'^question_content/file_upload/$', login_required(views.FileUploadView.as_view())),
+    url(r'^my_work/', login_required(views.MyWorkView.as_view()))
 ]

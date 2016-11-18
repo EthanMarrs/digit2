@@ -29,12 +29,12 @@
         <h2>Filter</h2>
         <h3>By state</h3>
         <ul>
-            <li class="{% if filter == None %}selected{% endif %} filter-option"><a href="/question_orders/{{ object.id }}/">All</a></li>
-            <li class="{% if filter == 0 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=0">Incomplete</a></li>
-            <li class="{% if filter == 1 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=1">Ready for Review</a></li>
-            <li class="{% if filter == 2 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=2">Needs Reworking</a></li>
-            <li class="{% if filter == 3 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=3">Complete</a></li>
-            <li class="{% if filter == 4 %}selected{% endif %}"><a href="/question_orders/{{ object.id }}/?filter=4">Flagged</a></li>
+            <li class="{% if filter == None %}selected{% endif %} filter-option"><a href="/tasks/{{ object.id }}/">All</a></li>
+            <li class="{% if filter == 0 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=0">Incomplete</a></li>
+            <li class="{% if filter == 1 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=1">Ready for Review</a></li>
+            <li class="{% if filter == 2 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=2">Needs Reworking</a></li>
+            <li class="{% if filter == 3 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=3">Complete</a></li>
+            <li class="{% if filter == 4 %}selected{% endif %}"><a href="/tasks/{{ object.id }}/?filter=4">Flagged</a></li>
         </ul>
     </div>
     <p><b>Assigned by:</b> {{ object.assigned_by.get_full_name }}</p>
@@ -107,17 +107,15 @@
                         {% endif %}
                     </select>
                 </td>
-                <td class="field-up">
-                    <a class="move-link" href="javascript:void(null);"
-                       url="/questions/{{ question.id }}/up/">
-                        <img src="/static/ordered_model/arrow-up.gif">
-                    </a>
-                </td>
-                <td class="field-down">
-                    <a class="move-link" href="javascript:void(null);"
-                       url="/questions/{{ question.id }}/down/">
-                        <img src="/static/ordered_model/arrow-down.gif">
-                    </a>
+                <td>
+                    {% for i in block_list %}
+                        {% if forloop.counter0 == block.order %}
+                            <span class="highlight-box">{{ forloop.counter }}</span>
+                        {% else %}
+                            <span block="{{ forloop.counter0 }}" question="{{ question.id }}" class="box">
+                                {{ forloop.counter }}</span>
+                        {% endif %}
+                    {% endfor %}
                 </td>
             </tr>
             {% endif %}

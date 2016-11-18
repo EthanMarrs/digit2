@@ -1,7 +1,11 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
+{% load core_tags %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'core/dash.css' %}" />
+{% endblock %}
 
 {% block coltype %}colMS{% endblock %}
 
@@ -10,6 +14,14 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
+{% if app_list|length > 1 %}
+        {% need_reminder as reminder %}
+        {% if reminder %}
+            <div class="module" id="warning">
+                <p id="warning-text"><b>Warning: </b>There is insufficient content for topics starting next week.</p>
+            </div>
+        {% endif %}
+{% endif %}
 <div id="content-main">
     {% if app_list|length > 1 %}
     <!-- CUSTOM CODE -->
@@ -19,11 +31,15 @@
                 <a href="" class="section" title="Dashboard">Dashboard</a>
             </caption>
             <tr>
+                <th scope="row"><a href="/my_work/">My Work</a></th>
+                <th scope="row"></th>
+            </tr>
+            <tr>
                 <th scope="row"><a href="/syllabi/">Syllabi</a></th>
                 <th scope="row"></th>
             </tr>
             <tr>
-                <th scope="row"><a href="/question_orders/">Question Orders</a></th>
+                <th scope="row"><a href="/tasks/">Tasks</a></th>
                 <th scope="row"></th>
             </tr>
             <tr>

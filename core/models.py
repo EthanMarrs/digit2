@@ -124,6 +124,18 @@ class Topic(models.Model):
 
         return count
 
+    def get_number_of_live_questions(self):
+        """Helper function which returns the number of live questions related to the topic."""
+        blocks = Block.objects.filter(
+            topic=self
+        )
+        count = 0
+
+        for block in blocks:
+            count += block.get_number_of_live_questions()
+
+        return count
+
     def get_questions(self):
         """Helper function which returns all the questions associated with the topic."""
         questions = Question.objects.none()
@@ -152,6 +164,10 @@ class Block(OrderedModel):
         """Helper function which returns the count of related questions."""
         return Question.objects.filter(block=self).count()
 
+    def get_number_of_live_questions(self):
+        """Helper function which returns the count of live related questions."""
+        return Question.objects.filter(block=self, live=True).count()
+
     def get_questions(self):
         """Helper function which returns all related questions."""
         return Question.objects.filter(block=self)
@@ -170,7 +186,7 @@ class Subject(models.Model):
         return str(self.name)
 
 
-class QuestionOrder(models.Model):
+class Task(models.Model):
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     moderator = models.ForeignKey(User, related_name="moderator", default=None)
@@ -180,10 +196,10 @@ class QuestionOrder(models.Model):
     due_date = models.DateField(null=True)
 
     def __str__(self):
-        return str(self.topic.name) + " Question Order"
+        return str(self.topic.name) + " Task"
 
 
-class Question(OrderedModel):
+class Question(models.Model):
     """Question class containing challenge."""
 
     INCOMPLETE = 0
@@ -210,7 +226,6 @@ class Question(OrderedModel):
     state = models.PositiveIntegerField("State",
                                         choices=QUESTION_STATES,
                                         default=INCOMPLETE)
-    order_with_respect_to = 'block'
 
     def change_to_review_ready(self):
         """Change state of question.
@@ -326,6 +341,7 @@ class QuestionResponse(models.Model):
     response = models.ForeignKey(Option)
     user = models.ForeignKey(User)
     time = models.DateTimeField(auto_now_add=True)
+    correct = models.BooleanField(default=False)
 
 
 class Comment(models.Model):

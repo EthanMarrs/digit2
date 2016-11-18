@@ -114,7 +114,7 @@ $(function () {
             });
 
             $.ajax({
-                url: "/question_orders/" + id + "/live/",
+                url: "/tasks/" + id + "/live/",
                 type: "POST",
                 success: function () {
                     location.reload();
@@ -138,7 +138,7 @@ $(function () {
         });
 
         $.ajax({
-            url: "/question_orders/" + id + "/open/",
+            url: "/tasks/" + id + "/open/",
             type: "POST",
             data: {
                 "state": state
@@ -148,6 +148,29 @@ $(function () {
             },
             error: function () {
                 console.log("Error: Can't update question order state.")
+            }
+        })
+    });
+
+    $(".box").on("click", function () {
+        var id = $(this).attr("question");
+        var block = $(this).attr("block");
+
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": $.cookie("csrftoken")}
+        });
+
+        $.ajax({
+            url: "/questions/" + id + "/move/",
+            type: "POST",
+            data: {
+                "block": block
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log("Error: Can't update task state.")
             }
         })
     });

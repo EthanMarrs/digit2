@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% block coltype %}flex{% endblock %}
+{% block content %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}"/>
+{% endblock %}
+
+<script src="{% static 'core/jquery.min.js' %}"></script>
+
+<div class="module full-width">
+    <div class="results">
+        <div class="spaced-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ASSIGNED BY</th>
+                    <th>ASSIGNED TO</th>
+                    <th>MODERATOR</th>
+                    <th>TOPIC</th>
+                    <th>OPEN</th>
+                    <th>DUE DATE</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in task_list %}
+                <tr>
+                    <td class="field-id"><a href="/tasks/{{ task.id }}/">{{ task.id }}</a></td>
+                    <td class="field-assigned-by">{{ task.assigned_by }}</td>
+                    <td class="field-assigned-to">{{  task.assigned_to }}</td>
+                    <td class="field-moderator">{{ task.moderator }}</td>
+                    <td class="field-topic">{{ task.topic  }}</td>
+                    <td class="field-open">{{  task.open }}</td>
+                    <td class="field-due-date">{{  task.due_date }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br/>
+</div>
+
+{% endblock %}

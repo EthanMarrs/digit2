@@ -24,6 +24,7 @@
                     <th>LAST NAME</th>
                     <th>ANSWERED</th>
                     <th>CORRECT</th>
+                    <th>PERCENTAGE</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +36,8 @@
                     <td class="field-first-name">{{  student.user__first_name }}</td>
                     <td class="field-last-name">{{  student.user__last_name }}</td>
                     <td class="field-answered">{{  student.responses }}</td>
-                    <td class="field-correct">{{  student.responses }}</td>
+                    <td class="field-correct">{{  student.correct }}</td>
+                    <td class="field-percentage">{% widthratio student.correct student.responses 100 %}%</td>
                 </tr>
                 {% endfor %}
                 </tbody>

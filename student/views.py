@@ -2,11 +2,10 @@ from django.shortcuts import render
 from django.views.generic import View, FormView
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.db.models import F
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from core import models
 from student import forms
@@ -44,6 +43,16 @@ class QuizView(View):
             if not klass:
                 return HttpResponseRedirect('/not_configured')
 
+            # Get number of responses today
+            responses_today = models.QuestionResponse.objects.filter(
+                time__gte=date.today(),
+                user=user
+            ).count()
+
+            # If max reached, don't give question
+            if responses_today > 2:
+                return render(request, "quiz.html", {"question": None})
+
             syllabus = klass.syllabus
 
             # Get IDs of questions answered within the last 2 weeks
@@ -54,7 +63,7 @@ class QuizView(View):
 
             # Get topics in last 2 weeks for given syllabus
             topics = models.Topic.objects.annotate(
-                week_end=F("week_start") + F("duration")) \
+                week_end=F("week_start") + F("duration") - 1) \
                 .filter(week_end__gte=week - 2, syllabus=syllabus)
 
             # Get blocks for these topics
@@ -76,12 +85,16 @@ class QuizView(View):
             return HttpResponseRedirect('/login/')
 
     def post(self, request, *args, **kwargs):
-        question = request.POST["question"]  # Question ID
-        answer = request.POST["answer"]  # Answer ID
-        if question and answer:
+        question_id = request.POST["question"]  # Question ID
+        option_id = request.POST["option"]  # Option ID
+
+        option = models.Option.objects.filter(id=option_id)
+
+        if question_id and option:
             models.QuestionResponse.objects.create(
-                question_id=question,
-                answer_id=answer,
+                question_id=question_id,
+                option_id=option_id,
+                correct=option.correct,
                 user=request.user
             )
             return HttpResponse(status=200)
@@ -91,7 +104,7 @@ class QuizView(View):
 
 class SignupView(FormView):
     template_name = "signup.html"
-    success_url = "/quiz/"
+    success_url = "/welcome/"
     form_class = forms.SignupForm
 
     def form_valid(self, form):
