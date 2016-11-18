@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ValidationError
 from ordered_model.models import OrderedModel
+import uuid
 
 
 class StateException(Exception):
@@ -216,6 +217,7 @@ class Question(models.Model):
         (FLAGGED, "Flagged for review")
     )
 
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     question_content = models.TextField(default="")
     answer_content = models.TextField(default="")
     additional_info_content = models.TextField(default="")
@@ -308,7 +310,7 @@ class Question(models.Model):
         return self.QUESTION_STATES[self.state][1]
 
     def __str__(self):
-        return "Question " + str(self.id)
+        return "Question " + str(self.uuid)[0:8]
 
 
 class Option(models.Model):
