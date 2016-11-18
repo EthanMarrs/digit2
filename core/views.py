@@ -442,6 +442,7 @@ class FileUploadView(View):
 
         return HttpResponse(status=200)
 
+
 class GetQuestionContent(View):
     """
     A view to fetch image content.

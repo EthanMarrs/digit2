@@ -36,5 +36,5 @@ class TopicForm(forms.Form):
     name = forms.CharField(widget=forms.Textarea())
     description = forms.CharField(widget=forms.Textarea())
     syllabus = forms.ModelChoiceField(queryset=models.Syllabus.objects.all())
-    week_start = forms.IntegerField()
-    duration = forms.IntegerField()
+    week_start = forms.IntegerField(min_value=1, max_value=53)
+    duration = forms.IntegerField(min_value=1, max_value=53)
