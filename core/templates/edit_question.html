@@ -67,5 +67,11 @@
 {% endautoescape %}
 <script src="{% static 'core/setupQuestionForm.js' %}"></script>
 <script src="{% static 'core/questionForm.js' %}"></script>
+<script src="{% static 'core/fetchQuestionInfo.js' %}"></script>
+{% autoescape off %}
+<script>
+    fetchQuestionInfo();
+</script>
+{% endautoescape %}
 
 {% endblock %}

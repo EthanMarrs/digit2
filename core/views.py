@@ -403,6 +403,37 @@ class QuestionContentView(View):
     """
     A View that accepts json to create and update question content.
     """
+    def get(self, request, *args, **kwargs):
+        # try:
+        question_id = request.GET.get("question_id")
+        # get the relevant models
+        question = models.Question.objects.get(id=question_id)
+        options = models.Option.objects.filter(question=question)
+        correct_question = "option_content_"
+
+        # assumes there are always three questions
+        for count, option in zip(range(1,4), options):
+            if option.correct:
+                correct_question += str(count)
+
+        # get the content from each of the things
+        add_info = []
+        if question.additional_info_content_json is not '':
+            add_info = json.loads(question.additional_info_content_json)
+        data = {
+            "image_url": (settings.MEDIA_URL + "/optimised_media/"),
+            "question_content": json.loads(question.question_content_json),
+            "answer_explanation_content": json.loads(question.answer_content_json),
+            "additional_information": add_info,
+            "option_content_1": json.loads(options[0].content_json),
+            "option_content_2": json.loads(options[1].content_json),
+            "option_content_3": json.loads(options[2].content_json),
+            "correct": correct_question,
+        }
+
+        return JsonResponse(data=data, status=200)
+        # except Exception as error:
+            # return JsonResponse(data={"error": error}, status=400)
 
     def post(self, request, *args, **kwargs):
         """Post view for question content."""
@@ -459,24 +490,6 @@ class FileUploadView(View):
                     destination.write(chunk)
 
         return HttpResponse(status=200)
-
-
-class GetQuestionContent(View):
-    """
-    A view to fetch question content.
-
-    Returns a json with appropriate views
-    Must include the media URL
-    """
-
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body.decode(encoding='UTF-8'))
-        question_id = data["question_id"]
-
-        # get the relevant models
-        question = models.Question.objects.get(id=question_id)
-        options = models.Option.objects.filter(question=question)
-        # get the content from each of the things
 
 
 class MyTasksView(View):

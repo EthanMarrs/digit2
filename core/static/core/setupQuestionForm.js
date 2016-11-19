@@ -30,13 +30,13 @@
         .addClass("create-block-buttons")
         .html("Add Equation")
         .attr("onClick",
-              "addEquationField('." + class_name + "', '')");
+              "addEquationField('" + class_name + "', '')");
       var add_text_button = $("<button></button>")
         .attr("type", "button")
         .addClass("create-block-buttons")
         .html("Add Text")
         .attr("onClick",
-              "addTextField('" + class_name + "')");
+              "addTextField('" + class_name + "','',false)");
       var add_image_button = $("<button></button>")
         .attr("type", "button")
         .addClass("create-block-buttons")

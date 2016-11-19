@@ -1,5 +1,3 @@
-console.log(global_question_id);
-
 var getUUID = function(){
   return uuid()
 }
@@ -14,12 +12,14 @@ var count = 0;
 // then add them to the document
 
 // appends buttons that control the handling of the blocks
-var addControlButtons = function(object, uuid){
+var addControlButtons = function(object, uuid, checked){
   var buttonContainer = $("<div></div>")
     .addClass("button-container");
 
+  var checked_value = checked ? "checked" : "";
+
   buttonContainer
-    .append("<div class='control-button' ><input type='checkbox' class='control-checkbox'>Make inline</input></div>")
+    .append("<div class='control-button' ><input type='checkbox' class='control-checkbox' " + checked_value + ">Make inline</input></div>")
     .append("<button type='button' class='control-button' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'>Move up</i></button>")
     .append("<button type='button' class='control-button' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'>Move Down</i></button>")
     .append("<button type='button' class='control-button' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'>Delete</i></button>");
@@ -27,7 +27,7 @@ var addControlButtons = function(object, uuid){
   return(object.append(buttonContainer));
 }
 
-var addEquationField = function(div_name, math_content){
+var addEquationField = function(div_name, math_content, is_inline){
 
   var uuid = getUUID();
   var mathquill_block_id = "mathquill_block_" + uuid;
@@ -70,9 +70,9 @@ var addEquationField = function(div_name, math_content){
     .append(contentDiv)
     .append(textSpan);
 
-  var content_field = addControlButtons(content_field, uuid);
+  var content_field = addControlButtons(content_field, uuid, is_inline);
 
-  $(div_name).append(content_field);
+  $("." + div_name).append(content_field);
 
   var math_field = document.getElementById(mathquill_block_id);
   var text_field = document.getElementById(mathquill_text_block_id);
@@ -92,12 +92,12 @@ var addEquationField = function(div_name, math_content){
   ++count;
 }
 
-var addTextField = function(div_name){
+var addTextField = function(div_name, content, is_inline){
   var uuid = getUUID();
 
   var text_block_id = "text_block_" + count;
   // create the textfield
-  var textField = $("<textarea></textarea>")
+  var textField = $("<textarea>" + content + "</textarea>")
     .attr("wrap","physical")
     .attr("cols","40")
     .attr("rows","5")
@@ -114,7 +114,7 @@ var addTextField = function(div_name){
     .addClass("text_field")
     .append(contentDiv);
 
-  content_field = addControlButtons(content_field, uuid);
+  content_field = addControlButtons(content_field, uuid, is_inline);
 
   // add it to the field
   $("."+div_name)
@@ -141,7 +141,7 @@ var addImageField = function(div_name){
     .css("display", "none")
     .append(input_field);
 
-  content_field = addControlButtons(content_field, uuid);
+  content_field = addControlButtons(content_field, uuid, is_inline);
 
   $("." + div_name)
     .append(content_field);
@@ -155,7 +155,7 @@ var addImageField = function(div_name){
   // if they hit cancel, then it will need to trigger a delete of the div/ or create a placeholder? Which you can then delete?
 }
 
-handleFiles = function(div_name, files){
+var handleFiles = function(div_name, files){
   // add the image before uploading
 
   // get the last file that has been added within the block.
@@ -190,6 +190,29 @@ handleFiles = function(div_name, files){
     return function(e) { aImg.attr("src", e.target.result); };
   })(img);
   reader.readAsDataURL(file);
+}
+
+var addExistingImageField = function(div_name, image_name, is_inline, src_path){
+  var img = $("<img src=" + src_path + image_name + "></img>");
+
+  console.log(img[0]);
+
+  var contentDiv = $("<div></div>")
+    .addClass("content-container")
+    .append(img);
+
+  var content_field = $("<div></div>")
+    .attr("id", uuid)
+    .addClass("content_field")
+    .addClass("image_field")
+    .addClass("existing-image")
+    .append(contentDiv);
+
+  content_field = addControlButtons(content_field, uuid, is_inline);
+
+  $("." + div_name)
+    .append(content_field);
+
 }
 
 var toggleTextField = function(textfield_id){
@@ -292,22 +315,34 @@ var getContent = function(){
         // check whether the img exists, otherwise cancel was called
         // and the image was not put in the block
         if ($(this).has("img")){
-          // generate a uuid for the image
-          var pic_uuid = getUUID();
-          //  get the file type
-          var files = $(this).find(".fileInput")[0].files;
-          var file = files[files.length - 1]; // get the last file
-          var file_suffix = file.name.split('.').pop();
-          var new_file_name = pic_uuid + "." + file_suffix;
-          // console.log(new_file_name);
-          // add the uuid to the values array
-          values.push(
-            { "image": new_file_name }
-          );
-          // add the image to the image_data object
-          image_data.append(new_file_name, file)
-          // post the image to the '/file' URL
-
+          // check if the image already exists
+          if ($(this).hasClass("existing-image")){
+            console.log("It's an existing image!");
+            // extract the uuid
+            console.log($(this).find("img").attr("src") );
+            values.push(
+              { "image": $(this).find("img").attr("src").split("/").pop() }
+            );
+          }
+          // image has just been uploaded
+          else{
+            console.log("AAAAAAA");
+            // generate a uuid for the image
+            var pic_uuid = getUUID();
+            //  get the file type
+            var files = $(this).find(".fileInput")[0].files;
+            var file = files[files.length - 1]; // get the last file
+            var file_suffix = file.name.split('.').pop();
+            var new_file_name = pic_uuid + "." + file_suffix;
+            // console.log(new_file_name);
+            // add the uuid to the values array
+            values.push(
+              { "image": new_file_name }
+            );
+            // add the image to the image_data object
+            image_data.append(new_file_name, file)
+            // post the image to the '/file' URL
+          }
         }
       }
       else{
@@ -407,6 +442,7 @@ var postInfo = function(){
 
     // post the data to the server
     json_data = data
+    // TODO - make the code optional
     // add the CSRF token to the headers
     $.ajaxSetup({
       headers: {"X-CSRFToken": $.cookie("csrftoken")}
