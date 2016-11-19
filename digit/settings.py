@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'ordered_model',
     'widget_tweaks',
     'bootstrap3',
-    'markdown_deux'
+    'markdown_deux',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,10 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/admin/login/'
 
 KATEX_CONVERSION_URL = 'http://localhost:8888/'
+
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERY_IMPORTS = ("core.tasks",)
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email'
