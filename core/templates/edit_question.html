@@ -25,6 +25,16 @@
 
 <div class="module full-width">
     <p><b>State: </b>{{ question.get_state }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row field-subject">
+            <div>
+                <label class="required"><b>Subject:</b></label>
+                {{ question_form.subject }}
+            </div>
+            <input type="hidden" name="question_id" value="{{ question.id }}"/>
+        </div>
+    </form>
     <div id="content-container">
         <div id="edit-panel"></div>
         <div id="preview-panel"></div>
@@ -57,7 +67,7 @@
     <div class="submit-row">
         <input type="submit" value="Save and send to moderator" >
         <input type="submit" value="Save and continue editing" >
-        <input class="default" type="submit" onClick="postInfo()" >
+        <input class="default" type="submit" >
     </div>
 </div>
 {% autoescape off %}

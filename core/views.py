@@ -313,6 +313,22 @@ class QuestionEditView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "form": forms.CommentForm,
+                       "question_form": forms.QuestionEditForm,
+                       "question": question})
+
+    def post(self, request, *args, **kwargs):
+        question = models.Question.objects.get(id=request.POST["question_id"])
+        question.subject_id = request.POST["subject"]
+        question.save()
+
+        return render(request, "edit_question.html",
+                      {"title": "Edit Question",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it",
+                       "form": forms.CommentForm,
+                       "question_form": forms.QuestionEditForm,
                        "question": question})
 
 

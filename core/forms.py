@@ -38,3 +38,7 @@ class TopicForm(forms.Form):
     syllabus = forms.ModelChoiceField(queryset=models.Syllabus.objects.all())
     week_start = forms.IntegerField(min_value=1, max_value=53)
     duration = forms.IntegerField(min_value=1, max_value=53)
+
+
+class QuestionEditForm(forms.Form):
+    subject = forms.ModelChoiceField(queryset=models.Subject.objects.all(), label="")
