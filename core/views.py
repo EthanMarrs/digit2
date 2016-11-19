@@ -214,6 +214,27 @@ class SyllabusListView(ListView):
         context['site_header'] = "Dig-it"
         return context
 
+    def get_queryset(self, *args, **kwargs):
+        results = []
+
+        for syllabus in models.Syllabus.objects.all():
+            classes = models.Class.objects.filter(syllabus=syllabus)
+            topics = models.Topic.objects.filter(syllabus=syllabus)
+            students = 0
+            questions = 0
+
+            for topic in topics:
+                questions += topic.get_number_of_questions()
+
+            for klass in classes:
+                students += klass.users.count()
+
+            results.append({"syllabus": syllabus,
+                            "students": students,
+                            "topics": topics.count(),
+                            "questions": questions})
+        return results
+
 
 class TaskListView(ListView):
     model = models.Task

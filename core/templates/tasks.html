@@ -48,6 +48,7 @@
                     <th>TOPIC</th>
                     <th>DESCRIPTION</th>
                     <th>STATUS</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,13 +59,16 @@
                     <td class="field-assigned-by">{{ task.assigned_by }}</td>
                     <td class="field-assigned-to">{{ task.assigned_to }}</td>
                     <td class="field-topic">{{ task.topic }}</td>
-                    <td class="field-description">{{ task.description }}</td>
+                    <td class="field-description">{{ task.topic.description }}</td>
                     <td class="field-open">
                         {% if task.open %}
                         Open
                         {% else %}
                         Closed
                         {% endif %}
+                    </td>
+                    <td align="center" class="field-timeline">
+                        <a class="other-button" href="/tasks/{{ task.id }}/">View Task</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -45,7 +45,7 @@ class Syllabus(models.Model):
         verbose_name_plural = "syllabi"
 
     def __str__(self):
-        return "Grade " + str(self.grade.name) + " Syllabus"
+        return str(self.grade.name) + " Syllabus"
 
 
 class Class(models.Model):

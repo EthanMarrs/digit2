@@ -189,6 +189,28 @@ table {
     background-color: #39AA56 !important;
 }
 
+.go-button {
+    background-color: #39AA56 !important;
+    padding: 5px;
+    color: white !important;
+    border: 0 none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.other-button {
+    background-color: #2196F3 !important;
+    padding: 5px;
+    color: white !important;
+    border: 0 none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.go-button:hover, .other-button:hover {
+    text-decoration: none;
+}
+
 .checkbox-spaced {
     margin-bottom: 15px;
 }
@@ -220,6 +242,10 @@ table {
 
 .spaced-table {
     padding-right: 280px;
+}
+
+.spaced-table table {
+    width: 100%;
 }
 
 .highlight-box {

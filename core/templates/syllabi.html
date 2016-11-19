@@ -7,7 +7,6 @@
 {% block extrastyle %}
     <link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
 
 <script src="{% static 'core/jquery.min.js' %}"></script>
@@ -18,24 +17,32 @@
             <a href="/admin/core/syllabus/add/" class="addlink">Add Syllabus</a>
         </li>
     </ul>
-    <div class="results">
-    <table id="result_list">
+    <div class="spaced-table">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>GRADE</th>
-                <th>USERS</th>
+                <th>STUDENTS</th>
+                <th>TOPICS</th>
+                <th>QUESTIONS</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-        {% for syllabi in object_list %}
+        {% for obj in object_list %}
         <tr>
-            <td class="field-id"><a href="/syllabi/{{ syllabi.id }}/">{{ syllabi.id }}</a></td>
-            <td class="field-grade">{{ syllabi.grade }}</td>
-            <td class="field-users">{{ syllabi.users|length }}</td>
-            <td class="field-timeline">
-                <a class="move-link" href="/syllabi/{{ syllabi.id }}/timeline/"><i class="material-icons md-14">timeline</i> Timeline</a>
+            <td class="field-id"><a href="/syllabi/{{ syllabi.id }}/">{{ obj.syllabus.id }}</a></td>
+            <td class="field-grade">{{ obj.syllabus.grade }}</td>
+            <td class="field-users">{{ obj.students }}</td>
+            <td class="field-topics">{{ obj.topics }}</td>
+            <td class="field-questions">{{ obj.questions }}</td>
+            <td align="center" class="field-timeline">
+                <a class="go-button" href="/syllabi/{{ obj.syllabus.id }}/">View Syllabus</a>
+            </td>
+            <td align="center" class="field-timeline">
+                <a class="move-link other-button" href="/syllabi/{{ obj.syllabus.id }}/timeline/">Timeline</a>
             </td>
         </tr>
         {% endfor %}

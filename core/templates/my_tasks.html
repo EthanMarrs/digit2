@@ -25,6 +25,7 @@
                     <th>TOPIC</th>
                     <th>OPEN</th>
                     <th>DUE DATE</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,9 @@
                     <td class="field-topic">{{ task.topic  }}</td>
                     <td class="field-open">{{  task.open }}</td>
                     <td class="field-due-date">{{  task.due_date }}</td>
+                    <td align="center" class="field-view">
+                        <a class="other-button" href="/tasks/{{ task.id }}/">View Task</a>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
