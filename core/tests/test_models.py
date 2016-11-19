@@ -270,3 +270,20 @@ class TestTopic(TestCase):
         topics = Topic.objects.all()
         assert(len(blocks) == topics[0].get_number_of_blocks())
 
+    def test_topic_save_does_not_duplicate_questions(self):
+        already_created_topic = Topic.objects.get(name="Financial Mathematics")
+        count = 0
+        for block in Block.objects.filter(topic=already_created_topic):
+            for question in Question.objects.filter(block=block):
+                count += 1
+        assert(count == 45)
+        new_description = "This is a new description"
+        already_created_topic.description = new_description
+        already_created_topic.save()
+
+        edited_topic = Topic.objects.get(name="Financial Mathematics")
+        count = 0
+        for block in Block.objects.filter(topic=edited_topic):
+            for question in Question.objects.filter(block=block):
+                count += 1
+        assert(count == 45)

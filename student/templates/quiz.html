@@ -9,7 +9,7 @@
         {{ form.question }}
         {% for option in options %}
             <div class="option-block">
-                <input name="options" id="{{ forloop.counter }}" type="radio">
+                <input name="options" id="{{ forloop.counter }}" type="radio" value="{{ option.id }}">
                 {{ option.content | safe}}
             </div>
         {% endfor %}
