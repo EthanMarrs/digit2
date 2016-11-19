@@ -216,6 +216,7 @@ class Question(models.Model):
     answer_content = models.TextField(default="")
     answer_content_json = models.TextField(default="")
     additional_info_content = models.TextField(default="")
+    additional_info_content_json = models.TextField(default="")
     block = models.ForeignKey(Block, blank=True, null=True)
     subject = models.ForeignKey(Subject, null=True)
     live = models.BooleanField(default=False)

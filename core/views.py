@@ -425,6 +425,8 @@ class QuestionContentView(View):
         if "answer_explanation_content" in data:
             question.additional_info_content = ch.get_formatted_content(
                 data["answer_explanation_content"])
+            question.additional_info_content_json = json.dumps(
+                data["answer_explanation_content"])
         question.save()
 
         # Assumes there will always be three questions
