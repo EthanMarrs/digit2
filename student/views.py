@@ -10,6 +10,8 @@ from datetime import date, datetime, timedelta
 from core import models
 from student import forms
 
+import random
+
 
 class HomeView(View):
     """
@@ -79,7 +81,9 @@ class QuizView(View):
 
             if question_set:
                 question = models.Question.objects.get(id=question_set.pop())
-                options = models.Option.objects.filter(question=question)
+                # .order_by('?') enforces business rule
+                # that options are randomly ordered
+                options = models.Option.objects.filter(question=question).order_by('?')
                 form = forms.QuizForm(initial={"question": question.id, "options": options})
             else:
                 options = None
@@ -93,19 +97,35 @@ class QuizView(View):
             return HttpResponseRedirect('/login/')
 
     def post(self, request, *args, **kwargs):
-        question_id = request.POST["question"]  # Question ID
-        option_id = request.POST["option"]  # Option ID
-
-        option = models.Option.objects.filter(id=option_id)
+        # TODO handle conversion error
+        question_id = int(request.POST["question"])  # Question ID
+        option_id = int(request.POST["option"])  # Option ID
+        option = models.Option.objects.get(id=option_id)
 
         if question_id and option:
             models.QuestionResponse.objects.create(
                 question_id=question_id,
-                option_id=option_id,
+                response=option,
                 correct=option.correct,
                 user=request.user
             )
-            return HttpResponse(status=200)
+            # return
+            options = models.Option.objects.filter(question_id=question_id)
+            correct_option = None
+            for _option in options:
+                if _option.correct:
+                    correct_option = _option
+                    break
+
+            question = models.Question.objects.get(id=question_id)
+            return render(request, "quiz_response.html",
+                          {"True": True,
+                           "False": False,
+                           "options": options,
+                           "question": question,
+                           "selected_option": option,
+                           "correct_option": correct_option,
+                           "response_correct": option.correct})
         else:
             return HttpResponse(status=400)
 
