@@ -10,7 +10,6 @@ from core.models import (Grade,
                          Syllabus,
                          Task,
                          StateException,
-                         CorrectOptionExistsError,
                          )
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
@@ -215,7 +214,10 @@ class QuestionContentViewTest(TestCase):
         Pass in a simple JSON file.
         """
         question_id = 123
-        Question(id=question_id).save()
+        test_question = Question(id=question_id)
+        test_question.save()
+        related_options = Option.objects.filter(question=test_question)
+        assert(len(related_options) == 3)
 
         user = User.objects.create(username='testuser')
         user.set_password('password')
@@ -252,14 +254,19 @@ class QuestionContentViewTest(TestCase):
                                     content_type="application/json")
         assert(response.status_code == 200)
         question = Question.objects.get(id=123)
+        assert(json.loads(question.question_content_json) == data["question_content"])
         assert(question.question_content == "<p>This is a test question</p>")
+        assert(json.loads(question.answer_content_json) == data["answer_explanation_content"])
         assert(question.answer_content == "<p>This is the answer</p>")
         # fetch the associated options
         options = Option.objects.filter(question=question)
         # assumes questions are created in the order that is created
         assert(len(options) == 3)
+        assert(json.loads(options[0].content_json) == data["option_content_1"])
         assert(options[0].content == "<p>option 1</p>")
+        assert(json.loads(options[1].content_json) == data["option_content_2"])
         assert(options[1].content == "<p>option 2</p>")
+        assert(json.loads(options[2].content_json) == data["option_content_3"])
         assert(options[2].content == "<p>option 3</p>")
 
         new_data = {
@@ -288,12 +295,17 @@ class QuestionContentViewTest(TestCase):
                                     content_type="application/json")
         assert(response.status_code == 200)
         question = Question.objects.get(id=123)
+        assert(json.loads(question.question_content_json) == new_data["question_content"])
         assert(question.question_content == "<p>new question text</p>")
+        assert(json.loads(question.answer_content_json) == new_data["answer_explanation_content"])
         assert(question.answer_content == "<p>new answer text</p>")
         # fetch the associated options
         options = Option.objects.filter(question=question)
         # assumes questions are created in the order that is created
         assert(len(options) == 3)
+        assert(json.loads(options[0].content_json) == new_data["option_content_1"])
         assert(options[0].content == "<p>new option 1</p>")
+        assert(json.loads(options[1].content_json) == new_data["option_content_2"])
         assert(options[1].content == "<p>new option 2</p>")
+        assert(json.loads(options[2].content_json) == new_data["option_content_3"])
         assert(options[2].content == "<p>new option 3</p>")
