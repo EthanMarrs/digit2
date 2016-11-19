@@ -124,3 +124,12 @@ form {
     list-style: none;
     color: darkred;
 }
+
+
+.option-block {
+    margin: 1em 0em;
+}
+
+.option-block p {
+    display:inline;
+}

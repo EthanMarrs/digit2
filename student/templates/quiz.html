@@ -8,9 +8,10 @@
         {{ question.question_content | safe}}
         {{ form.question }}
         {% for option in options %}
-            <input name="options" id="{{ forloop.counter }}" type="radio">
-            {{ option.content | safe}}
-
+            <div class="option-block">
+                <input name="options" id="{{ forloop.counter }}" type="radio">
+                {{ option.content | safe}}
+            </div>
         {% endfor %}
         <input type="submit" class="logBut" value="Submit Answer"/>
     {% else %}
