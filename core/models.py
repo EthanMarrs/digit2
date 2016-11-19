@@ -94,11 +94,12 @@ class Topic(models.Model):
         self.clean()
         super(Topic, self).save(*args, **kwargs)
 
-        for i in range(int(self.duration)):
-            block = Block.objects.create(topic=self, order=i)
+        if not self.get_number_of_questions() > 0:
+            for i in range(int(self.duration)):
+                block = Block.objects.create(topic=self, order=i)
 
-            for j in range(15):
-                Question.objects.create(block=block)
+                for j in range(15):
+                    Question.objects.create(block=block)
 
     def get_blocks(self):
         """Helper function which returns all blocks related to the topic."""
