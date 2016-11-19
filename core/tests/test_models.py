@@ -185,19 +185,19 @@ class TestQuestion(TestCase):
     def test_question_option_save(self):
         """Test that question cannot have option with correct answer."""
         question1 = Question.objects.all()[0]
-        option1 = Option(content="1", question=question1, correct=False)
-        option1.save()
 
-        option2 = Option(content="2", question=question1, correct=True)
-        option2.save()
+        option = Option.objects.first()
+        option.correct = True
+        option.save()
 
         with pytest.raises(CorrectOptionExistsError) as exception_info:
-            option3 = Option(content="3", question=question1, correct=True)
-            option3.save()
+            option2 = Option.objects.last()
+            option2.correct = True
+            option2.save()
         assert(exception_info.value.__str__() ==
                "An option already exists that is correct")
-        assert(len(question1.option_set.all()) == 2)
-        assert(len(Option.objects.all()) == 2)
+        assert(len(question1.option_set.all()) == 3)
+        assert(len(Option.objects.all()) == 3)
 
     def test_get_comments(self):
         """
@@ -212,6 +212,15 @@ class TestQuestion(TestCase):
         assert(len(question1.get_comments()) == 2)
         assert(question1.get_comments()[0].text == "Test comment!")
         assert(question1.get_comments()[0].created_at < question1.get_comments()[1].created_at)
+
+    def test_get_options(self):
+        """
+        Test that the get_options() function returns all options
+        relating to a question.
+        """
+        question1 = Question.objects.all()[0]
+
+        assert(question1.get_number_of_options() == 3)
 
     def test_get_state(self):
         question1 = Question.objects.all()[0]

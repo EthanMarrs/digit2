@@ -230,6 +230,17 @@ class Question(models.Model):
                                         choices=QUESTION_STATES,
                                         default=INCOMPLETE)
 
+    def save(self, *args, **kwargs):
+        """
+        Saves model, automatically creates the associated options.
+        """
+        self.clean()
+        super(Question, self).save(*args, **kwargs)
+
+        if not self.get_number_of_options() > 0:
+            for i in range(3):
+                Option.objects.create(question=self, correct=False)
+
     def change_to_review_ready(self):
         """Change state of question.
 
@@ -304,6 +315,13 @@ class Question(models.Model):
         comments = Comment.objects.filter(question=self)
         return comments
 
+    def get_number_of_options(self):
+        """
+        Returns the number of options associated with the question.
+        """
+        options = Option.objects.filter(question=self)
+        return options.count()
+
     def get_state(self):
         """
         Returns the string value of the current question state.
@@ -318,7 +336,7 @@ class Option(models.Model):
     """One or more incorrect options for each Question."""
 
     content = models.TextField(default="")
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, default=False)
     correct = models.BooleanField()
 
     def save(self, *args, **kwargs):
