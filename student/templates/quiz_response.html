@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% if response_correct %}
+        <h3>Congratulations!</h3>
+        <p>That is the correct answer</p>
+    {% else %}
+        <h3>Sorry</h3>
+        <p>Unfortunately that is not the answer</p>
+    {% endif %}
+    <h2>Question</h2>
+        {{ question.question_content | safe}}
+    <h2>Options</h2>
+        {% for option in options %}
+            {{ option.content | safe}}
+            <br />
+        {% endfor %}
+    <h2>Your Answer:</h2>
+        {{ selected_option.content | safe}}
+    <h2>Correct Answer:</h2>
+        {{ correct_option.content | safe}}
+    <h2>Solution</h2>
+        {{ question.answer_content | safe}}
+    <form method="get">
+        <input type="submit" class="logBut" value="Next Question"/>
+    </form>
+{% endblock %}
