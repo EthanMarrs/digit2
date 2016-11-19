@@ -28,6 +28,11 @@ class TopicAdmin(admin.ModelAdmin):
 @admin.register(models.Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'assigned_by', 'assigned_to', 'topic', 'open', 'due_date')
+    exclude = ('assigned_by',)
+
+    def save_model(self, request, obj, form, change):
+        obj.assigned_by = request.user
+        obj.save()
 
 
 @admin.register(models.Class)
