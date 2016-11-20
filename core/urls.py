@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^comment_success/', login_required(TemplateView.as_view(template_name='comment_success.html'))),
     url(r'^topics/(?P<pk>[^/]+)', login_required(views.TopicDetailView.as_view())),
     url(r'^topic_create_wizard/', login_required(views.TopicCreateWizardView.as_view())),
+    url(r'^syllabus_create_wizard/', login_required(views.SyllabusCreateWizardView.as_view())),
     url(r'^student_scores/', login_required(views.StudentScoresView.as_view())),
     url(r'^question_content/$', login_required(views.QuestionContentView.as_view())),
     url(r'^question_content/file_upload/$', login_required(views.FileUploadView.as_view())),

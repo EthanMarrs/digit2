@@ -58,11 +58,19 @@
             </tr>
             {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
             <tr>
+                <th scope="row"><a href="/syllabus_create_wizard/">Syllabus Creation Wizard</a></th>
+                <th scope="row"></th>
+                <th scope="row"></th>
+            </tr>
+            {% endif %}
+            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
+            <tr>
                 <th scope="row"><a href="/topic_create_wizard/">Topic Creation Wizard</a></th>
                 <th scope="row"></th>
                 <th scope="row"></th>
             </tr>
             {% endif %}
+
             {% if request.user.is_superuser or request.user|has_group:"Platform Manager" %}
             <tr>
                 <th scope="row"><a href="/student_scores/">Student Scores</a></th>

@@ -332,6 +332,26 @@ class QuestionEditView(View):
                        "question": question})
 
 
+class SyllabusCreateWizardView(FormView):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, "syllabus_create_wizard.html",
+                      {"title": "Syllabus Create Wizard",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it"})
+
+    def post(self, request, *args, **kwargs):
+        grade = models.Grade.objects.create(name=request.POST["grade"])
+        syllabus = models.Syllabus.objects.create(grade=grade)
+
+        for klass in request.POST.getlist("class"):
+            models.Class.objects.create(name=klass, syllabus=syllabus)
+
+        return HttpResponseRedirect("/admin/")
+
+
 class TopicCreateWizardView(FormView):
     template_name = "topic_create_wizard.html"
     success_url = "/admin/"

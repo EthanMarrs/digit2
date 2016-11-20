@@ -58,6 +58,9 @@ class Class(models.Model):
     class Meta:
         verbose_name_plural = "classes"
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Topic(models.Model):
     """Class that describes a unit of math content with time and duration."""
