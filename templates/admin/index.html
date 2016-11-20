@@ -23,7 +23,7 @@
         {% endif %}
 {% endif %}
 <div id="content-main">
-    {% if app_list|length > 1 %}
+    {% if title == 'Site administration' %}
     <!-- CUSTOM CODE -->
     <div class="app-dashboard module">
         <table>
@@ -35,6 +35,7 @@
                 <th scope="row"></th>
                 <th scope="row"></th>
             </tr>
+            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
             <tr>
                 <th scope="row"><a href="/syllabi/">Syllabi</a></th>
                 <td>
@@ -44,6 +45,7 @@
                     <a href="/admin/core/syllabus/" class="changelink">Change</a>
                 </td>
             </tr>
+            {% endif %}
             <tr>
                 <th scope="row"><a href="/tasks/">Tasks</a></th>
                 <td>
@@ -54,16 +56,20 @@
                 </td>
 
             </tr>
+            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
             <tr>
                 <th scope="row"><a href="/topic_create_wizard/">Topic Creation Wizard</a></th>
                 <th scope="row"></th>
                 <th scope="row"></th>
             </tr>
+            {% endif %}
+            {% if request.user.is_superuser or request.user|has_group:"Platform Manager" %}
             <tr>
                 <th scope="row"><a href="/student_scores/">Student Scores</a></th>
                 <th scope="row"></th>
                 <th scope="row"></th>
             </tr>
+            {% endif %}
         </table>
         </div>
     <!-- END CUSTOM CODE -->
@@ -101,8 +107,6 @@
         </div>
     {% endfor %}
 
-{% else %}
-    <p>{% trans "You don't have permission to edit anything." %}</p>
 {% endif %}
 </div>
 {% endblock %}

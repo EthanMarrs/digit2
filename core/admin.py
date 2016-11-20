@@ -40,8 +40,14 @@ class ClassAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'syllabus')
 
 
+@admin.register(models.Block)
+class QuestionAdmin(OrderedModelAdmin):
+    list_display = ('id', 'topic', 'move_up_down_links')
+
+
 admin.site.register(models.Option)
 admin.site.register(models.QuestionResponse)
 admin.site.register(models.Subject)
+
 
 
