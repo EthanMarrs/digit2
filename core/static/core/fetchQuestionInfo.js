@@ -11,7 +11,14 @@ var getData = function(){
     url: '../../../question_content/' + '?question_id=' + global_question_id, // TODO: This needs to be passed in as an attribute
     type: 'GET',
     success: function(data){
-      populateForm(data);
+      console.dir(data);
+      if(data["message"]){
+        console.log(data["message"]);
+      }
+      else{
+        console.log("populating");
+        populateForm(data);
+      }
     },
     error: function(data){
       alert("Fetching data from the server went wrong!")

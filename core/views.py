@@ -411,6 +411,14 @@ class QuestionContentView(View):
         options = models.Option.objects.filter(question=question)
         correct_question = "option_content_"
 
+        # check to see if the question has content or not
+        # TODO: this check could be better
+        # a teacher may decide to save content and go back to it
+        if(question.question_content_json == ""):
+            return JsonResponse(data={
+                "message":"no content currently stored for this question"},
+                status=200)
+
         # assumes there are always three questions
         for count, option in zip(range(1,4), options):
             if option.correct:
