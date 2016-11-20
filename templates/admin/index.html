@@ -25,17 +25,58 @@
 <div id="content-main">
     {% if title == 'Site administration' %}
     <!-- CUSTOM CODE -->
-    <div class="app-dashboard module">
+    {% if request.user.is_superuser or request.user|has_group:"Platform Manager" %}
+    <div class="app-management module">
         <table>
             <caption>
-                <a href="" class="section" title="Dashboard">Dashboard</a>
+                <a href="" class="section" title="Management">Management</a>
+            </caption>
+
+            <tr>
+                <th scope="row"><a href="/student_scores/">Student Scores</a></th>
+                <th scope="row"></th>
+                <th scope="row"></th>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+    <div class="app-tasks module">
+        <table>
+            <caption>
+                <a href="" class="section" title="Tasks">Tasks</a>
             </caption>
             <tr>
                 <th scope="row"><a href="/my_tasks/">My Tasks</a></th>
                 <th scope="row"></th>
                 <th scope="row"></th>
             </tr>
-            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
+            <tr>
+                <th scope="row"><a href="/tasks/">All Tasks</a></th>
+                <td>
+                    <a href="/admin/core/task/add/" class="addlink">Add</a>
+                </td>
+                <td>
+                    <a href="/admin/core/task/" class="changelink">Change</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
+    <div class="app-content module">
+        <table>
+            <caption>
+                <a href="" class="section" title="Content Creation">Content</a>
+            </caption>
+            <tr>
+                <th scope="row"><a href="/topic_create_wizard/">Topic Creation Wizard</a></th>
+                <th scope="row"></th>
+                <th scope="row"></th>
+            </tr>
+            <tr>
+                <th scope="row"><a href="/syllabus_create_wizard/">Syllabus Creation Wizard</a></th>
+                <th scope="row"></th>
+                <th scope="row"></th>
+            </tr>
             <tr>
                 <th scope="row"><a href="/syllabi/">Syllabi</a></th>
                 <td>
@@ -45,41 +86,9 @@
                     <a href="/admin/core/syllabus/" class="changelink">Change</a>
                 </td>
             </tr>
-            {% endif %}
-            <tr>
-                <th scope="row"><a href="/tasks/">Tasks</a></th>
-                <td>
-                    <a href="/admin/core/task/add/" class="addlink">Add</a>
-                </td>
-                <td>
-                    <a href="/admin/core/task/" class="changelink">Change</a>
-                </td>
-
-            </tr>
-            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
-            <tr>
-                <th scope="row"><a href="/syllabus_create_wizard/">Syllabus Creation Wizard</a></th>
-                <th scope="row"></th>
-                <th scope="row"></th>
-            </tr>
-            {% endif %}
-            {% if request.user.is_superuser or request.user|has_group:"Syllabus Creator" %}
-            <tr>
-                <th scope="row"><a href="/topic_create_wizard/">Topic Creation Wizard</a></th>
-                <th scope="row"></th>
-                <th scope="row"></th>
-            </tr>
-            {% endif %}
-
-            {% if request.user.is_superuser or request.user|has_group:"Platform Manager" %}
-            <tr>
-                <th scope="row"><a href="/student_scores/">Student Scores</a></th>
-                <th scope="row"></th>
-                <th scope="row"></th>
-            </tr>
-            {% endif %}
         </table>
-        </div>
+    </div>
+    {% endif %}
     <!-- END CUSTOM CODE -->
     {% endif %}
 
