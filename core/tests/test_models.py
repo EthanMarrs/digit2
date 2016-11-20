@@ -9,7 +9,6 @@ from core.models import (Grade,
                          Block,
                          Syllabus,
                          StateException,
-                         CorrectOptionExistsError,
                          )
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -190,12 +189,6 @@ class TestQuestion(TestCase):
         option.correct = True
         option.save()
 
-        with pytest.raises(CorrectOptionExistsError) as exception_info:
-            option2 = Option.objects.last()
-            option2.correct = True
-            option2.save()
-        assert(exception_info.value.__str__() ==
-               "An option already exists that is correct")
         assert(len(question1.option_set.all()) == 3)
         assert(len(Option.objects.all()) == 3)
 

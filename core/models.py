@@ -19,14 +19,6 @@ class StateException(Exception):
                 str(self.state))
 
 
-class CorrectOptionExistsError(Exception):
-    """An Exception for two or more correct options per question."""
-
-    def __init__(self, message):
-        """Constructor for CorrectOptionExistsError."""
-        self.message = message
-
-
 class Grade(models.Model):
     """Grade class that describes school year."""
 
@@ -223,8 +215,11 @@ class Question(models.Model):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     question_content = models.TextField(default="")
+    question_content_json = models.TextField(default="")
     answer_content = models.TextField(default="")
+    answer_content_json = models.TextField(default="")
     additional_info_content = models.TextField(default="")
+    additional_info_content_json = models.TextField(default="")
     block = models.ForeignKey(Block, blank=True, null=True)
     subject = models.ForeignKey(Subject, null=True)
     live = models.BooleanField(default=False)
@@ -339,23 +334,9 @@ class Option(models.Model):
     """One or more incorrect options for each Question."""
 
     content = models.TextField(default="")
+    content_json = models.TextField(default="")
     question = models.ForeignKey(Question, default=False)
     correct = models.BooleanField()
-
-    def save(self, *args, **kwargs):
-        """Save model and check that no other questions are already correct.
-
-        This function is checks that there are no questions that
-        are already correct, before calling the inherited save function.
-
-        NOTE: this does not validate questions that have no correct answers
-        """
-        if self.correct:
-            for option in self.question.option_set.all():
-                if option.correct:
-                    raise CorrectOptionExistsError(
-                        "An option already exists that is correct")
-        super(Option, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Question " + str(self.question.uuid)[0:8] + " Response"

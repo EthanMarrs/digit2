@@ -22,7 +22,12 @@
 <script src="{% static 'core/mathquill.min.js' %}"></script>
 <script src="{% static 'core/katex.min.js' %}"></script>
 <script src="{% static 'core/uuid.js' %}"></script>
-
+<div id="toolbar_container">
+    <input id="tab1" type="radio" name="tabs" checked>
+    <label for="tab1"><span>Frequently Used</span></label>
+    <input id="tab2" type="radio" name="tabs">
+    <label for="tab2"><span>Other</span></label>
+</div>
 <div class="module full-width">
     <p><b>State: </b>{{ question.get_state }}</p>
     <form method="post">
@@ -77,5 +82,13 @@
 {% endautoescape %}
 <script src="{% static 'core/setupQuestionForm.js' %}"></script>
 <script src="{% static 'core/questionForm.js' %}"></script>
+<script src="{% static 'core/fetchQuestionInfo.js' %}"></script>
+<script src="{% static 'core/setupToolbar.js' %}"></script>
+{% autoescape off %}
+<script>
+    fetchQuestionInfo();
+    addToolbarButtons();
+</script>
+{% endautoescape %}
 
 {% endblock %}

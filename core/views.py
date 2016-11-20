@@ -439,6 +439,45 @@ class QuestionContentView(View):
     """
     A View that accepts json to create and update question content.
     """
+    def get(self, request, *args, **kwargs):
+        # try:
+        question_id = request.GET.get("question_id")
+        # get the relevant models
+        question = models.Question.objects.get(id=question_id)
+        options = models.Option.objects.filter(question=question)
+        correct_question = "option_content_"
+
+        # check to see if the question has content or not
+        # TODO: this check could be better
+        # a teacher may decide to save content and go back to it
+        if(question.question_content_json == ""):
+            return JsonResponse(data={
+                "message":"no content currently stored for this question"},
+                status=200)
+
+        # assumes there are always three questions
+        for count, option in zip(range(1,4), options):
+            if option.correct:
+                correct_question += str(count)
+
+        # get the content from each of the things
+        add_info = []
+        if question.additional_info_content_json is not '':
+            add_info = json.loads(question.additional_info_content_json)
+        data = {
+            "image_url": (settings.MEDIA_URL + "/optimised_media/"),
+            "question_content": json.loads(question.question_content_json),
+            "answer_explanation_content": json.loads(question.answer_content_json),
+            "additional_information": add_info,
+            "option_content_1": json.loads(options[0].content_json),
+            "option_content_2": json.loads(options[1].content_json),
+            "option_content_3": json.loads(options[2].content_json),
+            "correct": correct_question,
+        }
+
+        return JsonResponse(data=data, status=200)
+        # except Exception as error:
+            # return JsonResponse(data={"error": error}, status=400)
 
     def post(self, request, *args, **kwargs):
         """Post view for question content."""
@@ -454,29 +493,26 @@ class QuestionContentView(View):
 
         # get question object
         question = models.Question.objects.get(id=int(data["name"]))
-
+        question.question_content_json = json.dumps(data["question_content"])
         question.question_content = ch.get_formatted_content(data["question_content"])
+        question.answer_content_json = json.dumps(data["answer_explanation_content"])
         question.answer_content = ch.get_formatted_content(data["answer_explanation_content"])
         if "answer_explanation_content" in data:
             question.additional_info_content = ch.get_formatted_content(
-                data["answer_explanation_content"])
+                data["additional_information"])
+            question.additional_info_content_json = json.dumps(
+                data["additional_information"])
         question.save()
 
-        # delete old options
-        # THIS MUST CHANGE FOR RELIABLE SAVING AND PROCESSING OF QUESTIONS
-        for option in models.Option.objects.filter(question=question):
-            option.delete()
-
-        # create the options
-        for i in range(1, 4):
-            # format the content
-            option_name = "option_content_" + str(i)
-            formatted_content = ch.get_formatted_content(data[option_name])
-            option = models.Option(
-                question=question,
-                # TODO refactor how to selec the correct answer
-                correct=(data["correct"]==option_name),
-                content=formatted_content)
+        # Assumes there will always be three questions
+        options = models.Option.objects.filter(question=question)
+        for count, option in zip(range(1, 4), options):
+            print(count, "option.id", option.id)
+            # create the option name reference
+            option_name = "option_content_" + str(count)
+            option.content = ch.get_formatted_content(data[option_name])
+            option.content_json = json.dumps(data[option_name])
+            option.correct = (data["correct"] == option_name)
             option.save()
 
         return JsonResponse(data={}, status=200)
@@ -498,15 +534,6 @@ class FileUploadView(View):
                     destination.write(chunk)
 
         return HttpResponse(status=200)
-
-
-class GetQuestionContent(View):
-    """
-    A view to fetch image content.
-    """
-
-    def post(self, request, *args, **kwargs):
-        pass
 
 
 class MyTasksView(View):

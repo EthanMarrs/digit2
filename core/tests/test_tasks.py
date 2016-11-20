@@ -19,7 +19,6 @@ from core.models import (Grade,
                          Syllabus,
                          Task,
                          StateException,
-                         CorrectOptionExistsError,
                          )
 
 
