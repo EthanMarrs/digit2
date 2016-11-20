@@ -135,6 +135,14 @@ table {
     /*padding-bottom: 0;*/
 }
 
+.table td a {
+    line-height: 40px;
+}
+
+.table td {
+    line-height: 40px;
+}
+
 .comments p {
     margin: 0;
 }

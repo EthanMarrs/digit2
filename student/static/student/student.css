@@ -6,7 +6,7 @@ body {
 
 .half {
     margin: 0 auto;
-    width: 300px;
+    max-width: 500px;
 }
 
 #navbar {
