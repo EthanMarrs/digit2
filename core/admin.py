@@ -3,11 +3,15 @@ from core import models, views
 from django.http import HttpResponse
 from django.conf.urls import url
 from ordered_model.admin import OrderedModelAdmin
+from django.utils.safestring import mark_safe
 
 
 @admin.register(models.Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question_content', 'answer_content', 'additional_info_content', 'state')
+    def edit(self, obj):
+        return mark_safe('<a href="/questions/{}/edit/" class="go-button">Edit</a>'.format(obj.id))
+
+    list_display = ('id', 'question_content', 'answer_content', 'additional_info_content', 'state', 'edit')
 
 
 @admin.register(models.Syllabus)
@@ -40,8 +44,25 @@ class ClassAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'syllabus')
 
 
-admin.site.register(models.Option)
-admin.site.register(models.QuestionResponse)
-admin.site.register(models.Subject)
+@admin.register(models.Block)
+class BlockAdmin(OrderedModelAdmin):
+    list_display = ('id', 'topic')
+
+
+@admin.register(models.QuestionResponse)
+class QuestionResponseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'question', 'response')
+
+
+@admin.register(models.Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+@admin.register(models.Option)
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'correct')
+
+
 
 

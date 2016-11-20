@@ -38,3 +38,22 @@ class TopicForm(forms.Form):
     syllabus = forms.ModelChoiceField(queryset=models.Syllabus.objects.all())
     week_start = forms.IntegerField(min_value=1, max_value=53)
     duration = forms.IntegerField(min_value=1, max_value=53)
+
+
+class SyllabusForm(forms.Form):
+    """
+    A complex form used in the syllabus creation wizard.
+    Most fields are fairly standard.
+    """
+    grade_name = forms.CharField(widget=forms.Textarea(attrs=
+                                                       {"rows": 1,
+                                                        "style": "resize:none;"
+                                                        }))
+    class_name = forms.CharField(widget=forms.Textarea(attrs=
+                                                       {"rows": 1,
+                                                        "style": "resize:none;"
+                                                        }))
+
+
+class QuestionEditForm(forms.Form):
+    subject = forms.ModelChoiceField(queryset=models.Subject.objects.all(), label="")

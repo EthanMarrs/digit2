@@ -15,36 +15,24 @@
 
 <div class="module">
     <h3 class="large-h3">Questions</h3>
-    <table>
+    <table class="half">
         <thead>
         <tr>
             <th>ID</th>
+            <th>NAME</th>
             <th>CONTENT</th>
             <th>SUBJECT</th>
             <th>STATE</th>
-            <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
         {% for question in object.get_questions %}
         <tr>
             <td class="field-id"><a href="/admin/core/question/{{ question.id }}/change/">{{ question.id }}</a></td>
+            <td class="field-uuid">{{ question.uuid|truncatechars:10 }}</td>
             <td class="field-content">{{ question.content|truncatechars:20 }}</td>
             <td class="field-subject">{{ question.subject }}</td>
             <td class="field-state">{{ question.get_state }}</td>
-            <td class="field-up">
-                <a class="move-link" href="javascript:void(null);"
-                   url="/admin/core/question/{{ question.id }}/move-up/?">
-                    <img src="/static/ordered_model/arrow-up.gif">
-                </a>
-            </td>
-            <td class="field-down">
-                <a class="move-link" href="javascript:void(null);"
-                   url="/admin/core/question/{{ question.id }}/move-down/?">
-                    <img src="/static/ordered_model/arrow-down.gif">
-                </a>
-            </td>
         </tr>
         {% endfor %}
         </tbody>

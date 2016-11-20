@@ -47,6 +47,7 @@
                     <th>ASSIGNED TO</th>
                     <th>TOPIC</th>
                     <th>DESCRIPTION</th>
+                    <th>DUE DATE</th>
                     <th>STATUS</th>
                     <th></th>
                 </tr>
@@ -59,7 +60,8 @@
                     <td class="field-assigned-by">{{ task.assigned_by }}</td>
                     <td class="field-assigned-to">{{ task.assigned_to }}</td>
                     <td class="field-topic">{{ task.topic }}</td>
-                    <td class="field-description">{{ task.topic.description }}</td>
+                    <td class="field-description">{{ task.topic.description|truncatechars:50 }}</td>
+                    <td class="field-due">{{ task.due_date|date:"Y/m/d" }}</td>
                     <td class="field-open">
                         {% if task.open %}
                         Open

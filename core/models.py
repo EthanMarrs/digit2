@@ -50,6 +50,9 @@ class Class(models.Model):
     class Meta:
         verbose_name_plural = "classes"
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Topic(models.Model):
     """Class that describes a unit of math content with time and duration."""
@@ -334,6 +337,9 @@ class Option(models.Model):
     content_json = models.TextField(default="")
     question = models.ForeignKey(Question, default=False)
     correct = models.BooleanField()
+
+    def __str__(self):
+        return "Question " + str(self.question.uuid)[0:8] + " Response"
 
 
 class QuestionResponse(models.Model):

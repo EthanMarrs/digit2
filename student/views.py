@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.forms import ValidationError
 
 from datetime import date, datetime, timedelta
+from random import randint
 
 from core import models
 from student import forms
@@ -76,11 +77,11 @@ class QuizView(View):
                 .values_list("id", flat=True)
 
             # Get question to serve from pool - answered
-            question_set = set(pool) - set(answered)
+            question_set = list(set(pool) - set(answered))
             question = None
 
             if question_set:
-                question = models.Question.objects.get(id=question_set.pop())
+                question = models.Question.objects.get(id=question_set[randint(0, len(question_set) - 1)])
                 # .order_by('?') enforces business rule
                 # that options are randomly ordered
                 options = models.Option.objects.filter(question=question).order_by('?')

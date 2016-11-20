@@ -3,6 +3,8 @@
  */
 
 $(function () {
+    var fields = 0;
+
     $(".move-link").on('click', function () {
         $.ajaxSetup({
             headers: {"X-CSRFToken": $.cookie("csrftoken")}
@@ -175,4 +177,17 @@ $(function () {
         })
     });
 
+    $("#add-field").off().on("click", function () {
+        $(".field-classes").append(
+            '<div id="class-field-div"><label class="required"></label>' +
+            '<textarea class="pad-text" cols="40" id="id_class_' + fields + '" name="class" rows="1" style="resize:none;" required="">' +
+            '</textarea><img class="del-field" src="/static/admin/img/icon-deletelink.svg" alt="delete"></div>'
+        );
+        fields++;
+
+        $(document).on("click", ".del-field", function () {
+            $(this).parent().remove();
+
+        })
+    });
 });

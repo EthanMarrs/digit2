@@ -2,8 +2,8 @@
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'student/student.css' %}"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Dig-it</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
 <div id="navbar">
@@ -11,8 +11,6 @@
         {% if user.is_authenticated %}
             <p class="left">Welcome, <b>{{ user.first_name }}</b>&emsp;|&emsp;</p>
             <a href="/logout/">Logout</a>
-        {% else %}
-            <a href="/login/">Login</a>
         {% endif %}
     </div>
     <div class="half">

@@ -9,5 +9,6 @@
 .idea/
 
 /docs/build/
-
+celerybeat.pid
 /media_cdn/
+/tmp/*

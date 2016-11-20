@@ -25,6 +25,24 @@
     background: #bfbfbf !important;
 }
 
+#add-field {
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.del-field {
+    margin-left: 8px;
+    margin-top: 12px;
+}
+
+.pad-text {
+    margin-top: 5px;
+}
+
+#add-field:hover, .del-field:hover {
+    cursor: pointer;
+}
+
 caption > a {
     color: white !important;
 }
