@@ -357,6 +357,9 @@ class Option(models.Model):
                         "An option already exists that is correct")
         super(Option, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return "Question " + str(self.question.uuid)[0:8] + " Response"
+
 
 class QuestionResponse(models.Model):
     """A record of which option was chosen in response to a question."""

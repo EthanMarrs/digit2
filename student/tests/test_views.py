@@ -81,7 +81,7 @@ class QuestionViewTests(TestCase):
             [response.context['question']],
             ['None']
         )
-        self.assertContains(response, "You have completed all questions in the available pool.")
+        self.assertContains(response, "You have completed all questions available for today.")
 
 
 class SignupViewTests(TestCase):

@@ -45,13 +45,24 @@ class ClassAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Block)
-class QuestionAdmin(OrderedModelAdmin):
-    list_display = ('id', 'topic', 'move_up_down_links')
+class BlockAdmin(OrderedModelAdmin):
+    list_display = ('id', 'topic')
 
 
-admin.site.register(models.Option)
-admin.site.register(models.QuestionResponse)
-admin.site.register(models.Subject)
+@admin.register(models.QuestionResponse)
+class QuestionResponseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'question', 'response')
+
+
+@admin.register(models.Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+@admin.register(models.Option)
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'correct')
+
 
 
 
