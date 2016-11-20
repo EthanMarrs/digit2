@@ -4,8 +4,22 @@
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block extrastyle %}
-    {{block.super}}
-    <link rel="stylesheet" type="text/css" href="{% static 'core/main.css'%}" />
+{{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css'%}"/>
+<style>
+    .go-button {
+        background-color: #39AA56 !important;
+        padding: 5px;
+        color: white !important;
+        border: 0 none;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+
+    .go-button:hover {
+    text-decoration: none;
+}
+</style>
 {% endblock %}
 
 {% block branding %}
