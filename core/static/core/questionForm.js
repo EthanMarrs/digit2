@@ -5,6 +5,7 @@ var getUUID = function(){
 var dict_of_questions = {};
 var MQ = MathQuill.getInterface(2);
 var mathField;
+var selectedSection = "";
 
 var count = 0;
 // create a function that creates a span, textfield and mathfield
@@ -27,6 +28,10 @@ var addControlButtons = function(object, uuid, checked){
   return(object.append(buttonContainer));
 }
 
+var attachToolbar = function(id_value){
+    selectedSection = dict_of_questions[id_value]
+  }
+
 var addEquationField = function(div_name, math_content, is_inline){
 
   var uuid = getUUID();
@@ -35,7 +40,11 @@ var addEquationField = function(div_name, math_content, is_inline){
 
   var mathFieldSpan = $("<span>" + math_content + "</span>")
     .addClass("mathquill-field mq-editable-field mq-math-mode mq-editable-field")
-    .attr("id", mathquill_block_id);
+    .attr("id", mathquill_block_id)
+    .on("click",function(){
+      attachToolbar(mathquill_text_block_id);
+      $("#toolbar_container").css("display", "block")
+    });
 
   var textField = $("<textarea></textarea>")
     .attr("wrap","physical")
@@ -87,6 +96,7 @@ var addEquationField = function(div_name, math_content, is_inline){
     }
   });
 
+  // TODO Change this to mathquill block id
   dict_of_questions[mathquill_text_block_id] = mathField;
 
   ++count;
