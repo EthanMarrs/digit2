@@ -3,6 +3,7 @@
 
 {% block content %}
     <div class="parent">
+        <br>
         <form class="login" method="POST" action="/login/">
             {% csrf_token %}
             {{ form.as_p }}

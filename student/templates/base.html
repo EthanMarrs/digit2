@@ -2,14 +2,12 @@
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'student/student.css' %}"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Dig-it</title>
 </head>
 <body>
 <div id="navbar">
     <div id="controls">
         {% if user.is_authenticated %}
-            <p class="left">Welcome, <b>{{ user.first_name }}</b>&emsp;|&emsp;</p>
             <a href="/logout/">Logout</a>
         {% else %}
             <a href="/login/">Login</a>
