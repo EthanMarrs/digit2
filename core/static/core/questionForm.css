@@ -120,7 +120,7 @@ img {
     margin: 0 auto;
     position: fixed;
     top:50px;
-    left:200px;
+    left:450px;
     z-index: 1000;
     display:none;
     border: 4px solid #0CE;
@@ -184,7 +184,7 @@ footer {
     width: 20px;
     position: fixed;
     top:45px;
-    left:195px;
+    left:445px;
     z-index: 1001;
     background-color: #0CE;
     text-align: center;
@@ -220,4 +220,19 @@ img {
 
 .control-button input {
   margin: 5px;
+}
+
+.toolbar-button {
+  display: inline-block;
+  width:30px;
+  height:30px;
+  border: 1px solid #0CE;
+  background-color: #f7f6f4;
+  margin:3px;
+  color: black;
+}
+
+.toolbar-button:hover {
+  background-color: #008ea6;
+  color:white;
 }

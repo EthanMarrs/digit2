@@ -18,6 +18,8 @@ var addMathContent = function(command_type, command){
       {button_content:"x^{\\square}", command_type:"keystroke", command:"^"},
       {button_content:"\\sqrt{ x }", command_type:"cmd", command:"\\sqrt"},
       {button_content:"\\sqrt[y]{ x }", command_type:"keystroke", command:"\\\\nthroot"},
+      {button_content:"\\times", command_type:"cmd", command:"\\times"},
+      {button_content:"x^{\\circ}", command_type:"keystroke", command:"^\\\\circ"},
      ],
     },
     {name:"Algebra",
@@ -37,7 +39,8 @@ var addToolbarButtons = function(){
     tab.content.map(function(button_info){
       var button = $("<div onClick=\"addMathContent('" + button_info.command_type + "', '" + button_info.command + "')\"></div>")
         // .click(addMathContent(button_info.command_type, button_info.command))
-        .append(katex.renderToString(button_info.button_content));
+        .append(katex.renderToString(button_info.button_content))
+        .addClass("toolbar-button");
       tab_div.append(button);
     })
     $("#toolbar_container").append(tab_div);
