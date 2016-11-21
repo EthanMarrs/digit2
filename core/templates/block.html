@@ -30,7 +30,7 @@
         <tr>
             <td class="field-id"><a href="/admin/core/question/{{ question.id }}/change/">{{ question.id }}</a></td>
             <td class="field-uuid">{{ question.uuid|truncatechars:10 }}</td>
-            <td class="field-content">{{ question.content|truncatechars:20 }}</td>
+            <td class="field-content">{{ question.question_content|truncatechars:20 }}</td>
             <td class="field-subject">{{ question.subject }}</td>
             <td class="field-state">{{ question.get_state }}</td>
         </tr>
