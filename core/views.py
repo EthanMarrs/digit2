@@ -315,7 +315,9 @@ class QuestionEditView(View):
                        "form": forms.CommentForm,
                        "question_form": forms.QuestionEditForm(
                             initial={'subject': question.subject}),
-                       "question": question
+                       "question": question,
+                       "options": models.Option.objects.filter(question=question),
+                       "preview_available": (question.question_content != "")
                        })
 
     def post(self, request, *args, **kwargs):
@@ -332,7 +334,7 @@ class QuestionEditView(View):
                        "form": forms.CommentForm,
                        "question": question,
                        "question_form": forms.QuestionEditForm(
-                            initial={'subject': question.subject}) })
+                            initial={'subject': question.subject})})
 
 
 class SyllabusCreateWizardView(FormView):

@@ -43,7 +43,23 @@
     </form>
     <div id="content-container">
         <div id="edit-panel"></div>
-        <div id="preview-panel"></div>
+        <div id="preview-panel">
+            {% if preview_available %}
+            <h3>Question</h3>
+            {{ question.question_content | safe}}
+            <h3>Options</h3>
+            {% for option in options %}
+                <div class="option-block">
+                    <input name="option" id="{{ forloop.counter }}" type="radio" value="{{ option.id }}">
+                    {{ option.content | safe}}
+                </div>
+            {% endfor %}
+            <h3>Answer</h3>
+            {{ question.answer_content | safe}}
+        {% else %}
+        <p>This is a new question, you need to save before you can see a preview</p>
+        {% endif %}
+        </div>
     </div>
     <div class="module">
         &nbsp;
