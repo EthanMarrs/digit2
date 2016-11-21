@@ -84,8 +84,10 @@
   root_div.append("<br />")
   root_div.append("<br />")
 
+  // TODO: make the submit button optional
   // add the submit button
-  root_div.append("<button type='button' class='create-block-buttons' onClick='postInfo()'>Submit</button>")
+  // root_div.append("<button type='button' class='create-block-buttons' onClick=>Submit</button>")
+
   // add the preview button
   root_div.append("<button type='button' class='create-block-buttons' onClick='createPreview()'>See Preview</button>")
   // hide the preview pane

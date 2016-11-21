@@ -469,7 +469,7 @@ var postInfo = function(){
       processData: false,
       type: 'POST',
       success: function(data){
-        alert("Images posted to server")
+        console.log("Images posted to server")
         // post the data to the server
         $.ajax({
           url: '../../../question_content/', // TODO: This needs to be passed in as an attribute
@@ -478,15 +478,17 @@ var postInfo = function(){
           data: JSON.stringify(json_data),
           dataType:'json',
           success: function(data){
-            alert("succes posting data")
+            console.log("succes posting data")
+            // TODO: change this code
+            $("#subject_form_button").click();
           },
           error: function(data){
-            alert("Posting data to server went wrong!")
+            console.log("Posting data to server went wrong!")
           },
         });
       },
       error: function(data){
-        alert("Posting images posting went wrong");
+        console.log("Posting images posting went wrong");
       },
     });
   }

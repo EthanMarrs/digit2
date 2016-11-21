@@ -11,7 +11,6 @@ var getData = function(){
     url: '../../../question_content/' + '?question_id=' + global_question_id, // TODO: This needs to be passed in as an attribute
     type: 'GET',
     success: function(data){
-      console.dir(data);
       if(data["message"]){
         console.log(data["message"]);
       }
@@ -43,7 +42,6 @@ var populateForm = function(data){
   sections.map(function(section_name){
     data[section_name].map(function(block){
       is_inline = block["inline"]; // evals to true or false
-      console.log(block);
       if(block["text"]){
         addTextField(section_name, block["text"], is_inline);
       }
@@ -51,7 +49,6 @@ var populateForm = function(data){
         addEquationField(section_name, block["latex"], is_inline);
       }
       else if(block["image"]){
-        console.log("There's an existing image!");
         addExistingImageField(section_name, block["image"], is_inline, "/media/optimised_media/")
       }
       else{

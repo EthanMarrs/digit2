@@ -313,8 +313,10 @@ class QuestionEditView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "form": forms.CommentForm,
-                       "question_form": forms.QuestionEditForm,
-                       "question": question})
+                       "question_form": forms.QuestionEditForm(
+                            initial={'subject': question.subject}),
+                       "question": question
+                       })
 
     def post(self, request, *args, **kwargs):
         question = models.Question.objects.get(id=request.POST["question_id"])
@@ -328,8 +330,9 @@ class QuestionEditView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "form": forms.CommentForm,
-                       "question_form": forms.QuestionEditForm,
-                       "question": question})
+                       "question": question,
+                       "question_form": forms.QuestionEditForm(
+                            initial={'subject': question.subject}) })
 
 
 class SyllabusCreateWizardView(FormView):

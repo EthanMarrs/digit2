@@ -56,4 +56,7 @@ class SyllabusForm(forms.Form):
 
 
 class QuestionEditForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(QuestionEditForm, self).__init__(*args, **kwargs)
+
     subject = forms.ModelChoiceField(queryset=models.Subject.objects.all(), label="")
