@@ -73,11 +73,11 @@
   ]
 
   // add "question" h3
-  root_div.append("<h3>Question</h3>"); //.append('Question Name:<input id="question_name_textfield" type="text" name="name" size="40"/><br/>')
+  root_div.append("<h2>Question</h2>"); //.append('Question Name:<input id="question_name_textfield" type="text" name="name" size="40"/><br/>')
   // append the 3 sections of the question
   root_div.append(createContentSections(question_sections, false));
   // add "options" h3
-  root_div.append("<h3>Options</h3>")
+  root_div.append("<h2 id='edit_panel_option_heading'>Options</h2>")
   // add the 3 option sections
   root_div.append(createContentSections(option_sections, true));
 
@@ -89,7 +89,11 @@
   // root_div.append("<button type='button' class='create-block-buttons' onClick=>Submit</button>")
 
   // add the preview button
-  root_div.append("<button type='button' class='create-block-buttons' onClick='createPreview()'>See Preview</button>")
   // hide the preview pane
-  root_div.append("<button type='button' class='create-block-buttons' onClick='togglePreview()'>Toggle Preview</button>")
+  var togglePreviewButton = $("<button>SEE PREVIEW</button>")
+    .attr("type","button")
+    .addClass("toggle-preview-button")
+    .attr("onClick", "togglePreview()");
+  // type='button' class='create-block-buttons' onClick='togglePreview()'
+  $(".submit-row").prepend(togglePreviewButton);
 })();

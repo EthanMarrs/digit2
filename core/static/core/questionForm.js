@@ -7,13 +7,6 @@ var MQ = MathQuill.getInterface(2);
 var mathField;
 var selectedSection = "";
 
-var preview_question_content = "";
-var preview_answer_explanation_content = "";
-var preview_additional_information = "";
-var preview_option_content_1 = "";
-var preview_option_content_2 = "";
-var preview_option_content_3 = "";
-
 var count = 0;
 // create a function that creates a span, textfield and mathfield
 // then add them to the array
@@ -27,10 +20,10 @@ var addControlButtons = function(object, uuid, checked){
   var checked_value = checked ? "checked" : "";
 
   buttonContainer
-    .append("<div class='control-button' ><input type='checkbox' class='control-checkbox' " + checked_value + ">Make inline</input></div>")
-    .append("<button type='button' class='control-button' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'>Move up</i></button>")
-    .append("<button type='button' class='control-button' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'>Move Down</i></button>")
-    .append("<button type='button' class='control-button' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'>Delete</i></button>");
+    .append("<div class='control-button' ><input type='checkbox' class='control-checkbox' " + checked_value + ">inline</input></div>")
+    .append("<button type='button' class='control-button' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>")
+    .append("<button type='button' class='control-button' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'></i></button>")
+    .append("<button type='button' class='control-button' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'></i></button>");
 
   return(object.append(buttonContainer));
 }
@@ -82,11 +75,13 @@ var addEquationField = function(div_name, math_content, is_inline){
   var content_field = $("<div></div>")
     .attr("id", uuid)
     .addClass("content_field")
-    .addClass("math_field")
-    .append(contentDiv)
-    .append(textSpan);
+    .addClass("math_field");
 
   var content_field = addControlButtons(content_field, uuid, is_inline);
+
+  content_field.append(contentDiv)
+    .append(textSpan);
+
 
   $("." + div_name).append(content_field);
 
@@ -128,10 +123,12 @@ var addTextField = function(div_name, content, is_inline){
   var content_field = $("<div></div>")
     .attr("id", uuid)
     .addClass("content_field")
-    .addClass("text_field")
-    .append(contentDiv);
+    .addClass("text_field");
 
   content_field = addControlButtons(content_field, uuid, is_inline);
+
+  content_field.append(contentDiv);
+
 
   // add it to the field
   $("."+div_name)
@@ -155,10 +152,11 @@ var addImageField = function(div_name){
     .attr("id", uuid)
     .addClass("content_field")
     .addClass("image_field")
-    .css("display", "none")
-    .append(input_field);
+    .css("display", "none");
 
-  content_field = addControlButtons(content_field, uuid, is_inline);
+  content_field = addControlButtons(content_field, uuid, false);
+  content_field.append(input_field);
+
 
   $("." + div_name)
     .append(content_field);
@@ -199,7 +197,7 @@ var handleFiles = function(div_name, files){
   // TODO
   // Make changes so that UUID is used to append the image
   $("."+div_name).children().last()
-    .prepend(contentDiv)
+    .append(contentDiv)
     .css("display","flex");
 
   var reader = new FileReader();
