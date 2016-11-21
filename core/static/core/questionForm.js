@@ -220,10 +220,12 @@ var addExistingImageField = function(div_name, image_name, is_inline, src_path){
     .attr("id", uuid)
     .addClass("content_field")
     .addClass("image_field")
-    .addClass("existing-image")
-    .append(contentDiv);
+    .addClass("existing-image");
 
   content_field = addControlButtons(content_field, uuid, is_inline);
+
+  content_field.append(contentDiv);
+
 
   $("." + div_name)
     .append(content_field);
