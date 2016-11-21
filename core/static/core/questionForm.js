@@ -7,6 +7,13 @@ var MQ = MathQuill.getInterface(2);
 var mathField;
 var selectedSection = "";
 
+var preview_question_content = "";
+var preview_answer_explanation_content = "";
+var preview_additional_information = "";
+var preview_option_content_1 = "";
+var preview_option_content_2 = "";
+var preview_option_content_3 = "";
+
 var count = 0;
 // create a function that creates a span, textfield and mathfield
 // then add them to the array
