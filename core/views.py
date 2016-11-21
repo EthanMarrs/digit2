@@ -119,6 +119,11 @@ class TopicDetailView(DetailView):
         """ Get context for a topic. """
 
         context = super(TopicDetailView, self).get_context_data(**kwargs)
+        context['title'] = "Topic Detail"
+        context['user'] = self.request.user
+        context['has_permission'] = self.request.user.is_staff
+        context['site_url'] = "/",
+        context['site_header'] = "Dig-it"
         return context
 
 
@@ -180,7 +185,6 @@ class SyllabusTimelineView(View):
                 "description": topic.description,
                 "week_start": topic.week_start,
                 "spaced": spaced,
-                # "date_start": "",
                 "space": topic.get_number_of_blocks() * 95,
                 "number_of_blocks": topic.get_number_of_blocks(),
                 "number_of_questions": topic.get_number_of_questions(),
@@ -561,3 +565,50 @@ class MyTasksView(View):
                        "site_url": "/",
                        "site_header": "Dig-it",
                        "task_list": tasks})
+
+
+class SyllabusOverviewView(View):
+    """
+    A view that displays an overview of syllabi.
+    """
+    def get(self, request, *args, **kwargs):
+        syllabi = models.Syllabus.objects.all()
+        results = []
+
+        for syllabus in syllabi:
+            topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
+            result = []
+
+            for index, topic in enumerate(topics):
+                spaced = False
+
+                if index > 0:
+                    week_end = topics[index - 1].week_start + topics[index - 1].duration
+
+                    # If there's a space between two topics
+                    if (topic.week_start - 1) > week_end:
+                        spaced = True
+
+                result.append({
+                    "id": topic.id,
+                    "name": topic.name,
+                    "syllabus": topic.syllabus,
+                    "description": topic.description,
+                    "week_start": topic.week_start,
+                    "spaced": spaced,
+                    "space": topic.get_number_of_blocks() * 95,
+                    "number_of_blocks": topic.get_number_of_blocks(),
+                    "number_of_questions": topic.get_number_of_questions(),
+                    "duration": topic.duration,
+                    "week_end": topic.week_start + topic.duration - 1,
+                })
+
+            results.append(result)
+
+        return render(request, "syllabus_overview.html",
+                      {"title": "Syllabi Overview",
+                       "user": request.user,
+                       "has_permission": request.user.is_staff,
+                       "site_url": "/",
+                       "site_header": "Dig-it",
+                       "data": results})

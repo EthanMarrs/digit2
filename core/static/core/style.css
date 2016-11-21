@@ -120,6 +120,11 @@ table {
     margin-right: 10px;
 }
 
+.timeline-container {
+    float: left;
+    width: 30%;
+}
+
 .color-td {
     width: 10px;
     height: 100%;

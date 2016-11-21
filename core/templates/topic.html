@@ -4,32 +4,38 @@
 
 {% load static %}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/main.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}"/>
+{% endblock %}
+
 <script src="{% static 'core/jquery.min.js' %}"></script>
 <script src="{% static 'core/jquery.cookie.js' %}"></script>
 <script src="{% static 'core/events.js' %}"></script>
 
-<h1>{{ object }}</h1>
-
-<div class="module">
-    <h3>Blocks</h3>
-    <table>
+<div class="module full-width">
+   <div class="half">
+        <h3 class="pull-left large-h3">{{ object }}</h3>
+        <a class="inline-block pull-right" href="/admin/core/topic/{{ object.id }}/change/">Edit</a>
+        <p class="no-margin">{{ object.description }}</p>
+    </div>
+    <div class="results">
+    <table class="half">
         <thead>
-        <tr>
-            <th>ID</th>
-            <th>ORDER</th>
-            <th>NAME</th>
-            <th>DESCRIPTION</th>
-            <th></th>
-            <th></th>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <th>BLOCK</th>
+                <th>QUESTIONS</th>
+                <th></th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         {% for block in object.get_blocks %}
         <tr>
-            <td class="field-id"><a href="/admin/core/block/{{ block.id }}/change/">{{ block.id }}</a></td>
-            <td class="field-content">{{ block.order }}</td>
-            <td class="field-content">{{ block.name }}</td>
-            <td class="field-subject">{{ block.description|truncatechars:20 }}</td>
+            <td class="field-id"><a href="/blocks/{{ block.id }}/">{{ block.id }}</a></td>
+            <td class="field-order">Block {{ block.order|add:1 }}</td>
+            <td class="field-questions">{{ block.get_number_of_questions }} Question{{ block.get_number_of_questions|pluralize }}</td>
             <td class="field-up">
                 <a class="move-link" href="javascript:void(null);"
                    url="/admin/core/block/{{ block.id }}/move-up/?">
@@ -46,7 +52,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <br/>
+        </div>
 </div>
 
 {% endblock %}

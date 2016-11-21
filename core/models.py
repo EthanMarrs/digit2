@@ -60,7 +60,7 @@ class Topic(models.Model):
     name = models.TextField(max_length=50)
     description = models.TextField(max_length=200)
     syllabus = models.ForeignKey(Syllabus)
-    week_start = models.PositiveSmallIntegerField(unique=True)
+    week_start = models.PositiveSmallIntegerField()
     duration = models.PositiveSmallIntegerField()
 
     def clean(self):
