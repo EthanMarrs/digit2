@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.conf.urls import url
 from ordered_model.admin import OrderedModelAdmin
 from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User
 
 
 @admin.register(models.Question)
@@ -33,6 +34,11 @@ class TopicAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'assigned_by', 'assigned_to', 'topic', 'open', 'due_date')
     exclude = ('assigned_by',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name in ["assigned_to", "moderator"]:
+            kwargs["queryset"] = User.objects.filter(is_staff=True)
+        return super(TaskAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
         obj.assigned_by = request.user
