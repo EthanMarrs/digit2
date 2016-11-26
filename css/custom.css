@@ -1,0 +1,55 @@
+p {
+    font-size: 18px !important;
+}
+
+a, li {
+    font-size: 18px !important;
+}
+
+.lead {
+    font-size: 22px !important
+}
+
+#jumbo-top {
+    margin-top: 100px;
+}
+
+#normal-top {
+    margin-top: 50px;
+}
+
+#banner {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.medium-top-margin {
+    margin-top: 40px;
+}
+
+.dark-background {
+    background-color: #2A2A2A;
+}
+
+.color-white {
+    color: white;
+    padding: 50px;
+    padding-bottom: 0;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.white {
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+}

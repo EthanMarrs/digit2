@@ -1,74 +1,137 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Dig-it by EthanMarrs</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Dig-it</h1>
-        <p>Honours Project</p>
-
-        <p class="view"><a href="https://github.com/EthanMarrs/dig-it">View the Project on GitHub <small>EthanMarrs/dig-it</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/EthanMarrs/dig-it/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/EthanMarrs/dig-it/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/EthanMarrs/dig-it">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p><strong>Students:</strong>           Ethan Marrs
-                        and Nathan Begbie</p>
-
-<p><strong>Supervisor:</strong>     Melissa Densmore</p>
-
-<p><strong>Client:</strong>         Lauren Kotze, Project Manager of Dig-it</p>
-
-<h3>
-<a id="what-is-dig-it" class="anchor" href="#what-is-dig-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is Dig-it?</h3>
-
-<p>Dig-it is a mathematics mobi-site aimed at high school students. It supplies them with questions on a weekly basis and rewards them with airtime if a certain percentage of questions are answered correctly. Dig-it currently operates on a small scale with roughly 1500 students from Grades 10 to 12. Dig-it is built and managed by the Praekelt Foundation and is funded by Investec. Dig-it is built with Python and Django, a web framework. In the next year, Dig-it will be scaling to a national level of over 100 000 students in 3 provinces. Various stakeholders engage in the content creation process through various platforms, with multiple stages of the process managed by different systems. As Dig-it scales, it requires tools to manage this scaling effectively, through better content creation and management systems. Dig-it needs to be an inclusive platform that allows for full control of content creation and content management in one place. </p>
-
-<h3>
-<a id="project-aims" class="anchor" href="#project-aims" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project Aims</h3>
-
-<p>The aims of this project are to:</p>
-
-<ul>
-<li>Allow content creators to create content within the platform in order to store the underlying data as LaTeX and text rather than images and text, and to optimize the content delivery system.</li>
-<li>Internalize the syllabus and content management within the platform as much as possible, for intuitive use by stakeholders, to manage the content as the platform scales.</li>
-<li>Automate parts of content management system as identified by the client.</li>
-<li>Reduce the load size of the pages that are sent to learners.</li>
-</ul>
-
-<h3>
-<a id="research-questions" class="anchor" href="#research-questions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Research Questions</h3>
-
-<p>While not a research project, we wish to answer the following questions as the focus of this software engineering project:</p>
-
-<ul>
-<li>To what extent can the mathematical content be created by the platform, specifically with regards to equations by introducing a WYSIWYG equation editor?</li>
-<li>To what degree can a content management system reduce the reliance on external tools for coordinating content workflows?</li>
-<li>By what percentage can we decrease the average page size of questions and answers sent to students?</li>
-</ul>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/EthanMarrs">EthanMarrs</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+    <title>Dig-it 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="/css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="../" class="navbar-brand">Dig-it 2.0</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="content_creation.html">Content Creation & Optimization</a>
+                </li>
+                <li>
+                    <a href="content_management.html">Content Management</a>
+                </li>
+                <li>
+                    <a href="downloads.html">Downloads</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/contact.html" target="_blank">Contact</a></li>
+            </ul>
+        </div>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+</div>
+<div class="row dark-background">
+    <div class="col-lg-6">
+        <img id="banner" src="img/digit_header2.jpg">
+    </div>
+    <div class="col-lg-6">
+        <h1 class="color-white medium-top-margin">Dig-it 2.0</h1>
+        <p class="white lead">
+            A prototype application to improve the creation, management and delivery of mathematics
+            content on a mobile E-learning platform. The project was undertaken by Nathan Begbie and
+            Ethan Marrs in partnership with Praekelt.org's Dig-it team.
+        </p>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h1>Overview</h1>
+            <hr>
+            <p class="text-justify">
+                This is a fourth year computer science honours project at the University of Cape Town.
+                The project was completed by <a href="https://github.com/ethanmarrs/">Ethan Marrs</a>
+                and <a href="https://github.com/nathanbegbie/">Nathan Begbie</a>, and was supervised by
+                <a href="http://www.melissadensmore.com/">Melissa Densmore</a>.
+                This project is about the creation, management and optimization of mathematical content.
+                The project is based on Dig-it, Praekelt.org’s mobile learning platform. Dig-it is planning to scale
+                nationally, and a prototype was created to trial new features that might enable the platform to
+                scale in future.
+            </p>
+            <h1>Background</h1>
+            <hr>
+            <p class="text-justify">
+                Dig-it is a mathematics mobi-site aimed at high school students. It supplies them with questions on
+                a weekly basis and rewards them with airtime if a certain percentage of questions are answered
+                correctly. Dig-it currently operates on a small scale with roughly 1500 students from Grades 10 to
+                12. Dig-it is built and managed by the Praekelt Foundation and is funded by Investec. Dig-it is
+                built with Python and Django, a web framework. In 2017, Dig-it will be scaling to a
+                national level of over 100 000 students in 3 provinces. An overview of the current platform workflow
+                is indicated below.
+            </p>
+            <img class="center-block" src="img/workflow.png"/>
+            <p class="text-justify">
+                Extensive analysis
+            </p>
+            <h1>Goals</h1>
+            <hr>
+            <p class="text-justify">
+                The project had a number of goals:
+            </p>
+            <ul>
+                <li>
+                    Create a tool that can replace Microsoft Word for creating mathematical content and that stores the
+                    data as LaTeX.
+                </li>
+                <li>
+                    Create an automated tool to convert the stored data into mobile-first web pages and minimise the
+                    size of the content that students would consume.
+                </li>
+                <li>
+                    Allow for automatic or semi-automatic content availability, which involves making questions
+                    available to students at certain points in the syllabus.
+                </li>
+                <li>Improve the arrangement and selection of questions.</li>
+                <li>Reduce dependencies on tools external to the platform</li>
+                <li>Create an inclusive system that manages the moderation of questions before their release</li>
+            </ul>
+            <h1>Results</h1>
+            <hr>
+            <p class="text-justify">mcdmk</p>
+
+
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <ul class="list-unstyled">
+                            <li class="pull-right"><a href="#top">Back to top</a></li>
+                        </ul>
+
+                        <p>Based on <a href="http://getbootstrap.com" rel="nofollow">Bootstrap</a>. Icons from <a
+                                href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome</a>. Web
+                            fonts
+                            from <a href="http://www.google.com/webfonts" rel="nofollow">Google</a>.</p>
+
+                    </div>
+                </div>
+
+            </footer>
+
+
+        </div>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+</body>
 </html>
