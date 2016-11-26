@@ -1,0 +1,14 @@
+*.egg-info
+*.pyc
+/ve/
+/env/
+.cache/
+.coverage
+
+*.sqlite3
+.idea/
+
+/docs/build/
+celerybeat.pid
+/media_cdn/
+/tmp/*
