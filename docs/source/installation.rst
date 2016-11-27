@@ -9,4 +9,6 @@ Ubuntu Linux
  * Navigate to the new directory by running ``cd digit2``.
  * Run ``virtualenv -p python3 env`` to create a Python 3 virtual environment.
  * Run ``pip install -r requirements.txt requirments-dev.txt`` to install the required packages.
- * Once all dependencies have been installed, run ``./manage.py runserver``
+ * Once all dependencies have been installed, run ``./manage.py runserver`` to start the development server
+ * If you want scheduled tasks to execute, run ``celery -A digit beat -l info -S django`` in one terminal window,
+   and ``celery --app=digit.celery  worker --loglevel=info`` in another
