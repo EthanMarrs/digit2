@@ -11,8 +11,12 @@ from django.conf import settings
 
 @app.task()
 def due_tasks_reminder():
+    """
+    A task which sends a reminder email when a content creation task is near its due date and is still open.
+    The user that has been assigned the content creation task will receive the email.
+    """
     today = datetime.today()
-    tasks = Task.objects.filter(due_date__range=(today, today + timedelta(days=7)))
+    tasks = Task.objects.filter(due_date__range=(today, today + timedelta(days=7)), open=True)
 
     for task in tasks:
         if task.assigned_to.email:
@@ -27,6 +31,10 @@ def due_tasks_reminder():
 
 @app.task()
 def content_missing_warning():
+    """
+    A task which sends a warning email when topics scheduled for the next week are missing content.
+    This matches the visual warning provided in the admin home screen.
+    """
     problem_topics = []
 
     # Fetch the current week in ISO standard
