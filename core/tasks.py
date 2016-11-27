@@ -22,7 +22,7 @@ def due_tasks_reminder():
         if task.assigned_to.email:
             send_mail(
                 'Dig-it Reminder: Task Almost Due',
-                'This is a reminder than the task "{}" is due within the next week.'.format(task),
+                'This is a reminder that the task "{}" is due within the next week.'.format(task),
                 'notifications@dig-it.me',
                 [task.assigned_to.email],
                 fail_silently=False,
