@@ -71,7 +71,14 @@ class SyllabusDetailView(DetailView):
 
 
 class CommentView(View):
+    """
+    A view for posting comments on a question.
+    """
     def post(self, request, *args, **kwargs):
+        """
+        Creates a new comment associated with a question.
+        Requires the comment text and the primary key of the question as POST parameters.
+        """
         text = request.POST["text"]
         question_id = kwargs["pk"]
         user = request.user
@@ -84,7 +91,14 @@ class CommentView(View):
 
 
 class BlockView(View):
+    """
+    A view for posting and retrieving blocks.
+    """
     def post(self, request, *args, **kwargs):
+        """
+        Posting to the blockview allows for the updating of a block's description.
+        Requires the block primary key and description text.
+        """
         text = request.POST["text"]
         block_id = kwargs["pk"]
 
@@ -95,6 +109,9 @@ class BlockView(View):
         return HttpResponse(status=200)
 
     def get(self, request, *args, **kwargs):
+        """
+        Retrieves a block by primary key for display.
+        """
         block = models.Block.objects.get(id=kwargs["pk"])
 
         return render(request, "block.html",
@@ -163,7 +180,15 @@ class QuestionChangeStateView(View):
 
 
 class SyllabusTimelineView(View):
+    """
+    A complicated view for retrieving a syllabus timeline.
+    Makes use of JSON to send the data through to the JavaScript.
+    """
     def get(self, request, *args, **kwargs):
+        """
+        Retrieves a timeline for a syllabus, returning the data as well as a JSON
+        blob with additional information for visualization.
+        """
         syllabus = models.Syllabus.objects.get(pk=kwargs["pk"])
         topics = models.Topic.objects.filter(syllabus=syllabus).order_by("week_start")
         now = datetime.now()
@@ -206,10 +231,14 @@ class SyllabusTimelineView(View):
 
 
 class SyllabusListView(ListView):
+    """
+    A list view for Syllabi.
+    """
     model = models.Syllabus
     template_name = "syllabi.html"
 
     def get_context_data(self, **kwargs):
+        """Returns the context for a syllabus list."""
         context = super(SyllabusListView, self).get_context_data(**kwargs)
         context['title'] = "Syllabus List"
         context['user'] = self.request.user
@@ -219,6 +248,7 @@ class SyllabusListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
+        """Returns the queryset for syllabi. Gives additional information on number of questions and topics."""
         results = []
 
         for syllabus in models.Syllabus.objects.all():
@@ -241,10 +271,14 @@ class SyllabusListView(ListView):
 
 
 class TaskListView(ListView):
+    """
+    A list view for a content creation task.
+    """
     model = models.Task
     template_name = "tasks.html"
 
     def get_context_data(self, **kwargs):
+        """Updates the context for the template."""
         context = super(TaskListView, self).get_context_data(**kwargs)
         context['title'] = "Task List"
         context['user'] = self.request.user
@@ -256,6 +290,7 @@ class TaskListView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
+        """Get queryset for tasks. Allows for filtering by GET params. """
         active_filter = self.request.GET.get('open')
         assigned_to = self.request.GET.get('assigned_to')
 
@@ -280,7 +315,14 @@ class TaskListView(ListView):
 
 
 class TaskLiveView(View):
+    """
+    A view that provides an endpoint for setting all questions live in a topic.
+    """
     def post(self, *args, **kwargs):
+        """
+        Posting to this endpoint will iterate through all questions in the topic
+        and set them to live.
+        """
         task = models.Task.objects.get(pk=kwargs["pk"])
         topic = task.topic
 
@@ -292,7 +334,11 @@ class TaskLiveView(View):
 
 
 class TaskOpenView(View):
+    """
+    A view to toggle a task open or closed.
+    """
     def post(self, request, *args, **kwargs):
+        """Posting to this endpoint will toggle the task open attribute."""
         task = models.Task.objects.get(pk=kwargs["pk"])
         state = request.POST["state"]
 
@@ -307,7 +353,12 @@ class TaskOpenView(View):
 
 
 class QuestionEditView(View):
+    """
+    An important view for editing questions.
+    This is where the two parts of the project have been combined.
+    """
     def get(self, request, *args, **kwargs):
+        """Retrieves a question and provides the form and UI for editing question content."""
         question = models.Question.objects.get(id=kwargs["pk"])
 
         return render(request, "edit_question.html",
@@ -325,6 +376,7 @@ class QuestionEditView(View):
                        })
 
     def post(self, request, *args, **kwargs):
+        """Posting to this endpoint will update the subject for the question."""
         question = models.Question.objects.get(id=request.POST["question_id"])
         question.subject_id = request.POST["subject"]
         question.save()
@@ -345,7 +397,11 @@ class QuestionEditView(View):
 
 
 class SyllabusCreateWizardView(FormView):
+    """
+    A view for the creation wizard of a syllabus to make creating syllabi easier.
+    """
     def get(self, request, *args, **kwargs):
+        """Returns the form for editing syllabi."""
 
         return render(request, "syllabus_create_wizard.html",
                       {"title": "Syllabus Create Wizard",
@@ -355,6 +411,7 @@ class SyllabusCreateWizardView(FormView):
                        "site_header": "Dig-it"})
 
     def post(self, request, *args, **kwargs):
+        """Posts the form, saving the grade, syllabus and classes specified."""
         grade = models.Grade.objects.create(name=request.POST["grade"])
         syllabus = models.Syllabus.objects.create(grade=grade)
 
@@ -365,11 +422,16 @@ class SyllabusCreateWizardView(FormView):
 
 
 class TopicCreateWizardView(FormView):
+    """
+    A view that provides a topic creation wizard.
+    Makes creating topics easy.
+    """
     template_name = "topic_create_wizard.html"
     success_url = "/admin/"
     form_class = forms.TopicForm
 
     def get_context_data(self, **kwargs):
+        """Updates the context of a topic."""
         context = super(TopicCreateWizardView, self).get_context_data(**kwargs)
         context['title'] = "Topic Creation Wizard"
         context['user'] = self.request.user
@@ -404,6 +466,7 @@ class TopicCreateWizardView(FormView):
         return context
 
     def form_valid(self, form):
+        """Ensures the form is valid, handles form issues."""
         topic = models.Topic(
             name=form.cleaned_data['name'],
             description=form.cleaned_data['description'],
@@ -488,8 +551,6 @@ class QuestionContentView(View):
         }
 
         return JsonResponse(data=data, status=200)
-        # except Exception as error:
-            # return JsonResponse(data={"error": error}, status=400)
 
     def post(self, request, *args, **kwargs):
         """Post view for question content."""

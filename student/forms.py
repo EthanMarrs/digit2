@@ -29,11 +29,5 @@ class QuizForm(forms.Form):
     A form for submitting responses to a question.
     """
 
-    # def __init__(self, *args, **kwargs):
-    #     super(QuizForm, self).__init__(**kwargs)
-    #     options = kwargs.pop("options")
-    #     print(options)
-    #     self.fields["option"] = forms.RadioSelect(choices=options)
-
     question = forms.IntegerField(widget=forms.HiddenInput())
-    # option = forms.RadioSelect()
+

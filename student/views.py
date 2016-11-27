@@ -30,13 +30,16 @@ class HomeView(View):
 class QuizView(View):
     """
     The view for students answering questions. This is a fairly complex view, since it
-    needs to calculate which questions to show to a student.
-    Firstly, the questions answered within the last 2 weeks are selected.
-    Then the available questions for the last 2 weeks are selected.
-    The answered questions are removed from the available pool.
-    A question is randomly selected from the pool.
+    needs to calculate which questions to show to a student, and store the option selected by the student.
     """
     def get(self, request):
+        """
+        Firstly, the questions answered within the last 2 weeks are selected.
+        Then the available questions for the last 2 weeks are selected.
+        The answered questions are removed from the available pool.
+        A question is randomly selected from the pool.
+        If the student has answered more than 3 questions in the last day, no questions are delivered.
+        """
         user = request.user
         week = int(datetime.now().strftime("%V"))
 
@@ -98,7 +101,11 @@ class QuizView(View):
             return HttpResponseRedirect('/login/')
 
     def post(self, request, *args, **kwargs):
-        # TODO handle conversion error
+        """
+        Posting to this endpoint results in the creation of a question response.
+        This ties the question, user and selected answer together.
+        Whether the answer was correct is also stored.
+        """
         question_id = int(request.POST["question"])  # Question ID
         option_id = int(request.POST["option"])  # Option ID
         option = models.Option.objects.get(id=option_id)
@@ -132,11 +139,17 @@ class QuizView(View):
 
 
 class SignupView(FormView):
+    """
+    A simple view for signing up students.
+    """
     template_name = "signup.html"
     success_url = "/welcome/"
     form_class = forms.SignupForm
 
     def form_valid(self, form):
+        """
+        Checks that the form is valid before saving the new User.
+        """
         user = User.objects.create_user(
             username=form.cleaned_data['username'],
             first_name=form.cleaned_data['first_name'],

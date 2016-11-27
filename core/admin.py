@@ -36,6 +36,10 @@ class TaskAdmin(admin.ModelAdmin):
     exclude = ('assigned_by',)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Modifies the queryset options for the User select box.
+        Ensures on Users that are staff are displayed.
+        """
         if db_field.name in ["assigned_to", "moderator"]:
             kwargs["queryset"] = User.objects.filter(is_staff=True)
         return super(TaskAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)

@@ -185,6 +185,7 @@ class Subject(models.Model):
 
 
 class Task(models.Model):
+    """Class that describes a content creation task."""
     assigned_by = models.ForeignKey(User, related_name="assigned_by")
     assigned_to = models.ForeignKey(User, related_name="assigned_to")
     moderator = models.ForeignKey(User, related_name="moderator", default=None)
