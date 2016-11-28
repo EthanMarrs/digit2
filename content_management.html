@@ -77,20 +77,124 @@
                 60% of questions correctly. Currently, Dig-it operates on a small scale with roughly 1500 active
                 students using the platform from grades 10 through to 12.
             </p>
+            <h3>Problem Statement</h3>
+            <p class="text-justify">
+                In 2017, Dig-it is scaling to the national level, aiming to service over 100 000 students in 3
+                provinces. For a number of reasons, Dig-it’s current workflow and codebase need to be adjusted to cater
+                for this expansion. The primary concerns regarding the current system are the creation of mathematical
+                content, the management of content and curricula, and optimizing the delivery of this content to
+                students.
+            </p>
+            <h3>Proposed Solution</h3>
+            <p class="text-justify">
+                The proposed solution was to create a prototype which demonstrates possible features for the project to
+                scale in future. The prototype was built from the ground up, focussing on our areas of interest and
+                research questions. This project is a proof of concept, and a potential reference design.
+            </p>
+            <h3>Aims</h3>
+            <p class="text-justify">
+                The primary aims of the project are to:
+            </p>
+            <ul>
+                <li>Allow for automatic or semi-automatic content availability, which involves making questions
+                    available to students at certain points in the syllabus
+                </li>
+                <li>Improve the arrangement and selection of questions</li>
+                <li>Reduce dependencies on tools external to the platform</li>
+                <li>Create an inclusive system that manages the moderation of questions before their release</li>
+            </ul>
+            <h1>Design</h1>
+            <p class="text-justify">
+
+            </p>
+            <h1>Development and Implementation</h1>
+            <p class="text-justify">
+
+            </p>
+            <h1>Results</h1>
+            <p class="text-justify">
+
+            </p>
+            <h1>Conclusions</h1>
+            <p class="text-justify">
+                A prototype system for managing mathematical content was developed in an attempt to address some of the
+                issues currently facing the Dig-it platform. A special emphasis was placed on reducing the reliance on
+                tools external to the platform, and improving the arrangement of curricula for students. With regards to
+                our research questions, it appears as though a custom CMS can certainly reduce the reliance on external
+                tools, especially when their current usage is limited. For Dig-it, this included spreadsheets and task
+                tracking software. The reliance on email as a communication tool was also reduced, but it was noted that
+                email is used elsewhere in the organisation, and so it would be likely users will continue to fall back
+                on its usage, regardless. Visual elements in the prototype were well received, especially when they
+                provided an overview of Dig-it content that improved upon the usage of spreadsheets. Hence, timelines
+                and overview screens proved to be the most effective in conveying complex curricula information to
+                administrators.
+                The new approach to the design of the system, using the weeks of the year instead of fixed dates,
+                allowed for the structuring of syllabi such that questions could be made available to students as soon
+                as they were completed. This new structure did result in some confusion with the CMS interface however,
+                despite iteration on the initial designs. This indicates that there is room for improvement in this
+                area. Somewhat unexpectedly, the interface ended up being quite challenging both from design and
+                technical perspectives.
+                Ultimately, we believe that we have met our overall aim for the project, to help provide new ideas and
+                approaches for the Dig-it platform to scale effectively in future.
+            </p>
+            <h1>Future Work</h1>
+            <p class="text-justify">
+                This paper has focussed mainly on the content management implications for Dig-it in future. Through the
+                implementation of a prototype, it seems clear that there are several possibilities for streamlining the
+                platform and improving operational efficiency. One aspect of this is automating the creation of
+                mathematical content. For a small platform, it would be possible to continue using a variety of tools to
+                manage content creation, but it appears as though this process would become increasingly difficult as
+                the platform scales.
+                The second aspect is how this content is managed sustainably. This prototype has demonstrated that
+                incorporating functionality for content moderation is useful to the administrators of the platform, and
+                that arrangement of questions on a single system can improve the usability of the overall platform. This
+                may be an area of future work for the project. It can also be said that features that were specifically
+                determined as out of scope, might be an area of future work for the prototype. This could include
+                integrating leaderboards and gamification into the new application design and workflow.
+                The project also devised a method to allow for questions to be delivered to students without manual
+                intervention. While this appeared to work in our testing, more research needs to be done to ascertain
+                whether this is a suitable approach for a production system.
+            </p>
+            <h1>Acknowledgements</h1>
+            <p class="text-justify">
+                Firstly, I’d like to thank my project partner, Nathan Begbie, for all his help and hard work on the
+                project. I would also like to extend a special thanks to Lauren Kotze for acting as our primary liaison
+                at Praekelt.org, and Milton Madanda for providing valuable advice. Lastly, I’d like to thank Melissa
+                Densmore and Michelle Kuttel, our supervisor and second reader respectively, for their guidance and
+                support on the project.
+            </p>
             <h1>Online Appendices</h1>
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>Section</th>
-                    <th>Format</th>
                     <th>File</th>
+                    <th>Description</th>
+                    <th>Format</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td></td>
-                    <td>All Tests</td>
-                    <td><a href=""></a></td>
+                    <td >Testing</td>
+                </tr>
+                <tr>
+                    <td><a href="img/test_all.png">test_all.png</a></td>
+                    <td>Screenshot of all Digit2 tests.</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td><a href="img/test_core.png">test_core.png</a></td>
+                    <td>Screenshot of test coverage report for the core module.</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td><a href="img/test_student.png">test_student.png</a></td>
+                    <td>Screenshot of test coverage report for the student module.</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td><a href="img/travis_ci.png">travis_ci.png</a></td>
+                    <td>Screenshot of continuous integration testing on Travis CI.</td>
+                    <td>png</td>
                 </tr>
                 </tbody>
             </table>
