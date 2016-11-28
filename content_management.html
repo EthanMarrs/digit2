@@ -105,8 +105,59 @@
             </ul>
             <h1>Design</h1>
             <p class="text-justify">
-
+                Given the software engineering nature of the project, design was an important aspect of the project’s
+                planning and incremental improvement. Early on is the planning stages, it was decided that user
+                involvement was key to the success of the project, and so a form of User-Centred Design was adopted. As
+                mentioned previously, this required regular meetings with Praekelt.org stakeholders involving
+                demonstrations, sketches, clarifications and discussions.
+                Overall, the content management aspect of the project had three primary design focusses. The first was
+                the technical design of the application, involving system architecture, design patterns and programming
+                decisions. The second focus was on realising the user stories defined by stakeholders, and thus the
+                information flows that are involved. The final focus was on the user interface and visual aspects of the
+                system – how the design could best aid the user in constructing syllabi and content.
             </p>
+            <h3>General Design</h3>
+            <p class="text-justify">
+                The design for the prototype is based on the idea that the structure of a syllabus should be determined
+                by the weeks in a year. By using ISO week numbers (each week is numbered between 1 and 52, occasionally
+                53 in leap years) instead of specific dates, content can be reused in the next year with few changes to
+                the underlying data.
+                This means that a syllabus is made up of topics with specific start and end weeks. Topics are then
+                broken into blocks, which are then associated with questions. Blocks are a week long, but could be of
+                arbitrary length, hence their naming. Students will be delivered questions that are at most two weeks
+                behind the current date, introducing the idea of a 2 week “moving window” of content. This helps prevent
+                the predicament of students falling behind in the syllabus. The final concept introduced is that of a
+                question creation task. This is a task set up to request the creation of
+                questions for a given topic. This then encapsulates the content creation and moderation processes. The
+                implementation of these concepts through Django models and hence database tables, is
+                described visually in the model diagram, available in the online appendices.
+            </p>
+            <h3>Use Cases</h3>
+            <p class="text-justify">
+                The use cases for the Dig-it prototype were developed collaboratively with the Dig-it project manager
+                and content uploader. Some use cases were identified through the scheduled project meetings, while
+                others were identified during a specific use case session. The minutes of these meetings can be found
+                online, alongside the output from the use case session.
+                The new Dig-it workflow was designed alongside the use cases, and is described below. Two use case
+                diagrams have been created to describe the requirements of the system. The first
+                is the simplest, and describes the student’s view of Dig-it, the second use case diagram relates to the
+                administration aspect of the system, and involves five key actors: syllabus creator, content creator,
+                content moderator, project manager and time.
+            </p>
+            <img class="center-block" src="img/use_cases_questions.png" style="width:50%;">
+            <br>
+            <img class="center-block" src="img/use_cases3.png" style="width:50%;">
+            <br>
+            <h3>New Workflow</h3>
+            <p class="text-justify">
+                To meet the design objective of automating aspects of the original system and unifying processes, a new
+                workflow needed to be designed.An important part of this new workflow involves the state of questions.
+                The figure below describes how questions can progress from the state of “incomplete” to “complete”. A
+                question
+                transitions between these states based on interactions between the content creators, content moderators
+                and platform manager.
+            </p>
+            <img class="img-responsive" src="img/question_state.png">
             <h1>Development and Implementation</h1>
             <p class="text-justify">
 
@@ -174,7 +225,53 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td >Testing</td>
+                    <td colspan="3"><b>Evaluation Session</b></td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/EvaluationSession.pdf">EvaluationSession.pdf</a></td>
+                    <td>The slideshow presented to the client at the usability session</td>
+                    <td>pdf</td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/sus.pdf">sus.pdf</a></td>
+                    <td>System Usability Scale questionnaire</td>
+                    <td>pdf</td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/scenarios.pdf">scenarios.pdf</a></td>
+                    <td>The scenarios and roles presented to the client for the usability session</td>
+                    <td>pdf</td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/Results.xlsx">Results.xlsx</a></td>
+                    <td>System Usability Scale results from evaluation session</td>
+                    <td>xlsx</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Design</b></td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/design_output.pdf">design_output.pdf</a></td>
+                    <td>A document that contains images of the design process for Dig-it 2.0</td>
+                    <td>pdf</td>
+                </tr>
+                <tr>
+                    <td><a href="downloads/digit.png">digit.png</a></td>
+                    <td>Model diagram for the Dig-it Django application</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td><a href="img/workflow.png">workflow.png</a></td>
+                    <td>A diagram depicting the current workflow of the Dig-it system</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td><a href="img/workflow_new.png">workflow_new.png</a></td>
+                    <td>A diagram depicting the new workflow for the Dig-it 2.0 prototype</td>
+                    <td>png</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Testing</b></td>
                 </tr>
                 <tr>
                     <td><a href="img/test_all.png">test_all.png</a></td>
