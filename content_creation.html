@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dig-it 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="../" class="navbar-brand">Dig-it 2.0</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="./">Home</a>
+                </li>
+                <li>
+                    <a href="content_creation.html">Content Creation & Optimization</a>
+                </li>
+                <li>
+                    <a href="content_management.html">Content Management</a>
+                </li>
+                <li>
+                    <a href="downloads.html">Downloads</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/contact.html" target="_blank">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <br>
+            <br>
+            <div id="normal-top" class="jumbotron">
+                <h1>Dig-it 2.0</h1>
+                <h2>A Prototype System for Creating and Optimising Mathematics Content</h2>
+                <p class="lead">By Nathan Begbie</p>
+            </div>
+            <h1>Abstract</h1>
+            <p class="text-justify">
+                This project presents the development of tools for the creation and optimisation of mathematical content for Dig-it. Dig-it's current tools and workflows were found to be inefficient and costly. Given the cost of data and the importance of user experience in fast loading sites, it was also important that content delivered to users be optimised. This project focussed on creating a tool for the creation of mathematical content that could be used on their platform and optimise the content that was delivered to users. This project resulted in the creation of a browser-based tool that allows content creators to replace the use of their current tools used to create mathematical content (MS Word). The creation of tools for automated content optimisation of content was successful in reducing page-size by more than half. These tools were integrated into a fully functional prototype which received high usability ratings and overall met the clients wishes.
+            </p>
+            <img class="center-block img-responsive" src="img/nathan_ArchitectureDesign.png"/>
+
+            <h1>Background</h1>
+            <p class="text-justify">
+                Dig-it is a mathematics mobi-site aimed at high school students. It supplies them with questions on a weekly basis and rewards them with airtime if a certain percentage of questions are answered correctly. Dig-it currently operates on a small scale with roughly 1500 students from Grades 10 to 12. In the next year, Dig-it will be scaling to a national level of over 100 000 students in 3 provinces.
+            </p>
+            <p class="text-justify">
+                In order to scale, it is important that the platform be managed properly. Unfortunately the platform faces a number of issues, in particular with how content is managed on the platform. This is partly influenced by the dependence on external tools to create mathematical content. The current workflow for content creation is that a question is created in a Word document, using text, images and Word’s WYSIWYG equation editor to create equations. The text and images are then copied and pasted into a web-form, while screenshots are taken of the equations and uploaded to the web-form. The Dig-it team’s reliance on this tool and this unwieldy, time-intensive and unoptimised process was iden- tified this as one the main blockers to optimising Dig-it’s work flows.
+            </p>
+            <h1>Aims</h1>
+            <p>The aim of this project was to optimise content creation, management and delivery. This part of the project in particular had two aims.
+                <ul>
+                    <li>create a tool that can replace Word as a tool for creating mathematical content and storing data as LaTeX.</li>
+                    <li>The second aim, was to create an automated tool to convert the stored data into mobile-first web pages and</li>
+                </ul>
+            </p>
+            <br/>
+
+            <img class="center-block img-responsive" style="border: 1px solid black;" src="img/nathan_FinalToolbar.png"/>
+
+            <h1>Content Creation</h1>
+            <p>This involved a user-centered approach to creating a toolbar with the Dig-it team. There were also a number of functional requirements.
+                <ul>
+                    <li>The equation editor should work in the browser.</li>
+                    <li>It should be a WYSIWYG editor.</li>
+                    <li>It should be a ’structured’ editor, with content represented in blocks.</li>
+                    <li>The editor should be capable of creating the same con- tent as the current tool, MS Word’s MathType equa- tion editor.</li>
+                    <li>It should be able to store the underlying data as latex.</li>
+                    <li>It should be able to integrate with the Django frame- work to fetch, edit and send the content to the server.</li>
+                </ul>
+
+            </p>
+            <p>These were all met with the funcional prototype.</p>
+
+            <h1>Content Optimisation</h1>
+            <p>This process involved taking a sample of Dig-it's current questions, extracting it into a measurable format, then investigating ways in which to render mathematical content. It was found that rendering latex as images was the most effective way to display information.</p>
+
+            <img class="center-block img-responsive" style="border: 1px solid black;" src="img/nathan_ContentOptimisation.png"/>
+            <br/>
+            <br/>
+            <img class="center-block img-responsive" src="img/nathan_average_size_comparison.png"/>
+
+            <h1>Results</h1>
+            <p>
+                <ul>
+                    <li>The content creation tool met all of the functional requirements of the client</li>
+                    <li>When tested for usabiliy, the tool received an excellent score of 81.6 .</li>
+                    <li>Page size was reduced to 41% of the original.</li>
+                </ul>
+            </p>
+
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-unstyled">
+                            <li class="pull-right"><a href="#top">Back to top</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
