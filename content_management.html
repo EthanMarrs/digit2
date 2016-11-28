@@ -34,9 +34,6 @@
                     <a href="downloads.html">Downloads</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/contact.html" target="_blank">Contact</a></li>
-            </ul>
         </div>
     </div>
 </div>
@@ -148,6 +145,16 @@
             <br>
             <img class="center-block" src="img/use_cases3.png" style="width:50%;">
             <br>
+            <h3>Architecture</h3>
+            <p class="text-justify">
+                The prototype architecture is described in the figure below. Users interact with the Dig-it application,
+                which
+                interacts with a database. Dig-it has been structured to have two modules (or as Django describes them,
+                “apps”). The “core” module encapsulates all the administrative features and the models for storing the
+                data. The “student” module encapsulates all student-facing features such as answering questions and
+                signing up on the platform.
+            </p>
+            <img class="img-responsive" src="img/architecture2.png">
             <h3>New Workflow</h3>
             <p class="text-justify">
                 To meet the design objective of automating aspects of the original system and unifying processes, a new
@@ -160,11 +167,65 @@
             <img class="img-responsive" src="img/question_state.png">
             <h1>Development and Implementation</h1>
             <p class="text-justify">
-
+                Praekelt.org almost exclusively writes software in the Python language for their projects. Thus, the
+                existing Dig-it system, which was developed some time ago, made use of Python 2. Praekelt.org also makes
+                extensive use of the Django Web Framework1 to speed up the software development process and provide a
+                consistent technological base for their applications.
+                Both project members have experience with Python and Django from past projects, and this was a natural
+                choice for the development of the project. The Python/Django stack’s ability to enable faster
+                prototyping and development was also deemed to be useful in this project. The latest versions of Python
+                (version 3.5) and Django (version 1.10) were used. Given that the project is web-based, standard web
+                technologies have also been used. This includes HTML, CSS and JavaScript. The stack used can also be
+                said to allow for high portability, given that Django runs on Windows, MacOS and Linux.
             </p>
+            <h3>Student Screens</h3>
+            <p class="text-justify">
+                Since the Dig-it prototype is primarily focussed on syllabus management, the student functionality is
+                quite simple. Students can sign up, login and answer questions. The figure below shows the question
+                screen students are presented. The delivery of questions to the user is much more complicated, although
+                from the user’s perspective, it seems quite simple. The content delivery is discussed in Nathan Begbie’s
+                side of the project, although it integrates with the overall system.
+            </p>
+            <div class="center-block">
+                <img class="center-block" src="img/screen_answer.png" style="width:20%;">
+            </div>
+            <h3>Curriculum Management</h3>
+            <p class="text-justify">
+                Managing the curriculum is done through a customised CMS that provides for standard Create, Read, Update
+                and Destroy (CRUD) operations on stored data, and tasks specific to the platform. Syllabi are created
+                through standard creation forms, and are linked up to grades and classes. Students are then allocated to
+                classes. The syllabus creator can then create topics for the syllabus, which autogenerates the required
+                number of questions. A task can then be made to request the creation of content, assigning moderators
+                and creators to fill in the content for the blank questions. The figure below shows the administration
+                home
+                page for Dig-it.
+            </p>
+            <img class="img-responsive" src="img/admin.png">
+            <h3>Content Moderation</h3>
+            <p class="text-justify">
+                Content moderation occurs on the question creation task screen displayed in the figure below. Both
+                content
+                creators and content moderators will use this to navigate the content creation process. This screen
+                displays all the questions in the associated topic, with descriptions for each week of work and the
+                status of each question. From here, users can edit each question’s mathematical content, answers etc.
+            </p>
+            <img class="img-responsive" src="img/moderation.png">
+            <br>
             <h1>Results</h1>
             <p class="text-justify">
-
+                Throughout the project, we received feedback on our progress. Mainly, this related to the flows within
+                the application, and the tasks that needed to be completed. On more than one occasion, our meetings
+                indicated that some of the functionality was confusing to use. This was one of our key findings, that
+                although curriculum information appears easy to organise from a high-level perspective, the interface
+                quickly becomes confusing for end users. We also received feedback that the more visual aspects of the
+                system (such as timelines and year overviews) were well received, since the current system mostly uses
+                basic CRUD forms. A final demonstration of the project and usability session was conducted with
+                stakeholders at
+                Praekelt.org. We made use of SUS to structure this process. Three parties
+                participated in the SUS evaluation after working through some scenarios on the platform. The evaluation
+                resulted in a SUS score of 81.6, which is generally considered to be above average. While the SUS score
+                is only one metric, it does appear to suggest that the application was largely usable for its intended
+                purpose.
             </p>
             <h1>Conclusions</h1>
             <p class="text-justify">
@@ -214,7 +275,7 @@
                 Densmore and Michelle Kuttel, our supervisor and second reader respectively, for their guidance and
                 support on the project.
             </p>
-            <h1>Online Appendices</h1>
+            <h1 id="supplementary-material">Online Appendices</h1>
             <table class="table table-bordered">
                 <thead>
                 <tr>
