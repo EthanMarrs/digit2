@@ -594,6 +594,7 @@ class QuestionContentView(View):
 class FileUploadView(View):
     """
     A View that processes image content.
+    Used in conjuntion with the mathtoolbar for editing questions.
     """
 
     def post(self, request, *args, **kwargs):
