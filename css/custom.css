@@ -18,6 +18,10 @@ th, td {
     margin-top: 100px;
 }
 
+.jumbo-margin {
+    margin-top: 170px;
+}
+
 #normal-top {
     margin-top: 50px;
 }
@@ -37,8 +41,6 @@ th, td {
 
 .color-white {
     color: white;
-    padding: 50px;
-    padding-bottom: 0;
 }
 
 .vcenter {
