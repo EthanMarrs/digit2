@@ -1,14 +1,12 @@
-
-var fetchQuestionInfo = function(){
-  // fetch the content
-  getData()
-
-}
-
-var getData = function(){
+/**
+ * Exposes the option to fetch data from a defined endpoint
+ * @param {string} data_endpoint - URL for where the data is fetched from
+ * @param {string} image_root - the root that images will reference
+ */
+var getData = function(data_endpoint, image_root){
   console.log("getData() is being called");
   $.ajax({
-    url: '../../../question_content/' + '?question_id=' + global_question_id, // TODO: This needs to be passed in as an attribute
+    url: data_endpoint, // TODO: This needs to be passed in as an attribute
     type: 'GET',
     success: function(data){
       if(data["message"]){
@@ -16,7 +14,7 @@ var getData = function(){
       }
       else{
         console.log("populating");
-        populateForm(data);
+        populateForm(data, image_root);
       }
     },
     error: function(data){
@@ -26,11 +24,12 @@ var getData = function(){
   });
 }
 
-/*
-Accepts Javascript object of data for form
-Returns: Nothing
-*/
-var populateForm = function(data){
+/**
+ * Adds data to the page from a JSON object of structured data
+ * @param {object} data - JavaScript object containing the data to populate the fields
+ * @param {string} image_root - the root that images will reference
+ */
+var populateForm = function(data, image_root){
   var sections = [
     "question_content",
     "answer_explanation_content",
@@ -49,7 +48,7 @@ var populateForm = function(data){
         addEquationField(section_name, block["latex"], is_inline);
       }
       else if(block["image"]){
-        addExistingImageField(section_name, block["image"], is_inline, "/media/optimised_media/")
+        addExistingImageField(section_name, block["image"], is_inline, image_root)
       }
       else{
         throw "Block is not defined as text, latex or image";
@@ -59,14 +58,3 @@ var populateForm = function(data){
   // check the correct answer
   $("#" + data["correct"]).prop("checked", true);
 }
-// populate the question content
-
-// populate the answer content
-
-// populate the additional info block
-
-// for each quesiton, populate the block
-
-// iterate function
-// if it's text or latex, create the latex
-// handle it differently if it's an image

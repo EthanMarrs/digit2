@@ -103,12 +103,16 @@ https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/
 <script src="{% static 'core/setupToolbar.js' %}"></script>
 {% autoescape off %}
 <script>
-    fetchQuestionInfo();
+    // create the form
+    setupToolbar()
+
+    getData(
+        '../../../question_content/' + '?question_id=' + global_question_id,
+        "/media/optimised_media/");
     addToolbarButtons();
     // add function listeners 'postInfo()'
     $("#save_button").on("click",function(){
-        console.log("boop");
-        postInfo();
+        postInfo('../../../question_content/file_upload/', '../../../question_content/', true);
     })
 </script>
 {% endautoescape %}

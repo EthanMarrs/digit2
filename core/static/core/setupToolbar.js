@@ -1,3 +1,8 @@
+/**
+ * Called when a toolbar button is pressed
+ * Calls the MathQuill API
+ * The correct MathQuill object is kept in the selectedSection var
+ */
 var addMathContent = function(command_type, command){
   // get the MathField object in question
 
@@ -12,23 +17,29 @@ var addMathContent = function(command_type, command){
   }
 }
 
-  buttons_info = [
-    {name:"Frequently Used",
-     content:[
-      {button_content:"x^{\\square}", command_type:"keystroke", command:"^"},
-      {button_content:"\\sqrt{ x }", command_type:"cmd", command:"\\sqrt"},
-      {button_content:"\\sqrt[y]{ x }", command_type:"keystroke", command:"\\\\nthroot"},
-      {button_content:"\\times", command_type:"cmd", command:"\\times"},
-      {button_content:"x^{\\circ}", command_type:"keystroke", command:"^\\\\circ"},
-     ],
-    },
-    {name:"Algebra",
-     content:[
-        {button_content:"\\frac{\\square}{\\square}", command_type:"cmd", command:"\\\\frac"},
-      ],
-    }
-  ]
+// The structure of the toolbar
+// as well as the commands
+buttons_info = [
+  {name:"Frequently Used",
+   content:[
+    {button_content:"x^{\\square}", command_type:"keystroke", command:"^"},
+    {button_content:"\\sqrt{ x }", command_type:"cmd", command:"\\sqrt"},
+    {button_content:"\\sqrt[y]{ x }", command_type:"keystroke", command:"\\\\nthroot"},
+    {button_content:"\\times", command_type:"cmd", command:"\\times"},
+    {button_content:"x^{\\circ}", command_type:"keystroke", command:"^\\\\circ"},
+   ],
+  },
+  {name:"Algebra",
+   content:[
+      {button_content:"\\frac{\\square}{\\square}", command_type:"cmd", command:"\\\\frac"},
+    ],
+  }
+]
 
+/**
+ * Iterates through buttons_info
+ * Creates the buttons and tabs that they exist in
+ */
 var addToolbarButtons = function(){
   console.log("boop!");
   var tab_count = 1

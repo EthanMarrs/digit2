@@ -1,14 +1,55 @@
-(function(){
-  console.log("Running");
+/**
+ * Returns a jQuery object - a button that fires the addEquationField function when clicked
+ * @param {string} class_name - the class of the object associated with addEquationField button
+ */
+var create_add_equation_button = function(class_name){
+  return $("<button></button>")
+    .attr("type", "button")
+    .addClass("create-block-buttons")
+    .html("Add Equation")
+    .attr("onClick",
+          "addEquationField('" + class_name + "', '')");
+}
+
+/**
+ * Returns a jQuery object - a button that fires the addTextField function when clicked
+ * @param {string} class_name - the class of the object associated with addTextField button
+ */
+var create_add_text_button = function(class_name){
+  return $("<button></button>")
+    .attr("type", "button")
+    .addClass("create-block-buttons")
+    .html("Add Text")
+    .attr("onClick",
+          "addTextField('" + class_name + "','',false)");
+}
+
+/**
+ * Returns a jQuery object - a button that fires the addImageField function when clicked
+ * @param {string} class_name - the class of the object associated with addImageField button
+ */
+var create_add_image_button = function(class_name){
+  return $("<button></button>")
+    .attr("type", "button")
+    .addClass("create-block-buttons")
+    .html("Add Image")
+    .attr("onClick",
+          "addImageField('" + class_name + "')");
+}
+
+/**
+ * for each item passed into the array,
+ * a div is created with that string used as the class of that div
+ * the resulting html is returned
+ */
+var setupToolbar = function(){
+  console.log("Running Setup");
 
   var root_div = $("#edit-panel").addClass("panel");
+  // TODO: need to make this optional
   $("#preview-panel").addClass("panel");
 
-  /*
-    for each item passed into the array,
-    a div is created with that string used as the class of that div
-    the resulting html is returned
-  */
+  /** This function iterates through the array */
   var createContentSections = function(array, is_option){
     var parentDiv = $("<div></div>");
 
@@ -25,24 +66,12 @@
           .append("<div class='option-Dive' >Correct<input type = 'radio' name = 'correct_option' id = '" + class_name + "' value = '" + class_name + "' /></div>")
       }
 
-      var add_equation_button = $("<button></button>")
-        .attr("type", "button")
-        .addClass("create-block-buttons")
-        .html("Add Equation")
-        .attr("onClick",
-              "addEquationField('" + class_name + "', '')");
-      var add_text_button = $("<button></button>")
-        .attr("type", "button")
-        .addClass("create-block-buttons")
-        .html("Add Text")
-        .attr("onClick",
-              "addTextField('" + class_name + "','',false)");
-      var add_image_button = $("<button></button>")
-        .attr("type", "button")
-        .addClass("create-block-buttons")
-        .html("Add Image")
-        .attr("onClick",
-              "addImageField('" + class_name + "')");
+      var add_equation_button = create_add_equation_button(class_name);
+
+      var add_text_button = create_add_text_button(class_name);
+
+      var add_image_button = create_add_image_button(class_name);
+
       var button_console = $("<div></div>")
         .addClass("create-block-buttons-container");
 
@@ -96,4 +125,4 @@
     .attr("onClick", "togglePreview()");
   // type='button' class='create-block-buttons' onClick='togglePreview()'
   $(".submit-row").prepend(togglePreviewButton);
-})();
+}

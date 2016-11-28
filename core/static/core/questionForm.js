@@ -1,3 +1,7 @@
+/**
+ * Get a UUID
+ * A wrapper for the uuid function
+ */
 var getUUID = function(){
   return uuid()
 }
@@ -8,11 +12,13 @@ var mathField;
 var selectedSection = "";
 
 var count = 0;
-// create a function that creates a span, textfield and mathfield
-// then add them to the array
-// then add them to the document
 
-// appends buttons that control the handling of the blocks
+/**
+ * Adds buttons to jQuery object
+ * @param {object} object - the object that div will be appended to
+ * @param {string} uuid - refernce to div that buttons will act upon
+ * @param {boolean} checked - whether the inline checkbox is true
+ */
 var addControlButtons = function(object, uuid, checked){
   var buttonContainer = $("<div></div>")
     .addClass("button-container");
@@ -21,17 +27,27 @@ var addControlButtons = function(object, uuid, checked){
 
   buttonContainer
     .append("<div class='control-button' ><input type='checkbox' class='control-checkbox' " + checked_value + ">inline</input></div>")
-    .append("<button type='button' class='control-button' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>")
-    .append("<button type='button' class='control-button' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'></i></button>")
-    .append("<button type='button' class='control-button' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'></i></button>");
+    .append("<button type='button' class='control-button move-up' onClick='moveUp(\"" + uuid + "\")'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>")
+    .append("<button type='button' class='control-button move-down' onClick='moveDown(\"" + uuid + "\")'><i class='fa fa-chevron-down' aria-hidden='true'></i></button>")
+    .append("<button type='button' class='control-button delete' onClick='deleteBlock(\"" + uuid + "\")'><i class='fa fa-trash' aria-hidden='true'></i></button>");
 
   return(object.append(buttonContainer));
 }
 
+/**
+ * Changes the selectedSection to is of last clicked on MathQuill equation
+ * Allows toolbar actions to reference the correct equation field.
+ */
 var attachToolbar = function(id_value){
     selectedSection = dict_of_questions[id_value]
   }
 
+/**
+ * Adds a Mathquill equation field and block to selected div
+ * @param {string} div_name - div that block will be appended to
+ * @param {string} math_content - latex string is it exists
+ * @param {string} is_inline - boolean for if the equation is inline
+ */
 var addEquationField = function(div_name, math_content, is_inline){
 
   var uuid = getUUID();
@@ -66,12 +82,6 @@ var addEquationField = function(div_name, math_content, is_inline){
     .append(outer_math_span)
     .append("<button type='button' class='equation-button' onClick='toggleTextField(\"" + mathquill_text_block_id + "\")'>Toggle TextField</button>");
 
-    // This allows added functionality
-    // They will be added later
-    // .append("<button type='button' class='equation-button' onClick='copyEquationField(\"" + mathquill_block_id + "\")'>Add a copy</button>");
-
-  // add the elements to the page
-
   var content_field = $("<div></div>")
     .attr("id", uuid)
     .addClass("content_field")
@@ -87,7 +97,6 @@ var addEquationField = function(div_name, math_content, is_inline){
 
   var math_field = document.getElementById(mathquill_block_id);
   var text_field = document.getElementById(mathquill_text_block_id);
-  // var otherThing = document.getElementById("other_thing_id");
 
   mathField = MQ.MathField(math_field, {spaceBehavesLikeTab: true,
     handlers: {
@@ -98,12 +107,17 @@ var addEquationField = function(div_name, math_content, is_inline){
     }
   });
 
-  // TODO Change this to mathquill block id
   dict_of_questions[mathquill_text_block_id] = mathField;
 
   ++count;
 }
 
+/**
+ * Adds a textarea field and block to selected div
+ * @param {string} div_name - div that block will be appended to
+ * @param {string} content - string of content to populate textarea is it exists
+ * @param {string} is_inline - boolean for if the equation is inline
+ */
 var addTextField = function(div_name, content, is_inline){
   var uuid = getUUID();
 
@@ -138,6 +152,10 @@ var addTextField = function(div_name, content, is_inline){
   ++count;
 }
 
+/**
+ * Adds a file field and block to selected div
+ * @param {string} div_name - div that block will be appended to
+ */
 var addImageField = function(div_name){
   var uuid = getUUID();
 
@@ -166,10 +184,13 @@ var addImageField = function(div_name){
   // this will trigger the file upload option.
   fileInput.click()
   // once a file has been selected, the onChange will be handled.
-
-  // if they hit cancel, then it will need to trigger a delete of the div/ or create a placeholder? Which you can then delete?
 }
 
+/**
+ * Handles the uploaded file, checks that it is an image and appends it to the respective div
+ * @param {string} div_name - name of div to append to
+ * @param {object} files - reference to the file objects
+ */
 var handleFiles = function(div_name, files){
   // add the image before uploading
 
@@ -179,7 +200,6 @@ var handleFiles = function(div_name, files){
 
   // check that file is of type image
   if (!imageType.test(file.type)) {
-    // TODO give a warning if is not an image!
     return false;
   }
 
@@ -191,11 +211,6 @@ var handleFiles = function(div_name, files){
     .addClass("content-container")
     .append(img);
 
-
-  // add to the last div, which has been created already and added to the bottom
-  // assumes that div is always the last one - no deletes or changes :/
-  // TODO
-  // Make changes so that UUID is used to append the image
   $("."+div_name).children().last()
     .append(contentDiv)
     .css("display","flex");
@@ -232,8 +247,11 @@ var addExistingImageField = function(div_name, image_name, is_inline, src_path){
 
 }
 
+/**
+ * Display or hide the textfield associated with a MathQuill field
+ * @param {string} textfield_id - id of textfield
+ */
 var toggleTextField = function(textfield_id){
-
   if($("#" + textfield_id).css("display")=="none"){
     $("#" + textfield_id).css("display", "inline-block");
   }
@@ -242,6 +260,9 @@ var toggleTextField = function(textfield_id){
   }
 }
 
+/**
+ * Deletes a block
+ */
 var deleteBlock = function(uuid){
   // remove the mathquill objects if nec
   if($("#" + uuid).hasClass("math_field")){
@@ -251,6 +272,10 @@ var deleteBlock = function(uuid){
   $("#" + uuid).remove()
 }
 
+/**
+ * Moves a block up in the order
+ * If it is at the top, nothing will happen
+ */
 var moveUp = function(uuid){
   // check if there is a previous element
   var blockToMove = $("#"+uuid);
@@ -265,6 +290,10 @@ var moveUp = function(uuid){
   }
 }
 
+/**
+ * Moves a block down in the order
+ * If it is at the bottom, nothing will happen
+ */
 var moveDown = function(uuid){
   // check if there is a previous element
   var blockToMove = $("#"+uuid);
@@ -280,6 +309,11 @@ var moveDown = function(uuid){
   }
 }
 
+/**
+ * Fetch the content from each of the blocks and images from files fields
+ * Wraps data into JavaScript objects that can convert to a dict and stores the
+ * images as FormData.
+ */
 var getContent = function(){
   data = {}
   data["name"] = $("#question_name_textfield").val()
@@ -343,7 +377,6 @@ var getContent = function(){
           }
           // image has just been uploaded
           else{
-            console.log("AAAAAAA");
             // generate a uuid for the image
             var pic_uuid = getUUID();
             //  get the file type
@@ -387,57 +420,24 @@ var getContent = function(){
   });
 }
 
-/*
-The way this function currently works is to find all of blocks of content
-For each block of content, find all of the textfields
-If the textfield is linked to an eqation field,
-  use the id to find the mathField object which has been stored in the dict_of_questions
-Pull the content and add it to an array of strings.
-*/
-var postInfo = function(){
+/**
+ * Posts the images to a defined endpoint and json data to another
+ * @param {string} image_endpoint - relative URL for the FormData
+ * @param {string} data_endpoint - relative URL for the JSON data
+ * @param {boolean} cookie_flag - whether a cookie should included in the data post
+ */
+var postInfo = function(image_endpoint, data_endpoint, cookie_flag){
   fetched_data = getContent();
 
   data=fetched_data.data;
   image_data=fetched_data.image_data;
 
   var data_invalid = false;
-  // validate the data
-  /*
-  if(data.name===""){
-    console.log("WARNING: There is no name for the question");
-    data_invalid = true;
-  }
-  */
-  data.name=global_question_id
 
-  /*
-  if(data.question_content==""){
-    console.log("NO CONTENT: question_content");
-    data_invalid = true;
-  }
-  if(data.answer_explanation_content==""){
-    console.log("NO CONTENT: answer_explanation_content");
-    data_invalid = true;
-  }
-  if(data.option_content_1==""){
-    console.log("NO CONTENT: option_content_1");
-    data_invalid = true;
-  }
-  if(data.option_content_2==""){
-    console.log("NO CONTENT: option_content_2");
-    data_invalid = true;
-  }
-  if(data.option_content_3==""){
-    console.log("NO CONTENT: option_content_3");
-    data_invalid = true;
-  }
-  */
+  data.name=global_question_id
 
   // Send the data and clean it up
   if(!data_invalid){
-    //  CLEAN UP
-    // clear the blocks so that more content can be created
-    // TODO: create a global reference for the sections - this violates DRY
     var sections = [
       "question_content",
       "answer_explanation_content",
@@ -455,131 +455,54 @@ var postInfo = function(){
     count = 0;
     // clear the array that stores mathFields
     dict_of_questions = {};
-    // END OF CLEAN UP
 
     // post the data to the server
     json_data = data
-    // TODO - make the code optional
+
+    if(cookie_flag){
     // add the CSRF token to the headers
-    $.ajaxSetup({
-      headers: {"X-CSRFToken": $.cookie("csrftoken")}
-    });
-
-    // Check if there are images
-
-
-    $.ajax({
-      url: '../../../question_content/file_upload/', // TODO: This needs to be passed in as an attribute
-      data: image_data,
-      cache: false,
-      contentType: false,
-      processData: false,
-      type: 'POST',
-      success: function(data){
-        console.log("Images posted to server")
-        // post the data to the server
-        $.ajax({
-          url: '../../../question_content/', // TODO: This needs to be passed in as an attribute
-          type: 'POST',
-          contentType:'application/json',
-          data: JSON.stringify(json_data),
-          dataType:'json',
-          success: function(data){
-            console.log("succes posting data")
-            // TODO: change this code
-            $("#subject_form_button").click();
-          },
-          error: function(data){
-            console.log("Posting data to server went wrong!")
-          },
-        });
-      },
-      error: function(data){
-        console.log("Posting images posting went wrong");
-      },
-    });
-  }
-}
-
-// wraps input in 'p' tags
-var renderText = function(text){
-  return $("<p></p>")
-    .addClass("preview-text")
-    .text(text);
-}
-
-var renderLatex = function(latex){
-  var katex_span = $("<span></span>")
-    .addClass("katex-span")[0];
-  katex.render(latex, katex_span);
-
-  // TODO
-  // handle case where there is text as well as
-  // TODO
-  // handle case where the latex is nt valid
-  return katex_span;
-}
-
-var renderImage = function(){
-  return $("<div></div>")
-    .addClass("image-placeholder")
-}
-
-// items is an array of objects that either have a key of
-// "text", "latex", "image"
-var renderBlock = function(items, block_name){
-  // create a root jquery div
-  var block = $("<div></div>")
-    .addClass(block_name);
-
-  // iterate through the items and append them
-  for (var i = 0; i < items.length; ++i) {
-    key = Object.keys(items[i])[0]
-    switch(key){
-      case "text":
-        block.append(renderText(items[i][key]));
-        break;
-      case "latex":
-        block.append(renderLatex(items[i][key]));
-        break;
-      case "image":
-        block.append(renderImage(items[i][key]));
-        break;
-      default:
-        console.log();
+      $.ajaxSetup({
+        headers: {"X-CSRFToken": $.cookie("csrftoken")}
+      });
     }
-    block.append($("<br />"))
+
+    if((image_endpoint)&&(data_endpoint)){
+      $.ajax({
+        url: image_endpoint,
+        data: image_data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data){
+          console.log("Images posted to server")
+          // post the data to the server
+          $.ajax({
+            url: data_endpoint,
+            type: 'POST',
+            contentType:'application/json',
+            data: JSON.stringify(json_data),
+            dataType:'json',
+            success: function(data){
+              console.log("succes posting data")
+              $("#subject_form_button").click();
+            },
+            error: function(data){
+              console.log("Posting data to server went wrong!")
+            },
+          });
+        },
+        error: function(data){
+          console.log("Posting images posting went wrong");
+        },
+      });
+    }
   }
-  return block;
 }
 
-var createPreview = function(data){
-  var root_div = $("#preview-panel");
-
-  // pull the data from the edit-panel
-  fetched_data = getContent();
-
-  data=fetched_data.data;
-  image_data=fetched_data.image_data;
-
-  console.dir(data);
-
-  root_div.append("<h3>Question</h3>");
-  // State the question
-  root_div.append(renderBlock(data.question_content, "question_block"));
-  // State the possible answers
-  root_div.append("<h3>Options</h3>");
-  root_div.append(renderBlock(data.option_content_1, "option block_1"));
-  root_div.append(renderBlock(data.option_content_1, "option block_2"));
-  root_div.append(renderBlock(data.option_content_1, "option block_3"));
-
-  // add a 'submit' button that will change question section to hidden
-
-  // add the correct answer
-
-  //
-}
-
+/**
+ * Display or hide the preview bar
+ */
 var togglePreview = function(){
   var preview_panel = $("#preview-panel");
   var display_value = preview_panel.css("display");
